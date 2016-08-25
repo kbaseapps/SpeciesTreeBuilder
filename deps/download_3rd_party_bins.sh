@@ -13,8 +13,11 @@ rmdir ./ncbi-blast-2.2.29+/bin
 rmdir ./ncbi-blast-2.2.29+
 rm ./blast.tar.gz
 
+cd ..
+rmdir ./temp
+
 ########### FastTree ###########
-cd ../bin
+cd ./bin
 echo "Downloading FastTree..."
 curl -o FastTree.linux 'http://www.microbesonline.org/fasttree/FastTree'
 chmod +x ./FastTree.linux

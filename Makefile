@@ -66,4 +66,8 @@ test:
 
 clean:
 	rm -rfv $(LBIN_DIR)
-	
+
+ref-data:
+	bash ./bin/prepare.sh
+	cp -a ./data/* /data/
+	touch /data/__READY__

@@ -60,7 +60,6 @@ public class SpeciesTreeBuilder {
 	private static final int DEFAULT_NEAREST_GENOME_COUNT = 100;
     private static final int MIN_NEAREST_GENOME_COUNT = 1;
 	private static final int MAX_NEAREST_GENOME_COUNT = 200;
-	private static final String defaultGenomeWsName = "KBasePublicGenomesV3";
 	private static final String[] genomeWsTypes = {"KBaseGenomes.Genome", 
 	    "KBaseGenomeAnnotations.GenomeAnnotation"};
 	
@@ -79,8 +78,10 @@ public class SpeciesTreeBuilder {
 	public SpeciesTreeBuilder(File tempDir, File dataDir, String genomeWsName, URL wsUrl, 
 	        AuthToken token) throws Exception {
 	    this.tempDir = tempDir;
+	    if (!this.tempDir.exists())
+	        tempDir.mkdirs();
 	    this.dataDir = dataDir;
-		this.genomeWsName = genomeWsName == null ? defaultGenomeWsName : genomeWsName;
+		this.genomeWsName = genomeWsName;
         this.storage = new WorkspaceClient(wsUrl, token);
         storage.setIsInsecureHttpConnectionAllowed(true);
         this.token = token;
@@ -234,7 +235,7 @@ public class SpeciesTreeBuilder {
 		return new String(result.toByteArray(), Charset.forName("UTF-8")).trim();
 	}
 	
-	private File getCogsDir() {
+	public File getCogsDir() {
 		return new File(dataDir, "cogs");
 	}
 	
@@ -648,10 +649,6 @@ public class SpeciesTreeBuilder {
         GenomeAnnotationData gad = gaapi.getCombinedData(
                 new GetCombinedDataParams().withRef(genomeRef)
                 .withExcludeGenes(1L).withExcludeCdsIdsByGeneId(1L));
-        /*final Genome genome = storage.getObjects2(new GetObjects2Params().withObjects(
-                Arrays.asList(new ObjectSpecification().withRef(genomeRef)))).getData().get(0)
-                .getData().asClassInstance(Genome.class);
-		String genomeName = genome.getScientificName();*/
         final List<FeatureData> cdss = new ArrayList<>(gad.getFeatureByIdByType().get(
                 gad.getCdsType()).values());
         String genomeName = gad.getSummary().getScientificName();

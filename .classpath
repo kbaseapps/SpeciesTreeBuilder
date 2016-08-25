@@ -15,27 +15,13 @@
 	<classpathentry kind="lib" path="../jars/lib/jars/syslog4j/syslog4j-0.9.46.jar"/>
 	<classpathentry kind="lib" path="../jars/lib/jars/junit/junit-4.9.jar"/>
 	<classpathentry kind="lib" path="../jars/lib/jars/forester/forester_1030.jar"/>
-	<classpathentry kind="lib" path="../jars/lib/jars/mongo/mongo-java-driver-2.11.2.jar"/>
-	<classpathentry kind="lib" path="../jars/lib/jars/jongo/jongo-0.5-early-20130912-1506.jar"/>
 	<classpathentry kind="lib" path="../jars/lib/jars/joda/joda-time-2.2.jar"/>
-	<classpathentry kind="lib" path="../jars/lib/jars/kbase/shock/shock-client-0.0.6.jar"/>
-	<classpathentry kind="lib" path="../jars/lib/jars/apache_commons/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="../jars/lib/jars/apache_commons/http/httpclient-4.3.1.jar"/>
-	<classpathentry kind="lib" path="../jars/lib/jars/apache_commons/http/httpcore-4.3.jar"/>
-	<classpathentry kind="lib" path="../jars/lib/jars/apache_commons/http/httpmime-4.3.1.jar"/>
-	<classpathentry kind="lib" path="../jars/lib/jars/kbase/kidl/kbase-kidl-parser2.jar"/>
-	<classpathentry kind="lib" path="../jars/lib/jars/apache_commons/commons-codec-1.8.jar"/>
 	<classpathentry kind="lib" path="../jars/lib/jars/apache_commons/commons-io-2.4.jar"/>
 	<classpathentry kind="lib" path="../jars/lib/jars/apache_commons/commons-lang3-3.1.jar"/>
-	<classpathentry kind="lib" path="../jars/lib/jars/bson4jackson/bson4jackson-2.2.0-2.2.0.jar"/>
-	<classpathentry kind="lib" path="../jars/lib/jars/easystream/easystream-1.2.13.jar"/>
 	<classpathentry kind="lib" path="../jars/lib/jars/slf4j/slf4j-api-1.6.1.jar"/>
-	<classpathentry kind="lib" path="../jars/lib/jars/google/guava-14.0.1.jar"/>
 	<classpathentry kind="lib" path="../jars/lib/jars/logback/logback-classic-1.1.2.jar"/>
 	<classpathentry kind="lib" path="../jars/lib/jars/logback/logback-core-1.1.2.jar"/>
 	<classpathentry kind="lib" path="../jars/lib/jars/kbase/common/kbase-common-0.0.20.jar"/>
-	<classpathentry kind="lib" path="../jars/lib/jars/derby/derby-10.10.1.1.jar"/>
 	<classpathentry kind="lib" path="../jars/lib/jars/kbase/genomes/kbase-genomes-20140411.jar"/>
 	<classpathentry kind="lib" path="../jars/lib/jars/kbase/workspace/WorkspaceClient-0.4.1.jar"/>
-	<classpathentry kind="lib" path="../jars/lib/jars/apache_commons/commons-compress-1.5.jar"/>
 </classpath>

@@ -9,18 +9,19 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import datafileutil.DataFileUtilClient;
+import datafileutil.GetObjectsParams;
+import datafileutil.ObjectData;
+import datafileutil.ObjectSaveData;
+import datafileutil.SaveObjectsParams;
+
 import us.kbase.auth.AuthToken;
 import us.kbase.common.service.Tuple11;
 import us.kbase.common.service.UObject;
 import us.kbase.kbasetrees.Tree;
-import us.kbase.workspace.CopyObjectParams;
+import us.kbase.kbasetrees.util.WorkspaceUtil;
 import us.kbase.workspace.GetObjectInfoNewParams;
-import us.kbase.workspace.GetObjects2Params;
-import us.kbase.workspace.ObjectData;
-import us.kbase.workspace.ObjectIdentity;
-import us.kbase.workspace.ObjectSaveData;
 import us.kbase.workspace.ObjectSpecification;
-import us.kbase.workspace.SaveObjectsParams;
 import us.kbase.workspace.WorkspaceClient;
 
 public class GenomeSetBuilder {
@@ -31,12 +32,16 @@ public class GenomeSetBuilder {
     
     public static String buildGenomeSetFromTree(String wsUrl, AuthToken token, String treeRef, 
 	        String genomeSetRef) throws Exception {
+        URL callbackUrl = new URL(System.getenv("SDK_CALLBACK_URL"));
+        DataFileUtilClient dfu = new DataFileUtilClient(callbackUrl, token);
+        dfu.setIsInsecureHttpConnectionAllowed(true);
+
         WorkspaceClient ws = new WorkspaceClient(new URL(wsUrl), token);
 		ws.setIsInsecureHttpConnectionAllowed(true);
-		ObjectData data = ws.getObjects2(new GetObjects2Params().withObjects(Arrays.asList(
-		        new ObjectSpecification().withRef(treeRef)))).getData().get(0);
+		ObjectData data = dfu.getObjects(new GetObjectsParams().withObjectRefs(Arrays.asList(
+		        treeRef))).getData().get(0);
 		Tree tree = data.getData().asClassInstance(Tree.class);
-		long wsid = data.getInfo().getE7();
+		//long wsid = data.getInfo().getE7();
 		Map<String, Map<String, List<String>>> refs = tree.getWsRefs();
 		String[] wsGenomeSetName = genomeSetRef.split("/");
 		String workspace = wsGenomeSetName[0];
@@ -81,24 +86,24 @@ public class GenomeSetBuilder {
 				newname = testname;
 			}
 			namehash.add(newname);
-			Tuple11<Long, String, String, String, Long, String, Long, String, String, Long, Map<String,String>> wsinfo = 
-					ws.copyObject(new CopyObjectParams().withTo(new ObjectIdentity().withWorkspace(workspace)
-					.withName(newname)).withFrom(new ObjectIdentity().withRef(ref)));
+			//Tuple11<Long, String, String, String, Long, String, Long, String, String, Long, Map<String,String>> wsinfo = 
+			//		ws.copyObject(new CopyObjectParams().withTo(new ObjectIdentity().withWorkspace(workspace)
+			//		.withName(newname)).withFrom(new ObjectIdentity().withRef(ref)));
 			//System.out.println("Genome " + key + " (ref=" + ref + ") was copied to " + workspace + "/" + newname);
-			wsid = wsinfo.getE7();
-			long objid = wsinfo.getE1();
-			long version = wsinfo.getE5();
-			ref = "" + wsid + "/" + objid + "/" + version;
+			//wsid = wsinfo.getE7();
+			//long objid = wsinfo.getE1();
+			//long version = wsinfo.getE5();
+			//ref = "" + wsid + "/" + objid + "/" + version;
 			String param = "param" + gcount;
 			gcount++;
             Map<String, String> element = new TreeMap<String, String>();
             element.put("ref", ref);
 			elements.put(param, element);
 	    }
-		ws.saveObjects(new SaveObjectsParams().withWorkspace(workspace).withObjects(Arrays.asList(
-				new ObjectSaveData().withType("KBaseSearch.GenomeSet").withName(genomeSetName)
-				.withData(new UObject(genomeSetData)))));
-		return null;
+        Long wsId = dfu.wsNameToId(workspace);
+        return WorkspaceUtil.getRefFromObjectInfo(dfu.saveObjects(new SaveObjectsParams().withId(wsId)
+                .withObjects(Arrays.asList(new ObjectSaveData().withType("KBaseSearch.GenomeSet")
+                        .withName(genomeSetName).withData(new UObject(genomeSetData))))).get(0));
 	}
 	
 	private static String cleanName(String text) {

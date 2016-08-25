@@ -11,5 +11,7 @@ module-version:
     0.0.1
 
 owners:
-    [rsutormin]
+    [rsutormin, msneddon]
 
+data-version:
+    1.0

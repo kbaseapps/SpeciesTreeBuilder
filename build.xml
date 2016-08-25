@@ -16,9 +16,13 @@
   <property name="scripts" location="scripts"/>
   <property name="web.xml" location="${scripts}/web.xml"/>
   <property name="exec.cmd.file" value="run_SpeciesTreeBuilder_async_job.sh"/>
+  <property name="exec2.cmd.file" value="prepare.sh"/>
   <property name="startup.cmd.file" value="start_server.sh"/>
 
   <fileset dir="${jars.dir}" id="lib">
+    <include name="apache_commons/commons-io-2.4.jar"/>
+    <include name="apache_commons/commons-lang3-3.1.jar"/>
+    <include name="forester/forester_1030.jar"/>
     <include name="ini4j/ini4j-0.5.2.jar"/>
     <include name="jackson/jackson-annotations-2.2.3.jar"/>
     <include name="jackson/jackson-core-2.2.3.jar"/>
@@ -29,15 +33,13 @@
     <include name="junit/junit-4.9.jar"/>
     <include name="kbase/auth/kbase-auth-0.4.1.jar"/>
     <include name="kbase/common/kbase-common-0.0.20.jar"/>
+    <include name="kbase/genomes/kbase-genomes-20140411.jar"/>
+    <include name="kbase/workspace/WorkspaceClient-0.4.1.jar"/>
     <include name="logback/logback-core-1.1.2.jar"/>
     <include name="logback/logback-classic-1.1.2.jar"/>
     <include name="servlet/servlet-api-2.5.jar"/>
     <include name="slf4j/slf4j-api-1.7.7.jar"/>
     <include name="syslog4j/syslog4j-0.9.46.jar"/>
-    <include name="kbase/workspace/WorkspaceClient-0.4.1.jar"/>
-    <include name="forester/forester_1030.jar"/>
-    <include name="kbase/genomes/kbase-genomes-20140411.jar"/>
-    <include name="apache_commons/commons-io-2.4.jar"/>
   </fileset>
 
   <path id="compile.classpath">
@@ -96,6 +98,10 @@ commit=${git.commit}</echo>
 java -Xmx2g -cp ${jar.absolute.path}:${lib.classpath} speciestreebuilder.SpeciesTreeBuilderServer $1 $2 $3
     </echo>
     <chmod file="${bin}/${exec.cmd.file}" perm="a+x"/>
+    <echo file="${bin}/${exec2.cmd.file}">#!/bin/bash
+java -Xmx2g -cp ${jar.absolute.path}:${lib.classpath} speciestreebuilder.prepare.SpeciesTreePreparation
+    </echo>
+    <chmod file="${bin}/${exec2.cmd.file}" perm="a+x"/>
   </target>
   
   <target name="test" description="run all tests">

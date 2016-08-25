@@ -6,7 +6,8 @@ MAINTAINER KBase Developer
 # any required dependencies for your module.
 
 # RUN apt-get update
-COPY ./deps/ /kb/deps
+RUN mkdir -p /kb/deps
+COPY ./deps/download_3rd_party_bins.sh /kb/deps/
 WORKDIR /kb/deps
 RUN ./download_3rd_party_bins.sh
 
