@@ -1,7 +1,5 @@
 package speciestreebuilder.test;
 
-import genomeannotationapi.GenomeAnnotationAPIClient;
-
 import java.io.File;
 import java.net.URL;
 import java.util.Arrays;
@@ -33,8 +31,6 @@ import us.kbase.common.service.JsonServerSyslog;
 import us.kbase.common.service.RpcContext;
 import us.kbase.common.service.UObject;
 import us.kbase.common.utils.FastaReader;
-import us.kbase.kbasegenomes.Feature;
-import us.kbase.kbasegenomes.Genome;
 import us.kbase.kbasetrees.Tree;
 import us.kbase.workspace.CreateWorkspaceParams;
 import us.kbase.workspace.GetObjects2Params;
@@ -104,7 +100,8 @@ public class SpeciesTreeBuilderServerTest {
         genomeKbIdToName.put("kb|g.27369", "Shewanella baltica OS625");
         genomeKbIdToName.put("kb|g.27370", "Shewanella baltica OS678");
         genomeKbIdToName.put("kb|g.210723", "Shewanella decolorationis S1201");
-        genomeKbIdToName.put("kb|g.242813", "Shewanella xiamenensis");
+        // Skipping next genome just to check we can handle lost references
+        //genomeKbIdToName.put("kb|g.242813", "Shewanella xiamenensis");
         // And several genomes for 
         genomeKbIdToName.put("kb|g.849", "Genome kb|g.849");
         genomeKbIdToName.put("kb|g.850", "Genome kb|g.850");
@@ -210,8 +207,10 @@ public class SpeciesTreeBuilderServerTest {
             for (String nodeId : nodeIds) {
                 String label = tree.getDefaultNodeLabels().get(nodeId);
                 Assert.assertNotNull(label);
-                Map<String, List<String>> refs = tree.getWsRefs().get(nodeId);
-                Assert.assertEquals(1, refs.size());
+                Map<String, List<String>> refMap = tree.getWsRefs().get(nodeId);
+                Assert.assertTrue(refMap.containsKey("g"));
+                List<String> refs = refMap.get("g");
+                Assert.assertEquals(nodeId.equals("kb|g.242813") ? 0 : 1, refs.size());
             }
         } catch (Exception ex) {
             System.err.println(tree.getTree());
@@ -225,7 +224,7 @@ public class SpeciesTreeBuilderServerTest {
         ///////////////////////////////////////////////////////////////////////////////////////////
         int genomesFound = impl.findCloseGenomes(
                 new FindCloseGenomesParams().withQueryGenome(genomeRef), token, getContext()).size();
-        Assert.assertEquals(31, genomesFound);
+        Assert.assertEquals(30, genomesFound);
         String taxPath = impl.guessTaxonomyPath(
                 new GuessTaxonomyPathParams().withQueryGenome(genomeRef), token, getContext());
         Assert.assertEquals("Shewanella; oneidensis;", taxPath);

@@ -50,7 +50,7 @@ public class CloseGenomesFinder {
 			if (idRefMap.get(kbId) == null) {
 				ref = kbToRefs.get(kbId);
 				if (ref == null) {
-					System.err.println("[trees] CloseGenomeFinder: Can't find genome for kbId=" + kbId);
+					System.err.println("[WARNING] CloseGenomeFinder: Can't find public genome object for id : " + kbId);
 					continue;
 				}
 			} else {

@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 
@@ -43,6 +44,7 @@ import us.kbase.common.utils.FastaWriter;
 import us.kbase.kbasetrees.Tree;
 import us.kbase.kbasetrees.util.TreeStructureUtil;
 import us.kbase.kbasetrees.util.WorkspaceUtil;
+import us.kbase.workspace.GetObjectInfoNewParams;
 import us.kbase.workspace.GetObjects2Params;
 import us.kbase.workspace.ListObjectsParams;
 import us.kbase.workspace.ObjectSpecification;
@@ -530,15 +532,15 @@ public class SpeciesTreeBuilder {
 				continue;
 			String ref = kbToRefs.get(genomeKb);
 			if (ref == null) {
-				System.err.println("[trees] SpeciesTreeBuilder: Can't find genome object for " +
-						"id: " + genomeKb);
-				concat.remove(genomeKb);
-				continue;
+				System.err.println("[WARNING] SpeciesTreeBuilder: Can't find public genome object " +
+						"for id: " + genomeKb);
+				//concat.remove(genomeKb);
+				//continue;
 			}
 			String name = kbToNames.get(genomeKb);
-			idLabelMap.put(genomeKb, name);
+			idLabelMap.put(genomeKb, name + " (" + genomeKb + ")");
 			refMap = new TreeMap<String, List<String>>();
-			refMap.put("g", Arrays.asList(ref));
+			refMap.put("g", ref == null ? Collections.<String>emptyList() : Arrays.asList(ref));
 			idRefMap.put(genomeKb, refMap);
 		}
 		String treeText = makeTree(concat);
@@ -584,11 +586,9 @@ public class SpeciesTreeBuilder {
 		return kbIdToMinDist;
 	}
 
-	public AlignConcat placeUserGenomesIntoAlignment(
-			List<String> genomeRefList, boolean useCog103Only,
-			Map<String, String> idLabelMap,
-			Map<String, Map<String, List<String>>> idRefMap, Set<String> seeds)
-			throws IOException {
+	public AlignConcat placeUserGenomesIntoAlignment(List<String> genomeRefList, 
+	        boolean useCog103Only, Map<String, String> idLabelMap,
+			Map<String, Map<String, List<String>>> idRefMap, Set<String> seeds) throws Exception {
 		Map<String, Map<String, String>> cogAlignments = 
 		        new LinkedHashMap<String, Map<String, String>>();
 		Map<String, Integer> cogToAlnLength = new LinkedHashMap<String, Integer>();
@@ -598,9 +598,19 @@ public class SpeciesTreeBuilder {
 			int alnLength = alignment.get(alignment.keySet().iterator().next()).length();
 			cogToAlnLength.put(cogCode, alnLength);
 		}
-		List<GenomeToCogsAlignment> userData = new ArrayList<GenomeToCogsAlignment>();
-		for (String genomeRef : genomeRefList) {
+        List<ObjectSpecification> objectids = new ArrayList<ObjectSpecification>();
+        for (String genomeRef : genomeRefList)
+            objectids.add(new ObjectSpecification().withRef(genomeRef));
+        Map<String, String> genomeRefToObjName = new TreeMap<String, String>();
+        List<Tuple11<Long, String, String, String, Long, String, Long, String, String, Long, Map<String,String>>> infos = 
+                storage.getObjectInfoNew(new GetObjectInfoNewParams().withObjects(objectids).withIncludeMetadata(0L));
+        for (Tuple11<Long, String, String, String, Long, String, Long, String, String, Long, Map<String,String>> info : infos) {
+            genomeRefToObjName.put(WorkspaceUtil.getRefFromObjectInfo(info), info.getE2());
+        }
+        List<GenomeToCogsAlignment> userData = new ArrayList<GenomeToCogsAlignment>();
+		for (String genomeRef : genomeRefToObjName.keySet()) {
 			try {
+	            objectids.add(new ObjectSpecification().withRef(genomeRef));
 				userData.add(alignGenomeProteins(genomeRef, useCog103Only, cogToAlnLength));
 			} catch (Exception ex) {
 				throw new IllegalStateException("Error processing genome [" + genomeRef + "] " +
@@ -619,7 +629,8 @@ public class SpeciesTreeBuilder {
 				cogAlignments.get(cogCode).put(nodeName, alignedSeq);
 				seeds.add(nodeName);
 				if (!idLabelMap.containsKey(nodeName)) {
-					idLabelMap.put(nodeName, genomeRes.getGenomeName());
+					idLabelMap.put(nodeName, genomeRes.getGenomeName() + " (" + 
+					        genomeRefToObjName.get(genomeRef) + ")");
 					Map<String, List<String>> refMap = new TreeMap<String, List<String>>();
 					refMap.put("g", Arrays.<String>asList(genomeRef));
 					idRefMap.put(nodeName, refMap);
