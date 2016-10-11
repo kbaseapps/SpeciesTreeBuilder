@@ -1,4 +1,4 @@
-package tmpgnmanntest;
+package buildtestgenome;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.File;
@@ -16,12 +16,14 @@ import us.kbase.common.service.RpcContext;
 import us.kbase.common.service.UnauthorizedException;
 
 /**
- * <p>Original spec-file module name: TmpGnmAnnTest</p>
+ * <p>Original spec-file module name: BuildTestGenome</p>
  * <pre>
- * A KBase module: TmpGnmAnnTest
+ * A KBase module: BuildTestGenome
+ * It's useful for preparation of small Genome objects in tests of
+ * methods dealing with protein translations in CDSs only.
  * </pre>
  */
-public class TmpGnmAnnTestClient {
+public class BuildTestGenomeClient {
     private JsonClientCaller caller;
     private long asyncJobCheckTimeMs = 100;
     private int asyncJobCheckTimeScalePercent = 150;
@@ -37,7 +39,7 @@ public class TmpGnmAnnTestClient {
     }
 
     /** Constructs a client with the default url and no user credentials.*/
-    public TmpGnmAnnTestClient() {
+    public BuildTestGenomeClient() {
        caller = new JsonClientCaller(DEFAULT_URL);
     }
 
@@ -45,7 +47,7 @@ public class TmpGnmAnnTestClient {
     /** Constructs a client with a custom URL and no user credentials.
      * @param url the URL of the service.
      */
-    public TmpGnmAnnTestClient(URL url) {
+    public BuildTestGenomeClient(URL url) {
         caller = new JsonClientCaller(url);
     }
     /** Constructs a client with a custom URL.
@@ -55,7 +57,7 @@ public class TmpGnmAnnTestClient {
      * @throws IOException if an IOException occurs when checking the token's
      * validity.
      */
-    public TmpGnmAnnTestClient(URL url, AuthToken token) throws UnauthorizedException, IOException {
+    public BuildTestGenomeClient(URL url, AuthToken token) throws UnauthorizedException, IOException {
         caller = new JsonClientCaller(url, token);
     }
 
@@ -67,7 +69,7 @@ public class TmpGnmAnnTestClient {
      * @throws IOException if an IOException occurs when checking the user's
      * credentials.
      */
-    public TmpGnmAnnTestClient(URL url, String user, String password) throws UnauthorizedException, IOException {
+    public BuildTestGenomeClient(URL url, String user, String password) throws UnauthorizedException, IOException {
         caller = new JsonClientCaller(url, user, password);
     }
 
@@ -81,7 +83,7 @@ public class TmpGnmAnnTestClient {
      * @throws IOException if an IOException occurs when checking the user's
      * credentials.
      */
-    public TmpGnmAnnTestClient(URL url, String user, String password, URL auth) throws UnauthorizedException, IOException {
+    public BuildTestGenomeClient(URL url, String user, String password, URL auth) throws UnauthorizedException, IOException {
         caller = new JsonClientCaller(url, user, password, auth);
     }
 
@@ -91,7 +93,7 @@ public class TmpGnmAnnTestClient {
      * @throws IOException if an IOException occurs when checking the token's
      * validity.
      */
-    public TmpGnmAnnTestClient(AuthToken token) throws UnauthorizedException, IOException {
+    public BuildTestGenomeClient(AuthToken token) throws UnauthorizedException, IOException {
         caller = new JsonClientCaller(DEFAULT_URL, token);
     }
 
@@ -102,7 +104,7 @@ public class TmpGnmAnnTestClient {
      * @throws IOException if an IOException occurs when checking the user's
      * credentials.
      */
-    public TmpGnmAnnTestClient(String user, String password) throws UnauthorizedException, IOException {
+    public BuildTestGenomeClient(String user, String password) throws UnauthorizedException, IOException {
         caller = new JsonClientCaller(DEFAULT_URL, user, password);
     }
 
@@ -228,20 +230,20 @@ public class TmpGnmAnnTestClient {
     protected <T> JobState<T> _checkJob(String jobId, TypeReference<List<JobState<T>>> retType) throws IOException, JsonClientException {
         List<Object> args = new ArrayList<Object>();
         args.add(jobId);
-        List<JobState<T>> res = caller.jsonrpcCall("TmpGnmAnnTest._check_job", args, retType, true, true);
+        List<JobState<T>> res = caller.jsonrpcCall("BuildTestGenome._check_job", args, retType, true, true);
         return res.get(0);
     }
 
     /**
-     * <p>Original spec-file function name: prepare_test_genome_annotation_from_proteins</p>
+     * <p>Original spec-file function name: prepare_test_genome_from_proteins</p>
      * <pre>
      * </pre>
-     * @param   params   instance of type {@link tmpgnmanntest.PrepareTestGenomeAnnotationFromProteinsParams PrepareTestGenomeAnnotationFromProteinsParams}
-     * @return   parameter "ga_ref" of String
+     * @param   params   instance of type {@link buildtestgenome.PrepareTestGenomeFromProteinsParams PrepareTestGenomeFromProteinsParams}
+     * @return   parameter "genome_ref" of String
      * @throws IOException if an IO exception occurs
      * @throws JsonClientException if a JSON RPC exception occurs
      */
-    protected String _prepareTestGenomeAnnotationFromProteinsSubmit(PrepareTestGenomeAnnotationFromProteinsParams params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+    protected String _prepareTestGenomeFromProteinsSubmit(PrepareTestGenomeFromProteinsParams params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
         if (this.serviceVersion != null) {
             if (jsonRpcContext == null || jsonRpcContext.length == 0 || jsonRpcContext[0] == null)
                 jsonRpcContext = new RpcContext[] {new RpcContext()};
@@ -250,21 +252,21 @@ public class TmpGnmAnnTestClient {
         List<Object> args = new ArrayList<Object>();
         args.add(params);
         TypeReference<List<String>> retType = new TypeReference<List<String>>() {};
-        List<String> res = caller.jsonrpcCall("TmpGnmAnnTest._prepare_test_genome_annotation_from_proteins_submit", args, retType, true, true, jsonRpcContext);
+        List<String> res = caller.jsonrpcCall("BuildTestGenome._prepare_test_genome_from_proteins_submit", args, retType, true, true, jsonRpcContext);
         return res.get(0);
     }
 
     /**
-     * <p>Original spec-file function name: prepare_test_genome_annotation_from_proteins</p>
+     * <p>Original spec-file function name: prepare_test_genome_from_proteins</p>
      * <pre>
      * </pre>
-     * @param   params   instance of type {@link tmpgnmanntest.PrepareTestGenomeAnnotationFromProteinsParams PrepareTestGenomeAnnotationFromProteinsParams}
-     * @return   parameter "ga_ref" of String
+     * @param   params   instance of type {@link buildtestgenome.PrepareTestGenomeFromProteinsParams PrepareTestGenomeFromProteinsParams}
+     * @return   parameter "genome_ref" of String
      * @throws IOException if an IO exception occurs
      * @throws JsonClientException if a JSON RPC exception occurs
      */
-    public String prepareTestGenomeAnnotationFromProteins(PrepareTestGenomeAnnotationFromProteinsParams params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
-        String jobId = _prepareTestGenomeAnnotationFromProteinsSubmit(params, jsonRpcContext);
+    public String prepareTestGenomeFromProteins(PrepareTestGenomeFromProteinsParams params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        String jobId = _prepareTestGenomeFromProteinsSubmit(params, jsonRpcContext);
         TypeReference<List<JobState<List<String>>>> retType = new TypeReference<List<JobState<List<String>>>>() {};
         long asyncJobCheckTimeMs = this.asyncJobCheckTimeMs;
         while (true) {
@@ -290,7 +292,7 @@ public class TmpGnmAnnTestClient {
         }
         List<Object> args = new ArrayList<Object>();
         TypeReference<List<String>> retType1 = new TypeReference<List<String>>() {};
-        List<String> res1 = caller.jsonrpcCall("TmpGnmAnnTest._status_submit", args, retType1, true, true, jsonRpcContext);
+        List<String> res1 = caller.jsonrpcCall("BuildTestGenome._status_submit", args, retType1, true, true, jsonRpcContext);
         String jobId = res1.get(0);
         TypeReference<List<JobState<List<Map<String, Object>>>>> retType2 = new TypeReference<List<JobState<List<Map<String, Object>>>>>() {};
         long asyncJobCheckTimeMs = this.asyncJobCheckTimeMs;

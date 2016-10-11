@@ -18,13 +18,14 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import buildtestgenome.BuildTestGenomeClient;
+import buildtestgenome.PrepareTestGenomeFromProteinsParams;
+
 import speciestreebuilder.BuildGenomeSetFromTreeParams;
 import speciestreebuilder.ConstructSpeciesTreeParams;
 import speciestreebuilder.FindCloseGenomesParams;
 import speciestreebuilder.GuessTaxonomyPathParams;
 import speciestreebuilder.SpeciesTreeBuilderServer;
-import tmpgnmanntest.PrepareTestGenomeAnnotationFromProteinsParams;
-import tmpgnmanntest.TmpGnmAnnTestClient;
 import us.kbase.auth.AuthToken;
 import us.kbase.auth.AuthService;
 import us.kbase.common.service.JsonServerSyslog;
@@ -71,10 +72,10 @@ public class SpeciesTreeBuilderServerTest {
             proteinIdToSeq.put(entry.getKey(), entry.getValue());
         String genomeName = "Shewanella_ANA_3_uid58347";
         String genomeObjId = genomeName + ".genome";
-        TmpGnmAnnTestClient tgat = new TmpGnmAnnTestClient(new URL(System.getenv("SDK_CALLBACK_URL")), token);
-        tgat.setIsInsecureHttpConnectionAllowed(true);
-        tgat.prepareTestGenomeAnnotationFromProteins(
-                new PrepareTestGenomeAnnotationFromProteinsParams().withGenomeName(genomeName)
+        BuildTestGenomeClient btg = new BuildTestGenomeClient(new URL(System.getenv("SDK_CALLBACK_URL")), token);
+        btg.setIsInsecureHttpConnectionAllowed(true);
+        btg.prepareTestGenomeFromProteins(
+                new PrepareTestGenomeFromProteinsParams().withGenomeName(genomeName)
                 .withProteinIdToSequence(proteinIdToSeq)
                 .withOutputWorkspaceName(getWsName()).withOutputObjectName(genomeObjId));
         // Sync genome objects (just fake wrappers with kbase-id as name)

@@ -1,5 +1,5 @@
 
-package tmpgnmanntest;
+package buildtestgenome;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 /**
- * <p>Original spec-file type: PrepareTestGenomeAnnotationFromProteinsParams</p>
+ * <p>Original spec-file type: PrepareTestGenomeFromProteinsParams</p>
  * 
  * 
  */
@@ -24,7 +24,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "genome_name",
     "protein_id_to_sequence"
 })
-public class PrepareTestGenomeAnnotationFromProteinsParams {
+public class PrepareTestGenomeFromProteinsParams {
 
     @JsonProperty("output_workspace_name")
     private java.lang.String outputWorkspaceName;
@@ -46,7 +46,7 @@ public class PrepareTestGenomeAnnotationFromProteinsParams {
         this.outputWorkspaceName = outputWorkspaceName;
     }
 
-    public PrepareTestGenomeAnnotationFromProteinsParams withOutputWorkspaceName(java.lang.String outputWorkspaceName) {
+    public PrepareTestGenomeFromProteinsParams withOutputWorkspaceName(java.lang.String outputWorkspaceName) {
         this.outputWorkspaceName = outputWorkspaceName;
         return this;
     }
@@ -61,7 +61,7 @@ public class PrepareTestGenomeAnnotationFromProteinsParams {
         this.outputObjectName = outputObjectName;
     }
 
-    public PrepareTestGenomeAnnotationFromProteinsParams withOutputObjectName(java.lang.String outputObjectName) {
+    public PrepareTestGenomeFromProteinsParams withOutputObjectName(java.lang.String outputObjectName) {
         this.outputObjectName = outputObjectName;
         return this;
     }
@@ -76,7 +76,7 @@ public class PrepareTestGenomeAnnotationFromProteinsParams {
         this.genomeName = genomeName;
     }
 
-    public PrepareTestGenomeAnnotationFromProteinsParams withGenomeName(java.lang.String genomeName) {
+    public PrepareTestGenomeFromProteinsParams withGenomeName(java.lang.String genomeName) {
         this.genomeName = genomeName;
         return this;
     }
@@ -91,7 +91,7 @@ public class PrepareTestGenomeAnnotationFromProteinsParams {
         this.proteinIdToSequence = proteinIdToSequence;
     }
 
-    public PrepareTestGenomeAnnotationFromProteinsParams withProteinIdToSequence(Map<String, String> proteinIdToSequence) {
+    public PrepareTestGenomeFromProteinsParams withProteinIdToSequence(Map<String, String> proteinIdToSequence) {
         this.proteinIdToSequence = proteinIdToSequence;
         return this;
     }
@@ -108,7 +108,7 @@ public class PrepareTestGenomeAnnotationFromProteinsParams {
 
     @Override
     public java.lang.String toString() {
-        return ((((((((((("PrepareTestGenomeAnnotationFromProteinsParams"+" [outputWorkspaceName=")+ outputWorkspaceName)+", outputObjectName=")+ outputObjectName)+", genomeName=")+ genomeName)+", proteinIdToSequence=")+ proteinIdToSequence)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((("PrepareTestGenomeFromProteinsParams"+" [outputWorkspaceName=")+ outputWorkspaceName)+", outputObjectName=")+ outputObjectName)+", genomeName=")+ genomeName)+", proteinIdToSequence=")+ proteinIdToSequence)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }
