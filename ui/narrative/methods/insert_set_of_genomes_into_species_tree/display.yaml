@@ -62,7 +62,7 @@ description : |
 
 <p>Note: when inserting one or more genomes into a species tree, the inserted genomes that are also contained within the KBase list of species will be duplicated in the tree. One copy will have the KBase list ID and the other will have the ID of the inserted genome. The genomes will also be duplicated in any genome set generated from the tree.</p>
     
-    <p><strong>Team members who developed & deployed algorithm in KBase:</strong> Roman Sutormin. For questions, <a href="mailto:help@kbase.us">e-mail help@kbase.us</a></p>
+    <p><strong>Team members who developed & deployed algorithm in KBase:</strong> Roman Sutormin. For questions, contact us at <a href="http://kbase.us/contact-us/">http://kbase.us/contact-us/</a></p>
     
 publications :
     -
