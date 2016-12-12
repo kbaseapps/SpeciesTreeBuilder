@@ -1,9 +1,9 @@
 {
   "ver" : "1.0.0",
   "authors" : [ ],
-  "contact" : "help@kbase.us",
+  "contact" : "http://kbase.us/contact-us/",
   "visble" : true,
-  "categories" : ["active"],
+  "categories" : ["active","comparative_genomics"],
   "widgets" : {
     "input" : null,
     "output" : "kbaseGenomeSetBuilder"
