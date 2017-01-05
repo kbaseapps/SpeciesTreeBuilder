@@ -1,10 +1,8 @@
 package speciestreebuilder;
 
-import genomeannotationapi.FeatureData;
 import genomeannotationapi.GenomeAnnotationAPIClient;
-import genomeannotationapi.GenomeAnnotationData;
-import genomeannotationapi.GetCombinedDataParams;
-import genomeannotationapi.ProteinData;
+import genomeannotationapi.GenomeSelectorV1;
+import genomeannotationapi.GetGenomeParamsV1;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -27,9 +25,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
+
+import kbasegenomes.Feature;
+import kbasegenomes.Genome;
 
 import datafileutil.DataFileUtilClient;
 
@@ -657,14 +657,15 @@ public class SpeciesTreeBuilder {
         URL callbackUrl = new URL(System.getenv("SDK_CALLBACK_URL"));
         GenomeAnnotationAPIClient gaapi = new GenomeAnnotationAPIClient(callbackUrl, token);
         gaapi.setIsInsecureHttpConnectionAllowed(true);
-        GenomeAnnotationData gad = gaapi.getCombinedData(
-                new GetCombinedDataParams().withRef(genomeRef)
-                .withExcludeGenes(1L).withExcludeCdsIdsByGeneId(1L));
-        final List<FeatureData> cdss = new ArrayList<>(gad.getFeatureByIdByType().get(
-                gad.getCdsType()).values());
-        String genomeName = gad.getSummary().getScientificName();
+        Genome genome = gaapi.getGenomeV1(
+                new GetGenomeParamsV1().withGenomes(
+                        Arrays.asList(new GenomeSelectorV1().withRef(genomeRef)))
+                        .withIncludedFeatureFields(Arrays.asList("id", "location",
+                                "protein_translation", "type"))).getGenomes().get(0).getData();
+        String genomeName = genome.getScientificName();
         if (genomeName == null)
             genomeName = "Genome " + genomeRef;
+        final List<Feature> cdss = genome.getFeatures();
 		File fastaFile = File.createTempFile("proteome", ".fasta", tempDir);
 		File dbFile = null;
 		File tabFile = null;
@@ -673,11 +674,8 @@ public class SpeciesTreeBuilder {
 			int protCount = 0;
 			try {
 				for (int pos = 0; pos < cdss.size(); pos++) {
-				    String cdsId = cdss.get(pos).getFeatureId();
-				    ProteinData protein = gad.getProteinByCdsId().get(cdsId);
-				    if (protein == null)
-				        continue;
-					String seq = protein.getProteinAminoAcidSequence();
+				    Feature cds = cdss.get(pos);
+					String seq = cds.getProteinTranslation();
 					if (seq == null || seq.isEmpty())
 						continue;
 					fw.write("" + pos, seq);
@@ -720,7 +718,7 @@ public class SpeciesTreeBuilder {
 					result.setCoverage(coverage);
 					result.setEvalue(Double.parseDouble(evalue));
 					int featurePos = Integer.parseInt(query);
-					result.setFeatureId(cdss.get(featurePos).getFeatureId());
+					result.setFeatureId(cdss.get(featurePos).getId());
 					result.setAlignedFeatureSeq(qseq);
 					result.setIdentity(ident);
 					protList.add(result);

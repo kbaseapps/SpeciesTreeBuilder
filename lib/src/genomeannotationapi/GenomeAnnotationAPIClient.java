@@ -3,7 +3,6 @@ package genomeannotationapi;
 import com.fasterxml.jackson.core.type.TypeReference;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +18,6 @@ import us.kbase.common.service.UnauthorizedException;
 /**
  * <p>Original spec-file module name: GenomeAnnotationAPI</p>
  * <pre>
- * A KBase module: GenomeAnnotationAPI
  * </pre>
  */
 public class GenomeAnnotationAPIClient {
@@ -27,20 +25,7 @@ public class GenomeAnnotationAPIClient {
     private long asyncJobCheckTimeMs = 100;
     private int asyncJobCheckTimeScalePercent = 150;
     private long asyncJobCheckMaxTimeMs = 300000;  // 5 minutes
-    private String serviceVersion = "dev";
-    private static URL DEFAULT_URL = null;
-    static {
-        try {
-            DEFAULT_URL = new URL("https://kbase.us/services/njs_wrapper");
-        } catch (MalformedURLException mue) {
-            throw new RuntimeException("Compile error in client - bad url compiled");
-        }
-    }
-
-    /** Constructs a client with the default url and no user credentials.*/
-    public GenomeAnnotationAPIClient() {
-       caller = new JsonClientCaller(DEFAULT_URL);
-    }
+    private String serviceVersion = "release";
 
 
     /** Constructs a client with a custom URL and no user credentials.
@@ -84,27 +69,6 @@ public class GenomeAnnotationAPIClient {
      */
     public GenomeAnnotationAPIClient(URL url, String user, String password, URL auth) throws UnauthorizedException, IOException {
         caller = new JsonClientCaller(url, user, password, auth);
-    }
-
-    /** Constructs a client with the default URL.
-     * @param token the user's authorization token.
-     * @throws UnauthorizedException if the token is not valid.
-     * @throws IOException if an IOException occurs when checking the token's
-     * validity.
-     */
-    public GenomeAnnotationAPIClient(AuthToken token) throws UnauthorizedException, IOException {
-        caller = new JsonClientCaller(DEFAULT_URL, token);
-    }
-
-    /** Constructs a client with the default URL.
-     * @param user the user name.
-     * @param password the password for the user name.
-     * @throws UnauthorizedException if the credentials are not valid.
-     * @throws IOException if an IOException occurs when checking the user's
-     * credentials.
-     */
-    public GenomeAnnotationAPIClient(String user, String password) throws UnauthorizedException, IOException {
-        caller = new JsonClientCaller(DEFAULT_URL, user, password);
     }
 
     /** Get the token this client uses to communicate with the server.
@@ -1494,6 +1458,110 @@ public class GenomeAnnotationAPIClient {
             }
             asyncJobCheckTimeMs = Math.min(asyncJobCheckTimeMs * this.asyncJobCheckTimeScalePercent / 100, this.asyncJobCheckMaxTimeMs);
             JobState<List<GenomeAnnotationData>> res = _checkJob(jobId, retType);
+            if (res.getFinished() != 0L)
+                return res.getResult().get(0);
+        }
+    }
+
+    /**
+     * <p>Original spec-file function name: get_genome_v1</p>
+     * <pre>
+     * A reasonably simple wrapper on get_objects2, but with Genome specific
+     * filters instead of arbitrary get subdata included paths.
+     * </pre>
+     * @param   params   instance of type {@link genomeannotationapi.GetGenomeParamsV1 GetGenomeParamsV1}
+     * @return   parameter "data" of type {@link genomeannotationapi.GenomeDataSetV1 GenomeDataSetV1}
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    protected String _getGenomeV1Submit(GetGenomeParamsV1 params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        if (this.serviceVersion != null) {
+            if (jsonRpcContext == null || jsonRpcContext.length == 0 || jsonRpcContext[0] == null)
+                jsonRpcContext = new RpcContext[] {new RpcContext()};
+            jsonRpcContext[0].getAdditionalProperties().put("service_ver", this.serviceVersion);
+        }
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<String>> retType = new TypeReference<List<String>>() {};
+        List<String> res = caller.jsonrpcCall("GenomeAnnotationAPI._get_genome_v1_submit", args, retType, true, true, jsonRpcContext);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: get_genome_v1</p>
+     * <pre>
+     * A reasonably simple wrapper on get_objects2, but with Genome specific
+     * filters instead of arbitrary get subdata included paths.
+     * </pre>
+     * @param   params   instance of type {@link genomeannotationapi.GetGenomeParamsV1 GetGenomeParamsV1}
+     * @return   parameter "data" of type {@link genomeannotationapi.GenomeDataSetV1 GenomeDataSetV1}
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public GenomeDataSetV1 getGenomeV1(GetGenomeParamsV1 params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        String jobId = _getGenomeV1Submit(params, jsonRpcContext);
+        TypeReference<List<JobState<List<GenomeDataSetV1>>>> retType = new TypeReference<List<JobState<List<GenomeDataSetV1>>>>() {};
+        long asyncJobCheckTimeMs = this.asyncJobCheckTimeMs;
+        while (true) {
+            if (Thread.currentThread().isInterrupted())
+                throw new JsonClientException("Thread was interrupted");
+            try { 
+                Thread.sleep(asyncJobCheckTimeMs);
+            } catch(Exception ex) {
+                throw new JsonClientException("Thread was interrupted", ex);
+            }
+            asyncJobCheckTimeMs = Math.min(asyncJobCheckTimeMs * this.asyncJobCheckTimeScalePercent / 100, this.asyncJobCheckMaxTimeMs);
+            JobState<List<GenomeDataSetV1>> res = _checkJob(jobId, retType);
+            if (res.getFinished() != 0L)
+                return res.getResult().get(0);
+        }
+    }
+
+    /**
+     * <p>Original spec-file function name: save_one_genome_v1</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link genomeannotationapi.SaveOneGenomeParamsV1 SaveOneGenomeParamsV1}
+     * @return   parameter "result" of type {@link genomeannotationapi.SaveGenomeResultV1 SaveGenomeResultV1}
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    protected String _saveOneGenomeV1Submit(SaveOneGenomeParamsV1 params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        if (this.serviceVersion != null) {
+            if (jsonRpcContext == null || jsonRpcContext.length == 0 || jsonRpcContext[0] == null)
+                jsonRpcContext = new RpcContext[] {new RpcContext()};
+            jsonRpcContext[0].getAdditionalProperties().put("service_ver", this.serviceVersion);
+        }
+        List<Object> args = new ArrayList<Object>();
+        args.add(params);
+        TypeReference<List<String>> retType = new TypeReference<List<String>>() {};
+        List<String> res = caller.jsonrpcCall("GenomeAnnotationAPI._save_one_genome_v1_submit", args, retType, true, true, jsonRpcContext);
+        return res.get(0);
+    }
+
+    /**
+     * <p>Original spec-file function name: save_one_genome_v1</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link genomeannotationapi.SaveOneGenomeParamsV1 SaveOneGenomeParamsV1}
+     * @return   parameter "result" of type {@link genomeannotationapi.SaveGenomeResultV1 SaveGenomeResultV1}
+     * @throws IOException if an IO exception occurs
+     * @throws JsonClientException if a JSON RPC exception occurs
+     */
+    public SaveGenomeResultV1 saveOneGenomeV1(SaveOneGenomeParamsV1 params, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+        String jobId = _saveOneGenomeV1Submit(params, jsonRpcContext);
+        TypeReference<List<JobState<List<SaveGenomeResultV1>>>> retType = new TypeReference<List<JobState<List<SaveGenomeResultV1>>>>() {};
+        long asyncJobCheckTimeMs = this.asyncJobCheckTimeMs;
+        while (true) {
+            if (Thread.currentThread().isInterrupted())
+                throw new JsonClientException("Thread was interrupted");
+            try { 
+                Thread.sleep(asyncJobCheckTimeMs);
+            } catch(Exception ex) {
+                throw new JsonClientException("Thread was interrupted", ex);
+            }
+            asyncJobCheckTimeMs = Math.min(asyncJobCheckTimeMs * this.asyncJobCheckTimeScalePercent / 100, this.asyncJobCheckMaxTimeMs);
+            JobState<List<SaveGenomeResultV1>> res = _checkJob(jobId, retType);
             if (res.getFinished() != 0L)
                 return res.getResult().get(0);
         }
