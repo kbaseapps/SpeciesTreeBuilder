@@ -21,7 +21,7 @@ suggestions :
             []
     methods:
         related :
-            []
+            [construct_species_tree]
         next :
             [build_genome_set_from_tree_generic]
 
@@ -58,13 +58,17 @@ parameters :
 
 
 description : |
-    <p>This method allows a user to construct a phylogenetic tree combining the genome(s) provided by the user with a set of closely related genomes selected from all public KBase genomes. Since the number of genomes available in KBase is very large, the procedure starts by selecting a subset of public KBase genomes closely related to the user-provided genomes. Relatedness is determined by alignment similarity to a select subset of COG (Clusters of Orthologous Groups) domains. Next, a phylogenetic tree is reconstructed using FastTree (a method to quickly estimate maximum likelihood phylogeny, see Publications) with the genome provided by the user and the set of genomes identified as similar in the previous step.</p>
-    
-    <p><strong>Team members who developed & deployed algorithm in KBase:</strong> Roman Sutormin. For questions, <a href="mailto:help@kbase.us">e-mail help@kbase.us</a></p>
+    <p>This app allows a user to construct a phylogenetic tree combining the genome(s) provided by the user with a set of closely related genomes selected from all public KBase genomes.
+    Since the number of genomes available in KBase is very large, the procedure starts by selecting a subset of public KBase genomes closely related to the user-provided genomes.
+    Relatedness is determined by alignment similarity to a select subset of COG (Clusters of Orthologous Groups) domains.
+    Next, a phylogenetic tree is reconstructed using FastTree (a method to quickly estimate maximum likelihood phylogeny, see Publications) with the genome provided by the user and the set of genomes identified as similar in the previous step.</p>
+    <p>Note: when inserting one or more genomes into a species tree, the inserted genomes that are also contained within the KBase list of species will be duplicated in the tree.
+    One copy will have the KBase list ID and the other will have the ID of the inserted genome.
+    The genomes will also be duplicated in any genome set generated from the tree.</p>
+    <p><strong>Team members who developed & deployed algorithm in KBase:</strong> Roman Sutormin. For questions, contact us at <a href="http://kbase.us/contact-us/">http://kbase.us/contact-us/</a></p>
     
 publications :
     -
         display-text: |
             Price MN, Dehal PS, Arkin AP (2010)FastTree 2--approximately maximum-likelihood trees for large alignments. PLoS One. 2010 Mar 10;5(3):e9490
         link: http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2835736/
-
