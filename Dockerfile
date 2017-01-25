@@ -18,6 +18,14 @@ RUN mkdir -p /kb/module/work
 RUN chmod 777 /kb/module
 
 WORKDIR /kb/module
+
+# Fix for problem with lets-encript in Java (PKIX path building failed:
+#   sun.security.provider.certpath.SunCertPathBuilderException: unable
+#   to find valid certification path to requested target)
+RUN keytool -import -keystore /usr/lib/jvm/java-7-oracle/jre/lib/security/cacerts \
+    -storepass changeit -noprompt -trustcacerts -alias letsencryptauthorityx3 \
+    -file ./ssl/lets-encrypt-x3-cross-signed.der
+
 RUN mkdir -p bin
 RUN cp /kb/deps/bin/* ./bin/
 
