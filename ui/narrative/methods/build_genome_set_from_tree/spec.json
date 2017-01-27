@@ -19,7 +19,7 @@
       "valid_ws_types" : [ "KBaseTrees.Tree" ]
     }
   }, {
-    "id" : "param1",
+    "id" : "genomeSetName",
     "optional" : false,
     "advanced" : false,
     "allow_multiple" : false,
@@ -42,7 +42,7 @@
           "target_type_transform": "ref"
         },
         {
-          "input_parameter": "param1",
+          "input_parameter": "genomeSetName",
           "generated_value": {
             "prefix": "genomeset_"
           },
@@ -52,7 +52,7 @@
       ],
       "output_mapping" : [
         {
-          "input_parameter": "param1",
+          "input_parameter": "genomeSetName",
           "target_property": "genomeSetName"
         },
         {

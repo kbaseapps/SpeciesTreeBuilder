@@ -32,7 +32,7 @@
       "max_int" : 200
     }
   }, {
-    "id" : "param2",
+    "id" : "treeID",
     "optional" : false,
     "advanced" : false,
     "allow_multiple" : false,
@@ -60,7 +60,7 @@
           "target_type_transform": "int"
         },
         {
-          "input_parameter": "param2",
+          "input_parameter": "treeID",
           "generated_value": {
             "prefix": "sptree_"
           },
@@ -77,7 +77,7 @@
       ],
       "output_mapping" : [
         {
-          "input_parameter": "param2",
+          "input_parameter": "treeID",
           "target_property": "treeID"
         },
         {

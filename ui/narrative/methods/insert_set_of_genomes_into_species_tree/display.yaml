@@ -50,7 +50,7 @@ parameters :
             Number of closest public genomes the tree will contain. (optional, default value is 100)
 
 
-    param2 :
+    treeID :
         ui-name : |
             Output Tree
         short-hint : |

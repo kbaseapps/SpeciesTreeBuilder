@@ -41,7 +41,7 @@ parameters :
             User-generated KBase phylogenetic species tree
 
 
-    param1 :
+    genomeSetName :
         ui-name : |
             Output Genome Set
         short-hint : |
