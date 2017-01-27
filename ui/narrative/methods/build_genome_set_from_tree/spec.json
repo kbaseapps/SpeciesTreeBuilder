@@ -1,6 +1,6 @@
 {
   "ver" : "1.0.0",
-  "authors" : [ ],
+  "authors" : [ "rsutormin" ],
   "contact" : "http://kbase.us/contact-us/",
   "visble" : true,
   "categories" : ["active","comparative_genomics"],
