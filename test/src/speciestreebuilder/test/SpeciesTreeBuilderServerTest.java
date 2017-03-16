@@ -26,8 +26,10 @@ import speciestreebuilder.ConstructSpeciesTreeParams;
 import speciestreebuilder.FindCloseGenomesParams;
 import speciestreebuilder.GuessTaxonomyPathParams;
 import speciestreebuilder.SpeciesTreeBuilderServer;
+import us.kbase.auth.AuthConfig;
 import us.kbase.auth.AuthToken;
 import us.kbase.auth.AuthService;
+import us.kbase.auth.ConfigurableAuthService;
 import us.kbase.common.service.JsonServerSyslog;
 import us.kbase.common.service.RpcContext;
 import us.kbase.common.service.UObject;
@@ -53,11 +55,17 @@ public class SpeciesTreeBuilderServerTest {
     
     @BeforeClass
     public static void init() throws Exception {
-        token = AuthService.validateToken(System.getenv("KB_AUTH_TOKEN"));
         String configFilePath = System.getenv("KB_DEPLOYMENT_CONFIG");
         File deploy = new File(configFilePath);
         Ini ini = new Ini(deploy);
         config = ini.get("SpeciesTreeBuilder");
+        // Token validation
+        String authUrl = config.get("auth-service-url");
+        String authUrlInsecure = config.get("auth-service-url-allow-insecure");
+        ConfigurableAuthService authService = new ConfigurableAuthService(
+                new AuthConfig().withKBaseAuthServerURL(new URL(authUrl))
+                .withAllowInsecureURLs("true".equals(authUrlInsecure)));
+        token = authService.validateToken(System.getenv("KB_AUTH_TOKEN"));
         wsClient = new WorkspaceClient(new URL(config.get("workspace-url")), token);
         wsClient.setIsInsecureHttpConnectionAllowed(true);
         // These lines are necessary because we don't want to start linux syslog bridge service
