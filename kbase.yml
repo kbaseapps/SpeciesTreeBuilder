@@ -2,16 +2,16 @@ module-name:
     SpeciesTreeBuilder
 
 module-description:
-    A KBase module
+    Module for building species trees
 
 service-language:
     java
 
 module-version:
-    0.0.6
+    0.0.7
 
 owners:
-    [rsutormin, msneddon]
+    [rsutormin, msneddon, jmc]
 
 data-version:
     1.0
