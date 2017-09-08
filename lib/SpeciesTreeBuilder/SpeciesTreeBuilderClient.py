@@ -45,7 +45,7 @@ class SpeciesTreeBuilder(object):
            field should be defined. out_workspace - (required) the workspace
            to deposit the completed tree out_tree_id - (optional) the name of
            the newly constructed tree (will be random if not present or null)
-           out_genomeset_id - the name of the output genomeset object
+           out_genomeset_ref - the name of the output genomeset object
            copy_genomes - 1 means copy genomes to user workspace; 0 means
            refer only to the public genomes use_ribosomal_s9_only -
            (optional) 1 means only one protein family (Ribosomal S9) is used
@@ -59,7 +59,7 @@ class SpeciesTreeBuilder(object):
            "genomeset_ref" of type "ws_genomeset_id" (A workspace ID that
            references a GenomeSet data object. @id ws KBaseSearch.GenomeSet),
            parameter "out_workspace" of String, parameter "out_tree_id" of
-           String, parameter "out_genomeset_id" of type "ws_genomeset_id" (A
+           String, parameter "out_genomeset_ref" of type "ws_genomeset_id" (A
            workspace ID that references a GenomeSet data object. @id ws
            KBaseSearch.GenomeSet), parameter "copy_genomes" of Long,
            parameter "use_ribosomal_s9_only" of Long, parameter

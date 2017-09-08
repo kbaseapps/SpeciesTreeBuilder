@@ -23,7 +23,7 @@ public class SpeciesTreeBuilderServer extends JsonServerServlet {
     private static final long serialVersionUID = 1L;
     private static final String version = "0.0.7";
     private static final String gitUrl = "git@github.com:jmchandonia/SpeciesTreeBuilder.git";
-    private static final String gitCommitHash = "04f3935e89e63815736f6fb25ea8d85941adb6fc";
+    private static final String gitCommitHash = "44da917e02a19213f6192905be24a9a953b2e2f2";
 
     //BEGIN_CLASS_HEADER
     public Map<String, String> getConfig() throws Exception {
