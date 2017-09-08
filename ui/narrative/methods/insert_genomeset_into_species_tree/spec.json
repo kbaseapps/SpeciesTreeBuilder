@@ -1,5 +1,5 @@
 {
-  "ver" : "1.0.1",
+  "ver" : "1.0.2",
   "authors" : [ "rsutormin" ],
   "contact" : "http://kbase.us/contact-us/",
   "visble" : true,
@@ -23,13 +23,26 @@
     "optional" : true,
     "advanced" : false,
     "allow_multiple" : false,
-    "default_values" : [ "100" ],
+    "default_values" : [ "20" ],
     "field_type" : "text",
     "text_options" : {
       "valid_ws_types" : [ ],
       "validate_as": "int",
       "min_int" : 1,
       "max_int" : 200
+    }
+  }, {
+    "id": "copy_genomes",
+    "optional": false,
+    "advanced": false,
+    "allow_multiple": false,
+    "default_values": [
+        "1"
+    ],
+    "field_type": "checkbox",
+    "checkbox_options": {
+        "checked_value": 1,
+        "unchecked_value": 0
     }
   }, {
     "id" : "treeID",
@@ -40,6 +53,17 @@
     "field_type" : "text",
     "text_options" : {
       "valid_ws_types" : [ "KBaseTrees.Tree" ],
+      "is_output_name":true
+    }
+  }, {
+    "id" : "genomeSetName",
+    "optional" : false,
+    "advanced" : false,
+    "allow_multiple" : false,
+    "default_values" : [ "" ],
+    "field_type" : "text",
+    "text_options" : {
+      "valid_ws_types" : [ "KBaseSearch.GenomeSet" ],
       "is_output_name":true
     }
   } ],
@@ -60,11 +84,23 @@
           "target_type_transform": "int"
         },
         {
+          "input_parameter": "copy_genomes",
+          "target_property": "copy_genomes"
+        },
+        {
           "input_parameter": "treeID",
           "generated_value": {
             "prefix": "sptree_"
           },
           "target_property": "out_tree_id"
+        },
+        {
+          "input_parameter": "genomeSetName",
+          "generated_value": {
+            "prefix": "genomeset_"
+          },
+          "target_property": "genomeset_ref",
+          "target_type_transform": "ref"
         },
         {
           "narrative_system_variable": "workspace",

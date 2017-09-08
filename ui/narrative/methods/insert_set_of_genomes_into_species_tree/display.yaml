@@ -3,9 +3,9 @@
 #
 name     : Insert Genome Into Species Tree
 subtitle : |
-    Add one or more genomes to the KBase species tree.
+    Add one or more genomes to a KBase species tree.
 tooltip  : |
-    Add one or more genomes to the KBase species tree.
+    Add one or more genomes to a KBase species tree.
 
 screenshots :
     - insert_set_of_genomes_into_species_tree_input.png
@@ -20,12 +20,12 @@ suggestions :
         related :
             []
         next :
-            []
+            [insert_genomeset_into_species_tree_generic, genome_comparison, compute_pangenome]
     methods:
         related :
             [construct_species_tree]
         next :
-            [build_genome_set_from_tree_generic]
+            []
 
 
 #
@@ -45,10 +45,17 @@ parameters :
         ui-name : |
             Neighbor public genome count
         short-hint : |
-            Number of closest public genomes the tree will contain. (optional, default value is 100)
+            Number of closest public genomes the tree will contain. (optional, default value is 20)
         long-hint  : |
-            Number of closest public genomes the tree will contain. (optional, default value is 100)
+            Number of closest public genomes the tree will contain. (optional, default value is 20)
 
+    copy_genomes :
+        ui-name : |
+            Copy public genomes to your workspace
+        short-hint : |
+            We recommend copying public genomes to your workspace, so that you can conveniently do other analyses on them
+        long-hint  : |
+            We recommend copying public genomes to your workspace, so that you can conveniently do other analyses on them.  If you don't want to do anything else with the species tree, you may not need copies
 
     treeID :
         ui-name : |
@@ -58,6 +65,15 @@ parameters :
         long-hint : |
             The name of the output phylogenetic tree relating genomes available in KBase to your genome
 
+    genomeSetName :
+        ui-name : |
+            Output Genome Set
+        short-hint : |
+            A collection of Genome objects
+        long-hint  : |
+            A collection of Genome objects
+        placeholder: |
+            Name the set of genomes generated
 
 description : |
     <p>This app allows a user to construct a phylogenetic tree combining the genome(s) provided by the user with a set of closely related genomes selected from all public KBase genomes.
@@ -65,12 +81,14 @@ description : |
     Relatedness is determined by alignment similarity to a select subset of COG (Clusters of Orthologous Groups) domains.
     Next, a phylogenetic tree is reconstructed using FastTree (a method to quickly estimate maximum likelihood phylogeny, see Publications) with the genome provided by the user and the set of genomes identified as similar in the previous step.</p>
     <p>Note: when inserting one or more genomes into a species tree, the inserted genomes that are also contained within the KBase list of species will be duplicated in the tree.
-    One copy will have the KBase list ID and the other will have the ID of the inserted genome.
-    The genomes will also be duplicated in any genome set generated from the tree.</p>
+    One copy will have the KBase list ID and the other will have the ID of the inserted genome.</p>
+    <p>This app also creates a Genome Set object containing all the genomes in the species tree that was generated.
+    By default, the genomes in this Genome Set are also copied into your narrative, in order to make further analyses (e.g., viewing, finding domains) more convenient.
+    By clicking on the Genome Set object that is generated, you can edit the set of genomes, e.g., to exclude some of them from downstream analyses.</p>
     <p><strong>Team members who developed & deployed algorithm in KBase:</strong> Roman Sutormin. For questions, contact us at <a href="http://kbase.us/contact-us/">http://kbase.us/contact-us/</a></p>
     
 publications :
     -
         display-text: |
-            Price MN, Dehal PS, Arkin AP (2010)FastTree 2--approximately maximum-likelihood trees for large alignments. PLoS One. 2010 Mar 10;5(3):e9490
+            Price MN, Dehal PS, Arkin AP (2010) FastTree 2--approximately maximum-likelihood trees for large alignments. PLoS One. 2010 Mar 10;5(3):e9490
         link: http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2835736/
