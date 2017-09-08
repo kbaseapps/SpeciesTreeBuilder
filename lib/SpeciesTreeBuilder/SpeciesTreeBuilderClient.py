@@ -45,20 +45,25 @@ class SpeciesTreeBuilder(object):
            field should be defined. out_workspace - (required) the workspace
            to deposit the completed tree out_tree_id - (optional) the name of
            the newly constructed tree (will be random if not present or null)
-           use_ribosomal_s9_only - (optional) 1 means only one protein family
-           (Ribosomal S9) is used for tree construction rather than all 49
-           improtant families, default value is 0. nearest_genome_count -
-           (optional) defines maximum number of public genomes nearest to
-           requested genomes that will show in output tree.) -> structure:
-           parameter "new_genomes" of list of type "ws_genome_id" (A
-           workspace ID that references a Genome data object. @id ws
-           KBaseGenomes.Genome KBaseGenomeAnnotations.GenomeAnnotation),
-           parameter "genomeset_ref" of type "ws_genomeset_id" (A workspace
-           ID that references a GenomeSet data object. @id ws
-           KBaseSearch.GenomeSet), parameter "out_workspace" of String,
-           parameter "out_tree_id" of String, parameter
-           "use_ribosomal_s9_only" of Long, parameter "nearest_genome_count"
-           of Long
+           out_genomeset_ref - the name of the output genomeset object
+           copy_genomes - 1 means copy genomes to user workspace; 0 means
+           refer only to the public genomes use_ribosomal_s9_only -
+           (optional) 1 means only one protein family (Ribosomal S9) is used
+           for tree construction rather than all 49 improtant families,
+           default value is 0. nearest_genome_count - (optional) defines
+           maximum number of public genomes nearest to requested genomes that
+           will show in output tree.) -> structure: parameter "new_genomes"
+           of list of type "ws_genome_id" (A workspace ID that references a
+           Genome data object. @id ws KBaseGenomes.Genome
+           KBaseGenomeAnnotations.GenomeAnnotation), parameter
+           "genomeset_ref" of type "ws_genomeset_id" (A workspace ID that
+           references a GenomeSet data object. @id ws KBaseSearch.GenomeSet),
+           parameter "out_workspace" of String, parameter "out_tree_id" of
+           String, parameter "out_genomeset_ref" of type "ws_genomeset_id" (A
+           workspace ID that references a GenomeSet data object. @id ws
+           KBaseSearch.GenomeSet), parameter "copy_genomes" of Long,
+           parameter "use_ribosomal_s9_only" of Long, parameter
+           "nearest_genome_count" of Long
         :returns: instance of type "ws_tree_id" (A workspace ID that
            references a Tree data object. @id ws KBaseTrees.Tree)
         """
