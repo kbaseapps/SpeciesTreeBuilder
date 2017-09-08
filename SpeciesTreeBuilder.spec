@@ -32,7 +32,7 @@ module SpeciesTreeBuilder {
             field should be defined.
         out_workspace - (required) the workspace to deposit the completed tree
         out_tree_id - (optional) the name of the newly constructed tree (will be random if not present or null)
-	out_genomeset_ref - the name of the output genomeset object
+	out_genomeset_id - the name of the output genomeset object
 	copy_genomes - 1 means copy genomes to user workspace; 0 means refer only to the public genomes
         use_ribosomal_s9_only - (optional) 1 means only one protein family (Ribosomal S9) is used for 
             tree construction rather than all 49 improtant families, default value is 0.
@@ -44,7 +44,7 @@ module SpeciesTreeBuilder {
         ws_genomeset_id genomeset_ref;
         string out_workspace;
         string out_tree_id;
-        ws_genomeset_id out_genomeset_ref;
+        ws_genomeset_id out_genomeset_id;
 	int copy_genomes;
         int use_ribosomal_s9_only;
         int nearest_genome_count;

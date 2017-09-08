@@ -99,8 +99,7 @@
           "generated_value": {
             "prefix": "genomeset_"
           },
-          "target_property": "out_genomeset_ref",
-          "target_type_transform": "ref"
+          "target_property": "out_genomeset_id"
         },
         {
           "narrative_system_variable": "workspace",
