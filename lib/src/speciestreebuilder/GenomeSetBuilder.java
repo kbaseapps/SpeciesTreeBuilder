@@ -58,7 +58,7 @@ public class GenomeSetBuilder {
 		    if (refs.get(key).containsKey("g") && refs.get(key).get("g").size() > 0) {
 		        String ref = refs.get(key).get("g").get(0);
 		        long refWsId = Long.parseLong(ref.split("/")[0]);
-		        if (wsId.equals(refWsId)) {
+		        if ((wsId.equals(refWsId)) || (!copyGenomes)) {
 		            String param = "param" + gcount;
 		            gcount++;
 		            Map<String, String> element = new TreeMap<String, String>();
