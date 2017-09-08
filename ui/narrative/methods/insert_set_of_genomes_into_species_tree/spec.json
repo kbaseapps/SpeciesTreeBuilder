@@ -99,7 +99,7 @@
           "generated_value": {
             "prefix": "genomeset_"
           },
-          "target_property": "genomeset_ref",
+          "target_property": "out_genomeset_ref",
           "target_type_transform": "ref"
         },
         {
