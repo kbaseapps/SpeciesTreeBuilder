@@ -100,7 +100,7 @@ public class SpeciesTreeBuilderServer extends JsonServerServlet {
     public String buildGenomeSetFromTree(BuildGenomeSetFromTreeParams params, AuthToken authPart, RpcContext jsonRpcContext) throws Exception {
         String returnVal = null;
         //BEGIN build_genome_set_from_tree
-        returnVal = GenomeSetBuilder.buildGenomeSetFromTree(config, authPart, params.getTreeRef(), params.getGenomesetRef());
+        returnVal = GenomeSetBuilder.buildGenomeSetFromTree(config, authPart, params.getTreeRef(), params.getGenomesetRef(), true);
         //END build_genome_set_from_tree
         return returnVal;
     }

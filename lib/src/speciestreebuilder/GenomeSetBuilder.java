@@ -28,12 +28,12 @@ import us.kbase.workspace.WorkspaceClient;
 
 public class GenomeSetBuilder {
     public static String buildGenomeSetFromTree(Map<String, String> config, AuthToken token, 
-            String treeRef, String genomeSetRef) throws Exception {
-        return buildGenomeSetFromTree(config.get("workspace-url"), token, treeRef, genomeSetRef);
+                                                String treeRef, String genomeSetRef, boolean copyGenomes) throws Exception {
+        return buildGenomeSetFromTree(config.get("workspace-url"), token, treeRef, genomeSetRef, copyGenomes);
     }
     
     public static String buildGenomeSetFromTree(String wsUrl, AuthToken token, String treeRef, 
-	        String genomeSetRef) throws Exception {
+                                                String genomeSetRef, boolean copyGenomes) throws Exception {
         URL callbackUrl = new URL(System.getenv("SDK_CALLBACK_URL"));
         DataFileUtilClient dfu = new DataFileUtilClient(callbackUrl, token);
         dfu.setIsInsecureHttpConnectionAllowed(true);
