@@ -126,7 +126,7 @@ ConstructSpeciesTreeParams is a reference to a hash where the following keys are
 	genomeset_ref has a value which is a SpeciesTreeBuilder.ws_genomeset_id
 	out_workspace has a value which is a string
 	out_tree_id has a value which is a string
-	out_genomeset_ref has a value which is a SpeciesTreeBuilder.ws_genomeset_id
+	out_genomeset_id has a value which is a SpeciesTreeBuilder.ws_genomeset_id
 	copy_genomes has a value which is an int
 	use_ribosomal_s9_only has a value which is an int
 	nearest_genome_count has a value which is an int
@@ -147,7 +147,7 @@ ConstructSpeciesTreeParams is a reference to a hash where the following keys are
 	genomeset_ref has a value which is a SpeciesTreeBuilder.ws_genomeset_id
 	out_workspace has a value which is a string
 	out_tree_id has a value which is a string
-	out_genomeset_ref has a value which is a SpeciesTreeBuilder.ws_genomeset_id
+	out_genomeset_id has a value which is a SpeciesTreeBuilder.ws_genomeset_id
 	copy_genomes has a value which is an int
 	use_ribosomal_s9_only has a value which is an int
 	nearest_genome_count has a value which is an int
@@ -683,7 +683,7 @@ genomeset_ref - (optional) reference to genomeset object; either new_genomes or 
     field should be defined.
 out_workspace - (required) the workspace to deposit the completed tree
 out_tree_id - (optional) the name of the newly constructed tree (will be random if not present or null)
-out_genomeset_ref - the name of the output genomeset object
+out_genomeset_id - the name of the output genomeset object
 copy_genomes - 1 means copy genomes to user workspace; 0 means refer only to the public genomes
 use_ribosomal_s9_only - (optional) 1 means only one protein family (Ribosomal S9) is used for 
     tree construction rather than all 49 improtant families, default value is 0.
@@ -701,7 +701,7 @@ new_genomes has a value which is a reference to a list where each element is a S
 genomeset_ref has a value which is a SpeciesTreeBuilder.ws_genomeset_id
 out_workspace has a value which is a string
 out_tree_id has a value which is a string
-out_genomeset_ref has a value which is a SpeciesTreeBuilder.ws_genomeset_id
+out_genomeset_id has a value which is a SpeciesTreeBuilder.ws_genomeset_id
 copy_genomes has a value which is an int
 use_ribosomal_s9_only has a value which is an int
 nearest_genome_count has a value which is an int
@@ -717,7 +717,7 @@ new_genomes has a value which is a reference to a list where each element is a S
 genomeset_ref has a value which is a SpeciesTreeBuilder.ws_genomeset_id
 out_workspace has a value which is a string
 out_tree_id has a value which is a string
-out_genomeset_ref has a value which is a SpeciesTreeBuilder.ws_genomeset_id
+out_genomeset_id has a value which is a SpeciesTreeBuilder.ws_genomeset_id
 copy_genomes has a value which is an int
 use_ribosomal_s9_only has a value which is an int
 nearest_genome_count has a value which is an int
