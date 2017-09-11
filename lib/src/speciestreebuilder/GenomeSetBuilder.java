@@ -116,7 +116,7 @@ public class GenomeSetBuilder {
 		                .withName(genomeSetName).withData(new UObject(genomeSetData))))).get(0));
     }
 
-    private static String cleanName(String text) {
+    protected static String cleanName(String text) {
         StringBuilder ret = new StringBuilder();
         for (int pos = 0; pos < text.length(); pos++) {
             char ch = text.charAt(pos);
