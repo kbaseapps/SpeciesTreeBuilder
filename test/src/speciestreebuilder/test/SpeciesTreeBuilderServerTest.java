@@ -201,10 +201,15 @@ public class SpeciesTreeBuilderServerTest {
         String genomeId = genomeName + ".genome";
         String spTreeId = "sptree.1";
         String genomeRef = getWsName() + "/" + genomeId;
-        String treeRef = impl.constructSpeciesTree(new ConstructSpeciesTreeParams().withNewGenomes(
-                Arrays.asList(genomeRef)).withOutWorkspace(getWsName())
-                .withOutTreeId(spTreeId).withUseRibosomalS9Only(0L).withNearestGenomeCount(20L), 
-                token, getContext());
+        String treeRef = impl.constructSpeciesTree(new ConstructSpeciesTreeParams()
+                                                   .withNewGenomes(Arrays.asList(genomeRef))
+                                                   .withOutWorkspace(getWsName())
+                                                   .withOutTreeId(spTreeId)
+                                                   .withUseRibosomalS9Only(0L)
+                                                   .withNearestGenomeCount(20L)
+                                                   .withOutGenomesetRef(getWsName()+"/genomeset.1")
+                                                   .withCopyGenomes(1L)
+                                                   , token, getContext());
         ObjectData od = wsClient.getObjects2(new GetObjects2Params().withObjects(Arrays.asList(
                 new ObjectSpecification().withRef(treeRef)))).getData().get(0);
         Tree tree = od.getData().asClassInstance(Tree.class);
@@ -226,10 +231,10 @@ public class SpeciesTreeBuilderServerTest {
             throw ex;
         }
         //////////////////////////// GenomeSet type should be updated /////////////////////////////
-        String genomeSetRef = impl.buildGenomeSetFromTree(
-                new BuildGenomeSetFromTreeParams().withTreeRef(treeRef)
-                .withGenomesetRef(getWsName() + "/genomeset.1"), token, getContext());
-        Assert.assertNotNull(genomeSetRef);
+        // String genomeSetRef = impl.buildGenomeSetFromTree(
+        // new BuildGenomeSetFromTreeParams().withTreeRef(treeRef)
+        // .withGenomesetRef(getWsName() + "/genomeset.1"), token, getContext());
+        // Assert.assertNotNull(genomeSetRef);
         ///////////////////////////////////////////////////////////////////////////////////////////
         int genomesFound = impl.findCloseGenomes(
                 new FindCloseGenomesParams().withQueryGenome(genomeRef), token, getContext()).size();

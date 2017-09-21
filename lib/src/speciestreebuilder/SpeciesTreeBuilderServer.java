@@ -21,9 +21,9 @@ import us.kbase.common.service.RpcContext;
  */
 public class SpeciesTreeBuilderServer extends JsonServerServlet {
     private static final long serialVersionUID = 1L;
-    private static final String version = "0.0.6";
-    private static final String gitUrl = "https://github.com/rsutormin/SpeciesTreeBuilder";
-    private static final String gitCommitHash = "8e623fa125a5e7d5b190b03f710d5b7a64d17b76";
+    private static final String version = "0.0.7";
+    private static final String gitUrl = "git@github.com:jmchandonia/SpeciesTreeBuilder.git";
+    private static final String gitCommitHash = "44da917e02a19213f6192905be24a9a953b2e2f2";
 
     //BEGIN_CLASS_HEADER
     public Map<String, String> getConfig() throws Exception {
@@ -100,7 +100,7 @@ public class SpeciesTreeBuilderServer extends JsonServerServlet {
     public String buildGenomeSetFromTree(BuildGenomeSetFromTreeParams params, AuthToken authPart, RpcContext jsonRpcContext) throws Exception {
         String returnVal = null;
         //BEGIN build_genome_set_from_tree
-        returnVal = GenomeSetBuilder.buildGenomeSetFromTree(config, authPart, params.getTreeRef(), params.getGenomesetRef());
+        returnVal = GenomeSetBuilder.buildGenomeSetFromTree(config, authPart, params.getTreeRef(), params.getGenomesetRef(), true);
         //END build_genome_set_from_tree
         return returnVal;
     }

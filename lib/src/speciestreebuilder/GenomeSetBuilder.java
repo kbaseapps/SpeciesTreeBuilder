@@ -28,12 +28,12 @@ import us.kbase.workspace.WorkspaceClient;
 
 public class GenomeSetBuilder {
     public static String buildGenomeSetFromTree(Map<String, String> config, AuthToken token, 
-            String treeRef, String genomeSetRef) throws Exception {
-        return buildGenomeSetFromTree(config.get("workspace-url"), token, treeRef, genomeSetRef);
+                                                String treeRef, String genomeSetRef, boolean copyGenomes) throws Exception {
+        return buildGenomeSetFromTree(config.get("workspace-url"), token, treeRef, genomeSetRef, copyGenomes);
     }
     
     public static String buildGenomeSetFromTree(String wsUrl, AuthToken token, String treeRef, 
-	        String genomeSetRef) throws Exception {
+                                                String genomeSetRef, boolean copyGenomes) throws Exception {
         URL callbackUrl = new URL(System.getenv("SDK_CALLBACK_URL"));
         DataFileUtilClient dfu = new DataFileUtilClient(callbackUrl, token);
         dfu.setIsInsecureHttpConnectionAllowed(true);
@@ -58,7 +58,7 @@ public class GenomeSetBuilder {
 		    if (refs.get(key).containsKey("g") && refs.get(key).get("g").size() > 0) {
 		        String ref = refs.get(key).get("g").get(0);
 		        long refWsId = Long.parseLong(ref.split("/")[0]);
-		        if (wsId.equals(refWsId)) {
+		        if ((wsId.equals(refWsId)) || (!copyGenomes)) {
 		            String param = "param" + gcount;
 		            gcount++;
 		            Map<String, String> element = new TreeMap<String, String>();
@@ -116,7 +116,7 @@ public class GenomeSetBuilder {
 		                .withName(genomeSetName).withData(new UObject(genomeSetData))))).get(0));
     }
 
-    private static String cleanName(String text) {
+    protected static String cleanName(String text) {
         StringBuilder ret = new StringBuilder();
         for (int pos = 0; pos < text.length(); pos++) {
             char ch = text.charAt(pos);

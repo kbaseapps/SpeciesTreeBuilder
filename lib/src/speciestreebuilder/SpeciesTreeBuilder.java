@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 
@@ -44,9 +45,11 @@ import us.kbase.common.utils.FastaWriter;
 import us.kbase.kbasetrees.Tree;
 import us.kbase.kbasetrees.util.TreeStructureUtil;
 import us.kbase.kbasetrees.util.WorkspaceUtil;
+import us.kbase.workspace.CopyObjectParams;
 import us.kbase.workspace.GetObjectInfoNewParams;
 import us.kbase.workspace.GetObjects2Params;
 import us.kbase.workspace.ListObjectsParams;
+import us.kbase.workspace.ObjectIdentity;
 import us.kbase.workspace.ObjectSpecification;
 import us.kbase.workspace.WorkspaceClient;
 import us.kbase.workspace.WorkspaceIdentity;
@@ -56,10 +59,11 @@ public class SpeciesTreeBuilder {
     private File dataDir;
     private WorkspaceClient storage;
     private AuthToken token;
+    private String wsUrl;
 	private static final String SPECIES_TREE_TYPE = "SpeciesTree";
 	private static final String MAX_EVALUE = "1e-05";
 	private static final int MIN_COVERAGE = 50;
-	private static final int DEFAULT_NEAREST_GENOME_COUNT = 100;
+	private static final int DEFAULT_NEAREST_GENOME_COUNT = 20;
     private static final int MIN_NEAREST_GENOME_COUNT = 1;
 	private static final int MAX_NEAREST_GENOME_COUNT = 200;
 	private static final String[] genomeWsTypes = {"KBaseGenomes.Genome", 
@@ -87,6 +91,7 @@ public class SpeciesTreeBuilder {
         this.storage = new WorkspaceClient(wsUrl, token);
         storage.setIsInsecureHttpConnectionAllowed(true);
         this.token = token;
+        this.wsUrl = wsUrl.toString();
 	}
 
 	public static File getDirParam(Map<String, String> configParams, String param) {
@@ -102,6 +107,9 @@ public class SpeciesTreeBuilder {
 				inputData.getUseRibosomalS9Only() == 1L;
 		long nearestGenomeCount = inputData.getNearestGenomeCount() != null ? 
 				inputData.getNearestGenomeCount() : DEFAULT_NEAREST_GENOME_COUNT;
+        boolean copyGenomes = inputData.getCopyGenomes() != null ?
+            (inputData.getCopyGenomes()==1L) : true;
+
 		if (nearestGenomeCount < MIN_NEAREST_GENOME_COUNT)
 		    throw new IllegalStateException("Neighbor public genome count can not be less than " +
 		            MIN_NEAREST_GENOME_COUNT);
@@ -129,12 +137,20 @@ public class SpeciesTreeBuilder {
 		    	genomeRefs.add((String)genomeSetElem.get("ref"));
 		    }
 		}
-		Tree tree = placeUserGenomes(genomeRefs, useCog103Only, false,
-				(int)nearestGenomeCount);
-        String objId = inputData.getOutTreeId();
-        if (objId == null)
-            objId = "tree" + System.currentTimeMillis();
-		return saveResult(inputData.getOutWorkspace(), objId, tree, inputData);
+		Tree tree = placeUserGenomes(inputData.getOutWorkspace(),
+                                     genomeRefs,
+                                     useCog103Only,
+                                     false,
+                                     copyGenomes,
+                                     (int)nearestGenomeCount);
+        String treeId = inputData.getOutTreeId();
+        if (treeId == null)
+            treeId = "tree" + System.currentTimeMillis();
+		String treeRef = saveResult(inputData.getOutWorkspace(), treeId, tree, inputData);
+        String outGenomesetRef = inputData.getOutGenomesetRef();
+        GenomeSetBuilder.buildGenomeSetFromTree
+            (wsUrl,token,treeRef,outGenomesetRef,copyGenomes);
+        return treeRef;
 	}
 	
 	private String saveResult(String ws, String id, Tree res,
@@ -496,8 +512,20 @@ public class SpeciesTreeBuilder {
 		return ret;
 	}
 
-	public Tree placeUserGenomes(List<String> genomeRefList, boolean useCog103Only, 
-	        boolean userGenomesOnly, int nearestGenomeCount) throws Exception {
+	public Tree placeUserGenomes(String workspace,
+                                 List<String> genomeRefList,
+                                 boolean useCog103Only, 
+                                 boolean userGenomesOnly,
+                                 boolean copyGenomes,
+                                 int nearestGenomeCount) throws Exception {
+
+	    URL callbackUrl = new URL(System.getenv("SDK_CALLBACK_URL"));
+        DataFileUtilClient dfu = new DataFileUtilClient(callbackUrl, token);
+        dfu.setIsInsecureHttpConnectionAllowed(true);
+		Long wsId = dfu.wsNameToId(workspace);
+        WorkspaceClient ws = new WorkspaceClient(new URL(wsUrl), token);
+		ws.setIsInsecureHttpConnectionAllowed(true);
+        
 		Map<String, String> idLabelMap = new TreeMap<String, String>();
 		Map<String, Map<String, List<String>>> idRefMap = 
 		        new TreeMap<String, Map<String, List<String>>>();
@@ -513,8 +541,8 @@ public class SpeciesTreeBuilder {
 					seeds, alnConcat, false);
 			if (kbIdToMinDist.size() > nearestGenomeCount)
 				kbIdToMinDist = kbIdToMinDist.subList(0, nearestGenomeCount);
-			for (Tuple2<String, Integer> entry : kbIdToMinDist)
-				nearestNodes.add(entry.getE1());
+            for (Tuple2<String, Integer> entry : kbIdToMinDist)
+                nearestNodes.add(entry.getE1());
 		}
 		Map<String, String> concat = new TreeMap<String, String>();
 		for (String kbId : alnConcat.getGenomeIds())
@@ -523,7 +551,8 @@ public class SpeciesTreeBuilder {
 		Map<String, String> kbToNames = loadGenomeKbToNames();
 		Map<String, String> kbToRefs = loadGenomeKbToRefs();
 		Map<String, Map<String, List<String>>> idKbMap = 
-		        new TreeMap<String, Map<String, List<String>>>();
+            new TreeMap<String, Map<String, List<String>>>();
+        Set<String> namehash = new TreeSet<String>();
 		for (String genomeKb : new ArrayList<String>(concat.keySet())) {
 			Map<String, List<String>> refMap = new TreeMap<String, List<String>>();
 			refMap.put("g", Arrays.asList(genomeKb));
@@ -533,12 +562,41 @@ public class SpeciesTreeBuilder {
 			String ref = kbToRefs.get(genomeKb);
 			if (ref == null) {
 				System.err.println("[WARNING] SpeciesTreeBuilder: Can't find public genome object " +
-						"for id: " + genomeKb);
+                                   "for id: " + genomeKb);
 				//concat.remove(genomeKb);
 				//continue;
 			}
 			String name = kbToNames.get(genomeKb);
 			idLabelMap.put(genomeKb, name + " (" + genomeKb + ")");
+            System.out.println("debug: "+genomeKb+" ref:"+ref+" name:"+name);
+            if (ref != null) {
+                long refWsId = Long.parseLong(ref.split("/")[0]);
+                if (copyGenomes && (!wsId.equals(refWsId))) {
+                    // copy it here, make new genome ref
+                    String origRef = new String(ref);
+                    String newname = idLabelMap.get(genomeKb);
+                    newname = GenomeSetBuilder.cleanName(newname);
+                    if (namehash.contains(newname)) {
+                        int count = 0;
+                        String testname = newname + "_" + count;
+                        while (namehash.contains(testname)) {
+                            count++;
+                            testname = newname + "_" + count;
+                        }
+                        newname = testname;
+                    }
+                    namehash.add(newname);
+                    Tuple11<Long, String, String, String, Long, String, Long, String, String, Long, Map<String,String>> wsinfo = 
+                        ws.copyObject(new CopyObjectParams()
+                                      .withTo(new ObjectIdentity()
+                                              .withWorkspace(workspace)
+                                              .withName(newname))
+                                      .withFrom(new ObjectIdentity()
+                                                .withRef(origRef)));
+                    System.out.println("Genome " + genomeKb + " (ref=" + origRef + ") was copied to " + workspace + "/" + newname);
+                    ref = WorkspaceUtil.getRefFromObjectInfo(wsinfo);
+                }
+            }
 			refMap = new TreeMap<String, List<String>>();
 			refMap.put("g", ref == null ? Collections.<String>emptyList() : Arrays.asList(ref));
 			idRefMap.put(genomeKb, refMap);
@@ -725,7 +783,7 @@ public class SpeciesTreeBuilder {
 				}
 			});
 			if (cog2proteins.isEmpty())
-				throw new IllegalStateException("No one protein family member found");
+				throw new IllegalStateException("Not one protein family member found");
 			for (List<ProteinToCogAlignemt> results : cog2proteins.values())
 				if (results.size() > 1)
 					Collections.sort(results, new Comparator<ProteinToCogAlignemt>() {
