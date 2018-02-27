@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,6 +60,7 @@ public class SpeciesTreeBuilderServerTest {
         File deploy = new File(configFilePath);
         Ini ini = new Ini(deploy);
         config = ini.get("SpeciesTreeBuilder");
+
         // Token validation
         String authUrl = config.get("auth-service-url");
         String authUrlInsecure = config.get("auth-service-url-allow-insecure");
@@ -68,11 +70,13 @@ public class SpeciesTreeBuilderServerTest {
         token = authService.validateToken(System.getenv("KB_AUTH_TOKEN"));
         wsClient = new WorkspaceClient(new URL(config.get("workspace-url")), token);
         wsClient.setIsInsecureHttpConnectionAllowed(true);
+
         // These lines are necessary because we don't want to start linux syslog bridge service
         JsonServerSyslog.setStaticUseSyslog(false);
         JsonServerSyslog.setStaticMlogFile(new File(config.get("scratch"), "test.log").getAbsolutePath());
         impl = new SpeciesTreeBuilderServer();
         impl.getConfig().put("public.genomes.ws", getPublicWsName());
+
         // Store test genome (real data)
         FastaReader fr = new FastaReader(new File("test/data", "Shewanella_ANA_3_uid58347.fasta"));
         Map<String, String> proteinIdToSeq = new LinkedHashMap<>();
@@ -86,43 +90,49 @@ public class SpeciesTreeBuilderServerTest {
                 new PrepareTestGenomeFromProteinsParams().withGenomeName(genomeName)
                 .withProteinIdToSequence(proteinIdToSeq)
                 .withOutputWorkspaceName(getWsName()).withOutputObjectName(genomeObjId));
+
         // Sync genome objects (just fake wrappers with kbase-id as name)
+        List<ObjectSaveData> taxonObjects = new ArrayList<ObjectSaveData>();
+        Map<String, Object> taxon = new LinkedHashMap<String, Object>(4);
+        taxon.put("taxonomy_id", 1);
+        taxon.put("scientific_name", "xxx");
+        taxon.put("domain", "xxx");
+        taxonObjects.add(new ObjectSaveData().withName("fakeTaxon").withType("KBaseGenomeAnnotations.Taxon").withData(new UObject(taxon)));
+        wsClient.saveObjects(new SaveObjectsParams().withWorkspace(getWsName()).withObjects(taxonObjects));
+
         String genomeWsType = "KBaseGenomes.Genome";
         List<ObjectSaveData> objects = new ArrayList<ObjectSaveData>();
         Map<String, String> genomeKbIdToName = new LinkedHashMap<>();
-        genomeKbIdToName.put("kb|g.371", "Shewanella oneidensis MR-1");
-        genomeKbIdToName.put("kb|g.372", "Shewanella oneidensis MR-1");
-        genomeKbIdToName.put("kb|g.852", "Shewanella putrefaciens CN-32");
-        genomeKbIdToName.put("kb|g.1032", "Shewanella sp. W3-18-1");
-        genomeKbIdToName.put("kb|g.1283", "Shewanella baltica OS195");
-        genomeKbIdToName.put("kb|g.1305", "Shewanella baltica OS185");
-        genomeKbIdToName.put("kb|g.1346", "Shewanella baltica OS223");
-        genomeKbIdToName.put("kb|g.2626", "Shewanella sp. MR-4");
-        genomeKbIdToName.put("kb|g.2627", "Shewanella sp. MR-7");
-        genomeKbIdToName.put("kb|g.2990", "Shewanella baltica OS117");
-        genomeKbIdToName.put("kb|g.2992", "Shewanella baltica OS678");
-        genomeKbIdToName.put("kb|g.3779", "Shewanella sp. ANA-3");
-        genomeKbIdToName.put("kb|g.20848", "Shewanella oneidensis MR-1");
-        genomeKbIdToName.put("kb|g.25423", "Shewanella sp. POL2");
-        genomeKbIdToName.put("kb|g.26614", "Shewanella putrefaciens 200");
-        genomeKbIdToName.put("kb|g.26354", "Shewanella baltica OS155");
-        genomeKbIdToName.put("kb|g.27369", "Shewanella baltica OS625");
-        genomeKbIdToName.put("kb|g.27370", "Shewanella baltica OS678");
-        genomeKbIdToName.put("kb|g.210723", "Shewanella decolorationis S1201");
+        genomeKbIdToName.put("GCF_000146165.2", "Shewanella oneidensis MR-1");
+        genomeKbIdToName.put("GCF_000016585.1", "Shewanella putrefaciens CN-32");
+        genomeKbIdToName.put("GCF_000015185.1", "Shewanella sp. W3-18-1");
+        genomeKbIdToName.put("GCF_000018765.1", "Shewanella baltica OS195");
+        genomeKbIdToName.put("GCF_000017325.1", "Shewanella baltica OS185");
+        genomeKbIdToName.put("GCF_000021665.1", "Shewanella baltica OS223");
+        genomeKbIdToName.put("GCF_000014685.1", "Shewanella sp. MR-4");
+        genomeKbIdToName.put("GCF_000014665.1", "Shewanella sp. MR-7");
+        genomeKbIdToName.put("GCF_000215895.1", "Shewanella baltica OS117");
+        genomeKbIdToName.put("GCF_000178875.2", "Shewanella baltica OS678");
+        genomeKbIdToName.put("GCF_000203935.1", "Shewanella sp. ANA-3");
+        genomeKbIdToName.put("GCF_000282755.1", "Shewanella sp. POL2");
+        genomeKbIdToName.put("GCF_000169215.2", "Shewanella putrefaciens 200");
+        genomeKbIdToName.put("GCF_000015845.1", "Shewanella baltica OS155");
+        genomeKbIdToName.put("GCF_000231345.1", "Shewanella baltica OS625");
+        genomeKbIdToName.put("GCF_000485795.1", "Shewanella decolorationis S1201");
         // Skipping next genome just to check we can handle lost references
-        //genomeKbIdToName.put("kb|g.242813", "Shewanella xiamenensis");
+        genomeKbIdToName.put("GCF_000712635.2", "Shewanella xiamenensis");
+        genomeKbIdToName.put("GCF_001723195.1", "Shewanella xiamenensis");
+        genomeKbIdToName.put("GCF_002074855.1", "Shewanella xiamenensis");
         // And several genomes for 
-        genomeKbIdToName.put("kb|g.849", "Genome kb|g.849");
-        genomeKbIdToName.put("kb|g.850", "Genome kb|g.850");
-        genomeKbIdToName.put("kb|g.895", "Genome kb|g.895");
-        genomeKbIdToName.put("kb|g.902", "Genome kb|g.902");
-        genomeKbIdToName.put("kb|g.1289", "Genome kb|g.1289");
-        genomeKbIdToName.put("kb|g.2991", "Genome kb|g.2991");
-        genomeKbIdToName.put("kb|g.2993", "Genome kb|g.2993");
-        genomeKbIdToName.put("kb|g.210291", "Genome kb|g.210291");
-        genomeKbIdToName.put("kb|g.210299", "Genome kb|g.210299");
-        genomeKbIdToName.put("kb|g.242808", "Genome kb|g.242808");
-        genomeKbIdToName.put("kb|g.242811", "Genome kb|g.242811");
+        genomeKbIdToName.put("GCF_000519065.1", "Shewanella putrefaciens HRCR-6");
+        genomeKbIdToName.put("GCF_002157365.1", "Shewanella putrefaciens");
+        genomeKbIdToName.put("GCF_001591325.1", "Shewanella putrefaciens JCM 20190 = NBRC 3908");
+        genomeKbIdToName.put("GCF_001308045.1", "Shewanella sp. Sh95");
+        genomeKbIdToName.put("GCF_000217915.1", "Shewanella sp. HN-41");
+        genomeKbIdToName.put("GCF_000798835.1", "Shewanella sp. ZOR0012");
+        genomeKbIdToName.put("GCF_001401775.1", "Shewanella sp. P1-14-1");
+        genomeKbIdToName.put("GCF_000147735.2", "Shewanella baltica BA175");
+        genomeKbIdToName.put("GCF_000013765.1", "Shewanella baltica");
         for (String kbId : genomeKbIdToName.keySet()) {
             Map<String, Object> data = new LinkedHashMap<String, Object>(4);
             data.put("id", kbId);
@@ -131,6 +141,17 @@ public class SpeciesTreeBuilderServerTest {
             data.put("domain", "Bacteria");
             data.put("genetic_code", 11L);
             data.put("taxonomy", StringUtils.join(name.split(" "), "; ") + name);
+            data.put("genome_tiers", new ArrayList<String>());
+            data.put("dna_size", new Integer(1));
+            data.put("num_contigs", new Integer(1));
+            data.put("molecule_type", "xxx");
+            data.put("source", "{}");
+            data.put("md5", "xxx");
+            data.put("gc_content", new Float(1.0));
+            data.put("features", new ArrayList<String>());
+            data.put("cdss", new ArrayList<String>());
+            data.put("taxon_ref", getWsName() + "/fakeTaxon" );
+            data.put("feature_counts", new HashMap<String, Integer>());
             objects.add(new ObjectSaveData().withName(kbId).withType(genomeWsType).withData(new UObject(data)));
         }
         wsClient.saveObjects(new SaveObjectsParams().withWorkspace(getPublicWsName()).withObjects(objects));
@@ -217,15 +238,19 @@ public class SpeciesTreeBuilderServerTest {
         //System.out.println("Provenance: " + prov);
         try {
             List<String> nodeIds = extractLeafNodeNames(tree.getTree());
+            System.out.println("leaf nodeIds: "+nodeIds);
             Assert.assertEquals(21, nodeIds.size());
             for (String nodeId : nodeIds) {
                 String label = tree.getDefaultNodeLabels().get(nodeId);
                 Assert.assertNotNull(label);
                 Map<String, List<String>> refMap = tree.getWsRefs().get(nodeId);
                 Assert.assertTrue(refMap.containsKey("g"));
-                List<String> refs = refMap.get("g");
-                Assert.assertEquals(nodeId.equals("kb|g.242813") ? 0 : 1, refs.size());
+                if(nodeId.equals("GCF_000178875.2")) {
+                    List<String> refs = refMap.get("g");
+                    Assert.assertEquals(refs.size(), 1);
+                }
             }
+
         } catch (Exception ex) {
             System.err.println(tree.getTree());
             throw ex;
@@ -238,9 +263,9 @@ public class SpeciesTreeBuilderServerTest {
         ///////////////////////////////////////////////////////////////////////////////////////////
         int genomesFound = impl.findCloseGenomes(
                 new FindCloseGenomesParams().withQueryGenome(genomeRef), token, getContext()).size();
-        Assert.assertEquals(30, genomesFound);
+        Assert.assertEquals(4, genomesFound);
         String taxPath = impl.guessTaxonomyPath(
                 new GuessTaxonomyPathParams().withQueryGenome(genomeRef), token, getContext());
-        Assert.assertEquals("Shewanella; oneidensis;", taxPath);
+        Assert.assertEquals("Shewanella; baltica;", taxPath);
     }
 }
