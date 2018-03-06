@@ -8,10 +8,10 @@ service-language:
     java
 
 module-version:
-    0.0.7
+    0.0.8
 
 owners:
-    [rsutormin, msneddon, jmc]
+    [rsutormin, msneddon, jmc, arfath]
 
 data-version:
     1.0
