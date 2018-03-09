@@ -527,8 +527,10 @@ public class SpeciesTreeBuilder {
         DataFileUtilClient dfu = new DataFileUtilClient(callbackUrl, token);
         dfu.setIsInsecureHttpConnectionAllowed(true);
 		Long wsId = dfu.wsNameToId(workspace);
+		System.out.println(">>> Got workspace Id "+wsId+"...");
         WorkspaceClient ws = new WorkspaceClient(new URL(wsUrl), token);
 		ws.setIsInsecureHttpConnectionAllowed(true);
+		System.out.println(">>> Got workspace client ...");
         
 		Map<String, String> idLabelMap = new TreeMap<String, String>();
 		Map<String, Map<String, List<String>>> idRefMap = 
@@ -661,6 +663,7 @@ public class SpeciesTreeBuilder {
 			cogAlignments.put(cogCode, alignment);
 			int alnLength = alignment.get(alignment.keySet().iterator().next()).length();
 			cogToAlnLength.put(cogCode, alnLength);
+			System.out.println(">>> loaded cog "+cogCode+"...");
 		}
 		System.out.println(">>> Cog codes loaded ...");
         List<ObjectSpecification> objectids = new ArrayList<ObjectSpecification>();
