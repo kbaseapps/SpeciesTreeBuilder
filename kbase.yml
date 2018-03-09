@@ -8,7 +8,7 @@ service-language:
     java
 
 module-version:
-    0.0.9
+    0.0.10
 
 owners:
     [rsutormin, msneddon, jmc, arfath]
