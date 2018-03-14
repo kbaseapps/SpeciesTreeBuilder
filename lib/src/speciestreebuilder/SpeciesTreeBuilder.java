@@ -106,6 +106,7 @@ public class SpeciesTreeBuilder {
 		System.out.println("====== Running SpeciesTreeBuilder ======");
 		boolean useCog103Only = inputData.getUseRibosomalS9Only() != null && 
 				inputData.getUseRibosomalS9Only() == 1L;
+		System.out.println(">>> useCog103Only: "+useCog103Only);
 		long nearestGenomeCount = inputData.getNearestGenomeCount() != null ? 
 				inputData.getNearestGenomeCount() : DEFAULT_NEAREST_GENOME_COUNT;
         boolean copyGenomes = inputData.getCopyGenomes() != null ?
@@ -659,11 +660,17 @@ public class SpeciesTreeBuilder {
 		        new LinkedHashMap<String, Map<String, String>>();
 		Map<String, Integer> cogToAlnLength = new LinkedHashMap<String, Integer>();
 		for (String cogCode : loadCogsCodes(useCog103Only)) {
-		    Map<String, String> alignment = loadCogAlignment(cogCode);
-			cogAlignments.put(cogCode, alignment);
-			int alnLength = alignment.get(alignment.keySet().iterator().next()).length();
-			cogToAlnLength.put(cogCode, alnLength);
-			System.out.println(">>> loaded cog "+cogCode+"...");
+			try {
+				System.out.println(">>> loading cog " + cogCode + "...");
+				Map<String, String> alignment = loadCogAlignment(cogCode);
+				cogAlignments.put(cogCode, alignment);
+				int alnLength = alignment.get(alignment.keySet().iterator().next()).length();
+				cogToAlnLength.put(cogCode, alnLength);
+				System.out.println(">>> loaded cog " + cogCode + "...");
+			} catch (Exception ex) {
+				System.out.println("Error: Exception thrown while loading cogs: " +ex.getMessage());
+				ex.printStackTrace();
+			}
 		}
 		System.out.println(">>> Cog codes loaded ...");
         List<ObjectSpecification> objectids = new ArrayList<ObjectSpecification>();
