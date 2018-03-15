@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.zip.GZIPOutputStream;
@@ -26,8 +27,9 @@ import org.ini4j.Ini;
 import speciestreebuilder.GenomeToCogsAlignment;
 import speciestreebuilder.ProteinToCogAlignemt;
 import speciestreebuilder.SpeciesTreeBuilder;
-import us.kbase.auth.AuthService;
+import us.kbase.auth.AuthConfig;
 import us.kbase.auth.AuthToken;
+import us.kbase.auth.ConfigurableAuthService;
 import us.kbase.common.service.ServerException;
 import us.kbase.common.service.UObject;
 
@@ -51,7 +53,14 @@ public class SpeciesTreePreparation {
 		File tempDir = new File(config.get("scratch"));
 		File dataDir = new File("data");
         String tokenStr = FileUtils.readFileToString(new File("./work/token"));
-		AuthToken token = AuthService.validateToken(tokenStr);
+
+        URL authUrl = new URL(config.get("auth-service-url"));
+        String authAllowInsecure = config.get("auth-service-url-allow-insecure");
+        ConfigurableAuthService authSrv = new ConfigurableAuthService(
+                new AuthConfig().withKBaseAuthServerURL(authUrl)
+                        .withAllowInsecureURLs("true".equals(authAllowInsecure)));
+        AuthToken token = authSrv.validateToken(tokenStr);
+
 		URL wsUrl = new URL(config.get("workspace-url"));
         String genomeWsName = config.get("public.genomes.ws");
 		SpeciesTreeBuilder stb = new SpeciesTreeBuilder(tempDir, dataDir, genomeWsName, wsUrl, 
