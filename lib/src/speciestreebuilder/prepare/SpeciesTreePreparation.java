@@ -54,7 +54,10 @@ public class SpeciesTreePreparation {
 		File dataDir = new File("data");
         String tokenStr = FileUtils.readFileToString(new File("./work/token"));
 
-        URL authUrl = new URL(config.get("auth-service-url"));
+        String urlStr = config.get("auth-service-url");
+        System.out.println(">>> url string: "+urlStr);
+        
+        URL authUrl = new URL(urlStr);
         String authAllowInsecure = config.get("auth-service-url-allow-insecure");
         ConfigurableAuthService authSrv = new ConfigurableAuthService(
                 new AuthConfig().withKBaseAuthServerURL(authUrl)
