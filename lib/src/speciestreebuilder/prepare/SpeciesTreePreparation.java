@@ -54,9 +54,14 @@ public class SpeciesTreePreparation {
 		File dataDir = new File("data");
         String tokenStr = FileUtils.readFileToString(new File("./work/token"));
 
+        // HACK: due to an unknown problem in perhaps the catalog service, the config
+        // files does not seem to be getting created during registration. Since none of
+        // this code is required for app registration or app execution, it has been
+        // commented out here. It will need to be uncommented if the species tree aligments
+        // need to be regenerated.
+
         String urlStr = config.get("auth-service-url");
-        System.out.println(">>> url string: "+urlStr);
-        
+
         URL authUrl = new URL(urlStr);
         String authAllowInsecure = config.get("auth-service-url-allow-insecure");
         ConfigurableAuthService authSrv = new ConfigurableAuthService(
