@@ -60,7 +60,7 @@ public class SpeciesTreePreparation {
         // commented out here. It will need to be uncommented if the species tree aligments
         // need to be regenerated.
 
-        String urlStr = config.get("auth-service-url");
+        /*String urlStr = config.get("auth-service-url");
 
         URL authUrl = new URL(urlStr);
         String authAllowInsecure = config.get("auth-service-url-allow-insecure");
@@ -90,7 +90,7 @@ public class SpeciesTreePreparation {
                     prepareFastTree(stb);
                 }
             }
-		}
+		}*/
 	}
 	
 	private static boolean checkIfAlignmentPreparationNeeded( 
