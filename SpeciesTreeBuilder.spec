@@ -22,6 +22,13 @@ module SpeciesTreeBuilder {
     */
     typedef string ws_genomeset_id;
 
+    /*
+    Shock handle
+    */
+    typedef structure {
+        string file_name;
+        string shock_id;
+    } Handle;
 
     /* 
         Input data type for construct_species_tree method. Method produces object of Tree type.
@@ -95,4 +102,18 @@ module SpeciesTreeBuilder {
     } BuildGenomeSetFromTreeParams;
 	
     funcdef build_genome_set_from_tree(BuildGenomeSetFromTreeParams params) returns (ws_genomeset_id genomeset_ref) authentication required;
+
+    /*
+    Exporter for trees in Newick format
+    */
+    typedef structure {
+        ws_tree_id tree_ref;
+    } ExportParams;
+
+    typedef structure {
+        string shock_id;
+    } ExportResult;
+
+    funcdef export_tree_newick(ExportParams params)
+      returns (ExportResult result) authentication required;
 };

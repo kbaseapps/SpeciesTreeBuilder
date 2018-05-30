@@ -21,9 +21,9 @@ import us.kbase.common.service.RpcContext;
  */
 public class SpeciesTreeBuilderServer extends JsonServerServlet {
     private static final long serialVersionUID = 1L;
-    private static final String version = "0.0.7";
+    private static final String version = "1.0.0";
     private static final String gitUrl = "git@github.com:jmchandonia/SpeciesTreeBuilder.git";
-    private static final String gitCommitHash = "44da917e02a19213f6192905be24a9a953b2e2f2";
+    private static final String gitCommitHash = "89b78ba87ceb2b29e7850d6ff1c469c69f043852";
 
     //BEGIN_CLASS_HEADER
     public Map<String, String> getConfig() throws Exception {
@@ -102,6 +102,22 @@ public class SpeciesTreeBuilderServer extends JsonServerServlet {
         //BEGIN build_genome_set_from_tree
         returnVal = GenomeSetBuilder.buildGenomeSetFromTree(config, authPart, params.getTreeRef(), params.getGenomesetRef(), true);
         //END build_genome_set_from_tree
+        return returnVal;
+    }
+
+    /**
+     * <p>Original spec-file function name: export_tree_newick</p>
+     * <pre>
+     * </pre>
+     * @param   params   instance of type {@link speciestreebuilder.ExportParams ExportParams}
+     * @return   parameter "result" of type {@link speciestreebuilder.ExportResult ExportResult}
+     */
+    @JsonServerMethod(rpc = "SpeciesTreeBuilder.export_tree_newick", async=true)
+    public ExportResult exportTreeNewick(ExportParams params, AuthToken authPart, RpcContext jsonRpcContext) throws Exception {
+        ExportResult returnVal = null;
+        //BEGIN export_tree_newick
+        returnVal = SpeciesTreeBuilder.exportTreeNewick(config.get("workspace-url"),config.get("shock-url"),config.get("scratch"),authPart,params);
+        //END export_tree_newick
         return returnVal;
     }
     @JsonServerMethod(rpc = "SpeciesTreeBuilder.status")

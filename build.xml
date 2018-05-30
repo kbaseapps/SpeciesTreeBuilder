@@ -35,6 +35,7 @@
     <include name="kbase/common/kbase-common-0.0.23.jar"/>
     <include name="kbase/genomes/kbase-genomes-20140411.jar"/>
     <include name="kbase/workspace/WorkspaceClient-0.6.0.jar"/>
+    <include name="kbase/shock/shock-client-0.0.14.jar" />
     <include name="logback/logback-core-1.1.2.jar"/>
     <include name="logback/logback-classic-1.1.2.jar"/>
     <include name="servlet/servlet-api-2.5.jar"/>

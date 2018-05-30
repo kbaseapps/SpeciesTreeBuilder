@@ -4,30 +4,13 @@ import genomeannotationapi.GenomeAnnotationAPIClient;
 import genomeannotationapi.GenomeSelectorV1;
 import genomeannotationapi.GetGenomeParamsV1;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
+import java.nio.file.*;
+import java.nio.charset.*;
+import java.util.*;
+import java.util.zip.*;
 import java.net.URL;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.regex.Pattern;
-import java.util.zip.GZIPInputStream;
 
 import kbasegenomes.Feature;
 import kbasegenomes.Genome;
@@ -45,14 +28,8 @@ import us.kbase.common.utils.FastaWriter;
 import us.kbase.kbasetrees.Tree;
 import us.kbase.kbasetrees.util.TreeStructureUtil;
 import us.kbase.kbasetrees.util.WorkspaceUtil;
-import us.kbase.workspace.CopyObjectParams;
-import us.kbase.workspace.GetObjectInfoNewParams;
-import us.kbase.workspace.GetObjects2Params;
-import us.kbase.workspace.ListObjectsParams;
-import us.kbase.workspace.ObjectIdentity;
-import us.kbase.workspace.ObjectSpecification;
-import us.kbase.workspace.WorkspaceClient;
-import us.kbase.workspace.WorkspaceIdentity;
+import us.kbase.workspace.*;
+import us.kbase.shock.client.*;
 
 public class SpeciesTreeBuilder {
     private File tempDir;
@@ -867,4 +844,94 @@ public class SpeciesTreeBuilder {
 	        return ret;
 	    }
 	}
+
+    /**
+       creates a workspace client; if token is null, client can
+       only read public workspaces.
+    */
+    public static WorkspaceClient createWsClient(String wsURL,
+                                                 AuthToken token) throws Exception {
+        WorkspaceClient rv = null;
+
+        if (token==null)
+            rv = new WorkspaceClient(new URL(wsURL));
+        else
+            rv = new WorkspaceClient(new URL(wsURL),token);
+        rv.setAuthAllowedForHttp(true);
+        return rv;
+    }
+
+    /**
+       store a file in Shock; returns handle.
+       If file doesn't exist or can't be read, returns null.
+    */
+    public static Handle toShock(String shockURL,
+                                 AuthToken token,
+                                 File f) throws Exception {
+        if (!f.canRead())
+            return null;
+
+        Handle rv = new Handle()
+            .withFileName(f.getName());
+
+        BasicShockClient shockClient = new BasicShockClient(new URL(shockURL), token);
+        InputStream is = new BufferedInputStream(new FileInputStream(f));
+        ShockNode sn = shockClient.addNode(is,f.getName(),null);
+        is.close();
+        String shockNodeID = sn.getId().getId();
+        rv.setShockId(shockNodeID);
+        return rv;
+    }
+
+    /**
+       Helper function to get name when listing/saving an object
+    */
+    private static String getNameFromObjectInfo(Tuple11<Long, String, String, String, Long, String, Long, String, String, Long, Map<String,String>> info) {
+        return info.getE2();
+    }
+
+    /**
+       Exports a tree in Newick format
+    */
+    public static ExportResult exportTreeNewick(String wsURL,
+                                                String shockURL,
+                                                String tempDirPath,
+                                                AuthToken token,
+                                                ExportParams params) throws Exception {
+        WorkspaceClient wc = createWsClient(wsURL,token);
+
+        // figure out name of object
+        GetObjectInfo3Results goir = wc.getObjectInfo3(new GetObjectInfo3Params().withObjects(Arrays.asList(new ObjectSpecification().withRef(params.getTreeRef()))));
+        String oName = getNameFromObjectInfo(goir.getInfos().get(0));
+
+        // get from workspace
+        final Tree tree = wc.getObjects(Arrays.asList(new ObjectIdentity().withRef(params.getTreeRef()))).get(0).getData().asClassInstance(Tree.class);
+
+        // export to CSV file, which has to be
+        // inside of a zip file
+        java.io.File tmpFile = java.io.File.createTempFile("tree", ".zip", new File(tempDirPath));
+        tmpFile.delete();
+        ZipOutputStream zout = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(tmpFile)));
+        PrintWriter outfile = new PrintWriter(new OutputStreamWriter(zout));
+        
+        if (!oName.toLowerCase().endsWith(".tree"))
+            oName += ".tree";
+        zout.putNextEntry(new ZipEntry(oName));
+        zout.flush();
+        outfile.write(tree.getTree());
+        outfile.flush();
+        zout.flush();
+        zout.closeEntry();
+        outfile.close();
+
+        // save in Shock
+        Handle shockHandle = toShock(shockURL, token, tmpFile);
+        ExportResult rv = new ExportResult()
+            .withShockId(shockHandle.getShockId());
+
+        // clean up tmp file
+        tmpFile.delete();
+
+        return rv;
+    }
 }

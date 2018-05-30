@@ -122,6 +122,19 @@ class SpeciesTreeBuilder(object):
             'SpeciesTreeBuilder.build_genome_set_from_tree',
             [params], self._service_ver, context)
 
+    def export_tree_newick(self, params, context=None):
+        """
+        :param params: instance of type "ExportParams" (Exporter for trees in
+           Newick format) -> structure: parameter "tree_ref" of type
+           "ws_tree_id" (A workspace ID that references a Tree data object.
+           @id ws KBaseTrees.Tree)
+        :returns: instance of type "ExportResult" -> structure: parameter
+           "shock_id" of String
+        """
+        return self._client.call_method(
+            'SpeciesTreeBuilder.export_tree_newick',
+            [params], self._service_ver, context)
+
     def status(self, context=None):
         return self._client.call_method('SpeciesTreeBuilder.status',
                                         [], self._service_ver, context)
