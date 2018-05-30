@@ -103,8 +103,10 @@ public class SpeciesTreeBuilder {
 	}
 
 	public String run(ConstructSpeciesTreeParams inputData) throws Exception {
+		System.out.println("====== Running SpeciesTreeBuilder ======");
 		boolean useCog103Only = inputData.getUseRibosomalS9Only() != null && 
 				inputData.getUseRibosomalS9Only() == 1L;
+		System.out.println(">>> useCog103Only: "+useCog103Only);
 		long nearestGenomeCount = inputData.getNearestGenomeCount() != null ? 
 				inputData.getNearestGenomeCount() : DEFAULT_NEAREST_GENOME_COUNT;
         boolean copyGenomes = inputData.getCopyGenomes() != null ?
@@ -143,6 +145,7 @@ public class SpeciesTreeBuilder {
                                      false,
                                      copyGenomes,
                                      (int)nearestGenomeCount);
+		System.out.println(">>> Built species tree ...");
         String treeId = inputData.getOutTreeId();
         if (treeId == null)
             treeId = "tree" + System.currentTimeMillis();
@@ -150,6 +153,7 @@ public class SpeciesTreeBuilder {
         String outGenomesetRef = inputData.getOutGenomesetRef();
         GenomeSetBuilder.buildGenomeSetFromTree
             (wsUrl,token,treeRef,outGenomesetRef,copyGenomes);
+		System.out.println(">>> Built genome set from tree ...");
         return treeRef;
 	}
 	
@@ -518,13 +522,16 @@ public class SpeciesTreeBuilder {
                                  boolean userGenomesOnly,
                                  boolean copyGenomes,
                                  int nearestGenomeCount) throws Exception {
+		System.out.println(">>> Placing user genomes into alignment...");
 
 	    URL callbackUrl = new URL(System.getenv("SDK_CALLBACK_URL"));
         DataFileUtilClient dfu = new DataFileUtilClient(callbackUrl, token);
         dfu.setIsInsecureHttpConnectionAllowed(true);
 		Long wsId = dfu.wsNameToId(workspace);
+		System.out.println(">>> Got workspace Id "+wsId+"...");
         WorkspaceClient ws = new WorkspaceClient(new URL(wsUrl), token);
 		ws.setIsInsecureHttpConnectionAllowed(true);
+		System.out.println(">>> Got workspace client ...");
         
 		Map<String, String> idLabelMap = new TreeMap<String, String>();
 		Map<String, Map<String, List<String>>> idRefMap = 
@@ -535,6 +542,7 @@ public class SpeciesTreeBuilder {
 		        idLabelMap, idRefMap, seeds);
 		
 		// Filtering
+		System.out.println(">>> filtering...");
 		Set<String> nearestNodes = new HashSet<String>();
 		if (!userGenomesOnly) {
 			List<Tuple2<String, Integer>> kbIdToMinDist = sortPublicGenomesByMismatches(
@@ -603,6 +611,7 @@ public class SpeciesTreeBuilder {
 		}
 		String treeText = makeTree(concat);
 		// Rerooting
+		System.out.println(">>> Rerooting ...");
         treeText = TreeStructureUtil.rerootTreeToMidpoint(treeText);
 		Map<String, String> props = new TreeMap<String, String>();
 		props.put("cog_codes", UObject.getMapper().writeValueAsString(loadCogsCodes(
@@ -651,11 +660,19 @@ public class SpeciesTreeBuilder {
 		        new LinkedHashMap<String, Map<String, String>>();
 		Map<String, Integer> cogToAlnLength = new LinkedHashMap<String, Integer>();
 		for (String cogCode : loadCogsCodes(useCog103Only)) {
-		    Map<String, String> alignment = loadCogAlignment(cogCode);
-			cogAlignments.put(cogCode, alignment);
-			int alnLength = alignment.get(alignment.keySet().iterator().next()).length();
-			cogToAlnLength.put(cogCode, alnLength);
+			try {
+				System.out.println(">>> loading cog " + cogCode + "...");
+				Map<String, String> alignment = loadCogAlignment(cogCode);
+				cogAlignments.put(cogCode, alignment);
+				int alnLength = alignment.get(alignment.keySet().iterator().next()).length();
+				cogToAlnLength.put(cogCode, alnLength);
+				System.out.println(">>> loaded cog " + cogCode + "...");
+			} catch (Exception ex) {
+				System.out.println("Error: Exception thrown while loading cogs: " +ex.getMessage());
+				ex.printStackTrace();
+			}
 		}
+		System.out.println(">>> Cog codes loaded ...");
         List<ObjectSpecification> objectids = new ArrayList<ObjectSpecification>();
         for (String genomeRef : genomeRefList)
             objectids.add(new ObjectSpecification().withRef(genomeRef));
@@ -675,6 +692,7 @@ public class SpeciesTreeBuilder {
 				        "(" + ex.getMessage() + ")", ex);
 			}
 		}
+		System.out.println(">>> Genome proteins aligned ...");
 		for (String cogCode : cogAlignments.keySet()) {
 			for (int genomePos = 0; genomePos < userData.size(); genomePos++) {
 				GenomeToCogsAlignment genomeRes = userData.get(genomePos);
@@ -695,6 +713,7 @@ public class SpeciesTreeBuilder {
 				}
 			}
 		}
+		System.out.println(">>> Concatenated cog alignments ...");
 		return concatCogAlignments(cogAlignments);
 	}
 	

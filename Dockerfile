@@ -5,7 +5,12 @@ MAINTAINER KBase Developer
 # Insert apt-get instructions here to install
 # any required dependencies for your module.
 
-# RUN apt-get update
+# update jars
+RUN cd /kb/dev_container/modules/jars \
+	&& git pull \
+	&& . /kb/dev_container/user-env.sh \
+	&& make deploy
+
 RUN mkdir -p /kb/deps
 COPY ./deps/download_3rd_party_bins.sh /kb/deps/
 WORKDIR /kb/deps
