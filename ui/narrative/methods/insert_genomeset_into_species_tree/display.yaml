@@ -1,7 +1,7 @@
 #
 # Define basic display information
 #
-name     : Insert Set of Genomes Into Species Tree
+name     : Insert Set of Genomes Into Species Tree 2.1.10
 
 tooltip  : |
     Add a user-provided GenomeSet to a KBase species tree.
