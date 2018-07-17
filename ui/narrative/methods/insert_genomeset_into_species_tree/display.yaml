@@ -84,7 +84,7 @@ parameters :
 description : |
     <p>This app allows a user to construct a phylogenetic tree combining the GenomeSet provided by the user with a set of closely related genomes from the KBase list of species.
     Since the number of genomes available in KBase is very large, the procedure starts by selecting a subset of KBase genomes closely related to the user-provided genome. Relatedness is determined by alignment similarity to a select subset of COG (Clusters of Orthologous Groups) domains.
-    Next, a phylogenetic tree is reconstructed using FastTree (a method to quickly estimate maximum likelihood phylogeny, see Publications) with the genome provided by the user and the set of genomes identified as similar in the previous step. The output tree can be shown with two possible layouts - rectangular and circular.</p>
+    Next, a phylogenetic tree is reconstructed using FastTree (version 2.1.10, a method to quickly estimate maximum likelihood phylogeny, see Publications) with the genome provided by the user and the set of genomes identified as similar in the previous step. The output tree can be shown with two possible layouts - rectangular and circular.</p>
     <p>Note: when inserting one or more genomes into a species tree, the inserted genomes that are also contained within the KBase list of species will be duplicated in the tree. One copy will have the KBase list ID and the other will have the ID of the inserted genome.</p>
     <p>This app also creates a Genome Set object containing all the genomes in the species tree that was generated.
     By default, the genomes in this Genome Set are also copied into your narrative, in order to make further analyses (e.g., viewing, finding domains) more convenient.
