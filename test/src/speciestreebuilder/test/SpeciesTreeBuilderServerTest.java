@@ -234,8 +234,6 @@ public class SpeciesTreeBuilderServerTest {
         ObjectData od = wsClient.getObjects2(new GetObjects2Params().withObjects(Arrays.asList(
                 new ObjectSpecification().withRef(treeRef)))).getData().get(0);
         Tree tree = od.getData().asClassInstance(Tree.class);
-        //List<ProvenanceAction> prov = od.getProvenance();
-        //System.out.println("Provenance: " + prov);
         try {
             List<String> nodeIds = extractLeafNodeNames(tree.getTree());
             System.out.println("leaf nodeIds: "+nodeIds);
@@ -267,5 +265,22 @@ public class SpeciesTreeBuilderServerTest {
         String taxPath = impl.guessTaxonomyPath(
                 new GuessTaxonomyPathParams().withQueryGenome(genomeRef), token, getContext());
         Assert.assertEquals("Shewanella; baltica;", taxPath);
+    }
+
+    @Test(expected=IllegalArgumentException.class)
+    public void testNoSameName() throws Exception {
+        String genomeName = "Shewanella_ANA_3_uid58347";
+        String genomeId = genomeName + ".genome";
+        String spTreeId = "sptree.1";
+        String genomeRef = getWsName() + "/" + genomeId;
+        String treeRef = impl.constructSpeciesTree(new ConstructSpeciesTreeParams()
+                        .withNewGenomes(Arrays.asList(genomeRef))
+                        .withOutWorkspace(getWsName())
+                        .withOutTreeId(spTreeId)
+                        .withUseRibosomalS9Only(0L)
+                        .withNearestGenomeCount(20L)
+                        .withOutGenomesetRef(spTreeId)
+                        .withCopyGenomes(1L)
+                , token, getContext());
     }
 }
