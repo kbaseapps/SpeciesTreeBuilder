@@ -104,7 +104,7 @@ public class SpeciesTreeBuilder {
 
 	public String run(ConstructSpeciesTreeParams inputData) throws Exception {
 		System.out.println("====== Running SpeciesTreeBuilder ======");
-		if (inputData.getOutGenomesetRef().equals(inputData.getOutTreeId())) {
+		if (inputData.getOutGenomesetRef().split("/")[1].equals(inputData.getOutTreeId())) {
 			throw new IllegalArgumentException("Output Genome Set and Output Tree must have different names");
 		}
 		boolean useCog103Only = inputData.getUseRibosomalS9Only() != null && 
