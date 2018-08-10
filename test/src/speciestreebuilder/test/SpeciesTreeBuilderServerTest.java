@@ -76,7 +76,7 @@ public class SpeciesTreeBuilderServerTest {
         JsonServerSyslog.setStaticMlogFile(new File(config.get("scratch"), "test.log").getAbsolutePath());
         impl = new SpeciesTreeBuilderServer();
         impl.getConfig().put("public.genomes.ws", getPublicWsName());
-
+        /*
         // Store test genome (real data)
         FastaReader fr = new FastaReader(new File("test/data", "Shewanella_ANA_3_uid58347.fasta"));
         Map<String, String> proteinIdToSeq = new LinkedHashMap<>();
@@ -154,7 +154,7 @@ public class SpeciesTreeBuilderServerTest {
             data.put("feature_counts", new HashMap<String, Integer>());
             objects.add(new ObjectSaveData().withName(kbId).withType(genomeWsType).withData(new UObject(data)));
         }
-        wsClient.saveObjects(new SaveObjectsParams().withWorkspace(getPublicWsName()).withObjects(objects));
+        wsClient.saveObjects(new SaveObjectsParams().withWorkspace(getPublicWsName()).withObjects(objects));*/
     }
     
     private static String getWsName() throws Exception {
@@ -221,7 +221,7 @@ public class SpeciesTreeBuilderServerTest {
         String genomeName = "Shewanella_ANA_3_uid58347";
         String genomeId = genomeName + ".genome";
         String spTreeId = "sptree.1";
-        String genomeRef = getWsName() + "/" + genomeId;
+        String genomeRef = "7601/4/1";
         String treeRef = impl.constructSpeciesTree(new ConstructSpeciesTreeParams()
                                                    .withNewGenomes(Arrays.asList(genomeRef))
                                                    .withOutWorkspace(getWsName())
@@ -270,16 +270,15 @@ public class SpeciesTreeBuilderServerTest {
     @Test(expected=IllegalArgumentException.class)
     public void testNoSameName() throws Exception {
         String genomeName = "Shewanella_ANA_3_uid58347";
-        String genomeId = genomeName + ".genome";
         String spTreeId = "sptree.1";
-        String genomeRef = getWsName() + "/" + genomeId;
+        String genomeRef = getWsName() + "/" + spTreeId;
         String treeRef = impl.constructSpeciesTree(new ConstructSpeciesTreeParams()
                         .withNewGenomes(Arrays.asList(genomeRef))
                         .withOutWorkspace(getWsName())
                         .withOutTreeId(spTreeId)
                         .withUseRibosomalS9Only(0L)
                         .withNearestGenomeCount(20L)
-                        .withOutGenomesetRef(spTreeId)
+                        .withOutGenomesetRef(genomeRef)
                         .withCopyGenomes(1L)
                 , token, getContext());
     }

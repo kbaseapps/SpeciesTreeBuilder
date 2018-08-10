@@ -89,16 +89,10 @@
         },
         {
           "input_parameter": "treeID",
-          "generated_value": {
-            "prefix": "sptree_"
-          },
           "target_property": "out_tree_id"
         },
         {
           "input_parameter": "genomeSetName",
-          "generated_value": {
-            "prefix": "genomeset_"
-          },
           "target_property": "out_genomeset_ref",
           "target_type_transform": "ref"
         },
