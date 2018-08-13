@@ -20,11 +20,11 @@ import us.kbase.common.service.Tuple11;
 import us.kbase.common.service.UObject;
 import us.kbase.kbasetrees.Tree;
 import us.kbase.kbasetrees.util.WorkspaceUtil;
-import us.kbase.workspace.CopyObjectParams;
-import us.kbase.workspace.GetObjectInfoNewParams;
-import us.kbase.workspace.ObjectIdentity;
-import us.kbase.workspace.ObjectSpecification;
-import us.kbase.workspace.WorkspaceClient;
+import workspace.CopyObjectParams;
+import workspace.GetObjectInfoNewParams;
+import workspace.ObjectIdentity;
+import workspace.ObjectSpecification;
+import workspace.WorkspaceClient;
 
 public class GenomeSetBuilder {
     public static String buildGenomeSetFromTree(Map<String, String> config, AuthToken token, 

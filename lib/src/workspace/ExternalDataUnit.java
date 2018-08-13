@@ -20,15 +20,15 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  * resource_release_epoch may be supplied. Both are supplied on output.
  * string resource_name - the name of the resource, for example JGI.
  * string resource_url - the url of the resource, for example
- *     http://genome.jgi.doe.gov
+ *         http://genome.jgi.doe.gov
  * string resource_version - version of the resource
  * timestamp resource_release_date - the release date of the resource
  * epoch resource_release_epoch - the release date of the resource
  * string data_url - the url of the data, for example
- *     http://genome.jgi.doe.gov/pages/dynamicOrganismDownload.jsf?
- *         organism=BlaspURHD0036
+ *         http://genome.jgi.doe.gov/pages/dynamicOrganismDownload.jsf?
+ *                 organism=BlaspURHD0036
  * string data_id - the id of the data, for example
- *     7625.2.79179.AGTTCC.adnq.fastq.gz
+ *         7625.2.79179.AGTTCC.adnq.fastq.gz
  * string description - a free text description of the data.
  * </pre>
  * 

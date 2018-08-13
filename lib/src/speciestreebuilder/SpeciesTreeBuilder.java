@@ -45,14 +45,14 @@ import us.kbase.common.utils.FastaWriter;
 import us.kbase.kbasetrees.Tree;
 import us.kbase.kbasetrees.util.TreeStructureUtil;
 import us.kbase.kbasetrees.util.WorkspaceUtil;
-import us.kbase.workspace.CopyObjectParams;
-import us.kbase.workspace.GetObjectInfoNewParams;
-import us.kbase.workspace.GetObjects2Params;
-import us.kbase.workspace.ListObjectsParams;
-import us.kbase.workspace.ObjectIdentity;
-import us.kbase.workspace.ObjectSpecification;
-import us.kbase.workspace.WorkspaceClient;
-import us.kbase.workspace.WorkspaceIdentity;
+import workspace.CopyObjectParams;
+import workspace.GetObjectInfoNewParams;
+import workspace.GetObjects2Params;
+import workspace.ListObjectsParams;
+import workspace.ObjectIdentity;
+import workspace.ObjectSpecification;
+import workspace.WorkspaceClient;
+import workspace.WorkspaceIdentity;
 
 public class SpeciesTreeBuilder {
     private File tempDir;
@@ -112,8 +112,7 @@ public class SpeciesTreeBuilder {
 		System.out.println(">>> useCog103Only: "+useCog103Only);
 		long nearestGenomeCount = inputData.getNearestGenomeCount() != null ? 
 				inputData.getNearestGenomeCount() : DEFAULT_NEAREST_GENOME_COUNT;
-        boolean copyGenomes = inputData.getCopyGenomes() != null ?
-            (inputData.getCopyGenomes()==1L) : true;
+        boolean copyGenomes = inputData.getCopyGenomes() == null || (inputData.getCopyGenomes() == 1L);
 
 		if (nearestGenomeCount < MIN_NEAREST_GENOME_COUNT)
 		    throw new IllegalStateException("Neighbor public genome count can not be less than " +
