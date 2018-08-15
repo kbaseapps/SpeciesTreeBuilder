@@ -6,7 +6,7 @@
   "categories" : ["active","comparative_genomics"],
   "widgets" : {
     "input" : null,
-    "output" : null
+    "output" : "no-display"
   },
   "parameters" : [ {
     "id" : "param0",
