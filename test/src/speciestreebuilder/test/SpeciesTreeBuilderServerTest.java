@@ -17,6 +17,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import speciestreebuilder.ConstructSpeciesTreeOutput;
 import speciestreebuilder.ConstructSpeciesTreeParams;
 import speciestreebuilder.SpeciesTreeBuilderServer;
 import us.kbase.auth.AuthConfig;
@@ -131,8 +132,8 @@ public class SpeciesTreeBuilderServerTest {
     @Test
     public void testConstructSpeciesTree() throws Exception {
         String spTreeId = "sptree.1";
-        String genomeRef = "ReferenceDataManager/GCF_001593245.1";
-        String treeRef = impl.constructSpeciesTree(new ConstructSpeciesTreeParams()
+        String genomeRef = "ReferenceDataManager/GCF_000010525.1";
+        ConstructSpeciesTreeOutput result = impl.constructSpeciesTree(new ConstructSpeciesTreeParams()
                                                    .withNewGenomes(Arrays.asList(genomeRef))
                                                    .withOutWorkspace(getWsName())
                                                    .withOutTreeId(spTreeId)
@@ -141,6 +142,7 @@ public class SpeciesTreeBuilderServerTest {
                                                    .withOutGenomesetRef(getWsName()+"/genomeset.1")
                                                    .withCopyGenomes(1L)
                                                    , token, getContext());
+        String treeRef = result.getOutputResultId();
         ObjectData od = wsClient.getObjects2(new GetObjects2Params().withObjects(Arrays.asList(
                 new ObjectSpecification().withRef(treeRef)))).getData().get(0);
         Tree tree = od.getData().asClassInstance(Tree.class);
@@ -180,9 +182,9 @@ public class SpeciesTreeBuilderServerTest {
     @Test(expected=IllegalArgumentException.class)
     public void testNoSameName() throws Exception {
         String spTreeId = "sptree.1";
-        String genomeRef = "ReferenceDataManager/GCF_001593245.1";
+        String genomeRef = "ReferenceDataManager/GCF_000010525.1";
         String genomeSetRef = getWsName() + "/" + spTreeId;
-        String treeRef = impl.constructSpeciesTree(new ConstructSpeciesTreeParams()
+        ConstructSpeciesTreeOutput result = impl.constructSpeciesTree(new ConstructSpeciesTreeParams()
                         .withNewGenomes(Arrays.asList(genomeRef))
                         .withOutWorkspace(getWsName())
                         .withOutTreeId(spTreeId)

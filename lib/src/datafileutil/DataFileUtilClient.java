@@ -29,7 +29,7 @@ public class DataFileUtilClient {
     private long asyncJobCheckTimeMs = 100;
     private int asyncJobCheckTimeScalePercent = 150;
     private long asyncJobCheckMaxTimeMs = 300000;  // 5 minutes
-    private String serviceVersion = "dev";
+    private String serviceVersion = "release";
     private static URL DEFAULT_URL = null;
     static {
         try {
