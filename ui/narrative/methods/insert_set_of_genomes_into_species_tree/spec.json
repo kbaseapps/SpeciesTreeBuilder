@@ -6,7 +6,7 @@
   "categories" : ["active","comparative_genomics"],
   "widgets" : {
     "input" : null,
-    "output" : "kbaseTree"
+    "output" : null
   },
   "parameters" : [ {
     "id" : "param0",
