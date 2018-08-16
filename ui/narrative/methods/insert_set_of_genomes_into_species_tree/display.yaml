@@ -86,6 +86,355 @@ description : |
     By default, the genomes in this Genome Set are also copied into your narrative, in order to make further analyses (e.g., viewing, finding domains) more convenient.
     By clicking on the Genome Set object that is generated, you can edit the set of genomes, e.g., to exclude some of them from downstream analyses.</p>
     <p><strong>Team members who developed & deployed algorithm in KBase:</strong> Roman Sutormin. For questions, contact us at <a href="http://kbase.us/contact-us/">http://kbase.us/contact-us/</a></p>
+
+The COGs domains used in the estimate of relatedness include 
+<table>
+ <tr  >
+  <td  width=87 >COG0012</td>
+  <td width=87 >COG0012</td>
+  <td  >Predicted
+  GTPase, probable translation factor [Translation, ribosomal structure and
+  biogenesis].</td>
+  <td width=87 style='width:65pt'></td>
+  <td width=87 style='width:65pt'></td>
+ </tr>
+ <tr  >
+  <td  >COG0013</td>
+  <td>AlaS</td>
+  <td  >Alanyl-tRNA synthetase [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0016</td>
+  <td>PheS</td>
+  <td  >Phenylalanyl-tRNA synthetase alpha
+  subunit [Translation, ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0018</td>
+  <td>ArgS</td>
+  <td  >Arginyl-tRNA synthetase
+  [Translation, ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0030</td>
+  <td>KsgA</td>
+  <td  >Dimethyladenosine transferase (rRNA
+  methylation) [Translation, ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0041</td>
+  <td>PurE</td>
+  <td  >Phosphoribosylcarboxyaminoimidazole
+  (NCAIR) mutase [Nucleotide transport and metabolism].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0046</td>
+  <td>PurL</td>
+  <td  >Phosphoribosylformylglycinamidine
+  (FGAM) synthase, synthetase domain [Nucleotide transport and metabolism].</td>
+  <td></td>
+ </tr>
+ <tr  >
+  <td  >COG0048</td>
+  <td>RpsL</td>
+  <td  >Ribosomal protein S12 [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0049</td>
+  <td>RpsG</td>
+  <td  >Ribosomal protein S7 [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0051</td>
+  <td>RpsJ</td>
+  <td  >Ribosomal protein S10 [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0052</td>
+  <td>RpsB</td>
+  <td  >Ribosomal protein S2 [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0072</td>
+  <td>PheT</td>
+  <td  >Phenylalanyl-tRNA synthetase beta
+  subunit [Translation, ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0080</td>
+  <td>RplK</td>
+  <td  >Ribosomal protein L11 [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0081</td>
+  <td>RplA</td>
+  <td  >Ribosomal protein L1 [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0082</td>
+  <td>AroC</td>
+  <td  >Chorismate synthase [Amino acid
+  transport and metabolism].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0086</td>
+  <td>RpoC</td>
+  <td  >DNA-directed RNA polymerase, beta'
+  subunit/160 kD subunit [Transcription].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0087</td>
+  <td>RplC</td>
+  <td  >Ribosomal protein L3 [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0088</td>
+  <td>RplD</td>
+  <td  >Ribosomal protein L4 [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0089</td>
+  <td>RplW</td>
+  <td  >Ribosomal protein L23 [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0090</td>
+  <td>RplB</td>
+  <td  >Ribosomal protein L2 [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0091</td>
+  <td>RplV</td>
+  <td  >Ribosomal protein L22 [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0092</td>
+  <td>RpsC</td>
+  <td  >Ribosomal protein S3 [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0093</td>
+  <td>RplN</td>
+  <td  >Ribosomal protein L14 [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0094</td>
+  <td>RplE</td>
+  <td  >Ribosomal protein L5 [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0096</td>
+  <td>RpsH</td>
+  <td  >Ribosomal protein S8 [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0097</td>
+  <td>RplF</td>
+  <td  >Ribosomal protein L6P/L9E
+  [Translation, ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0098</td>
+  <td>RpsE</td>
+  <td  >Ribosomal protein S5 [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0099</td>
+  <td>RpsM</td>
+  <td  >Ribosomal protein S13 [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0100</td>
+  <td>RpsK</td>
+  <td  >Ribosomal protein S11 [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0102</td>
+  <td>RplM</td>
+  <td  >Ribosomal protein L13 [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0103</td>
+  <td>RpsI</td>
+  <td  >Ribosomal protein S9 [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0105</td>
+  <td>Ndk</td>
+  <td  >Nucleoside diphosphate kinase
+  [Nucleotide transport and metabolism].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0126</td>
+  <td>Pgk</td>
+  <td  >3-phosphoglycerate kinase
+  [Carbohydrate transport and metabolism].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0127</td>
+  <td>COG0127</td>
+  <td  >Xanthosine triphosphate
+  pyrophosphatase [Nucleotide transport and metabolism].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0130</td>
+  <td>TruB</td>
+  <td  >Pseudouridine synthase [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0150</td>
+  <td>PurM</td>
+  <td  >Phosphoribosylaminoimidazole (AIR)
+  synthetase [Nucleotide transport and metabolism].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0151</td>
+  <td>PurD</td>
+  <td  >Phosphoribosylamine-glycine ligase
+  [Nucleotide transport and metabolism].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0164</td>
+  <td>RnhB</td>
+  <td  >Ribonuclease HII [DNA replication,
+  recombination, and repair].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0172</td>
+  <td>SerS</td>
+  <td  >Seryl-tRNA synthetase [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0185</td>
+  <td>RpsS</td>
+  <td  >Ribosomal protein S19 [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0186</td>
+  <td>RpsQ</td>
+  <td  >Ribosomal protein S17 [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0215</td>
+  <td>CysS</td>
+  <td  >Cysteinyl-tRNA synthetase
+  [Translation, ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0244</td>
+  <td>RplJ</td>
+  <td  >Ribosomal protein L10 [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0256</td>
+  <td>RplR</td>
+  <td  >Ribosomal protein L18 [Translation,
+  ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0343</td>
+  <td>Tgt</td>
+  <td  >Queuine/archaeosine
+  tRNA-ribosyltransferase [Translation, ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0504</td>
+  <td>PyrG</td>
+  <td  >CTP synthase (UTP-ammonia lyase)
+  [Nucleotide transport and metabolism].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0519</td>
+  <td>GuaA</td>
+  <td  >GMP synthase, PP-ATPase
+  domain/subunit [Nucleotide transport and metabolism].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0532</td>
+  <td>InfB</td>
+  <td  >Translation initiation factor 2
+  (IF-2; GTPase) [Translation, ribosomal structure and biogenesis].</td>
+  <td  ></td>
+ </tr>
+ <tr  >
+  <td  >COG0533</td>
+  <td>QRI7</td>
+  <td  >Metal-dependent proteases with
+  possible chaperone activity [Posttranslational modification, protein
+  turnover, chaperones].</td>
+ </tr>
+</table>
     
 publications :
     -
