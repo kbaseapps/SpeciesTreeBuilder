@@ -21,9 +21,9 @@ import us.kbase.common.service.RpcContext;
  */
 public class SpeciesTreeBuilderServer extends JsonServerServlet {
     private static final long serialVersionUID = 1L;
-    private static final String version = "0.0.7";
-    private static final String gitUrl = "git@github.com:jmchandonia/SpeciesTreeBuilder.git";
-    private static final String gitCommitHash = "44da917e02a19213f6192905be24a9a953b2e2f2";
+    private static final String version = "0.0.11";
+    private static final String gitUrl = "https://github.com/kbaseapps/SpeciesTreeBuilder.git";
+    private static final String gitCommitHash = "1ea205ea3ce32396c9252dd9112fb3948c4f031a";
 
     //BEGIN_CLASS_HEADER
     public Map<String, String> getConfig() throws Exception {
@@ -43,11 +43,11 @@ public class SpeciesTreeBuilderServer extends JsonServerServlet {
      * Build a species tree out of a set of given genome references.
      * </pre>
      * @param   input   instance of type {@link speciestreebuilder.ConstructSpeciesTreeParams ConstructSpeciesTreeParams}
-     * @return   parameter "tree_ref" of original type "ws_tree_id" (A workspace ID that references a Tree data object. @id ws KBaseTrees.Tree)
+     * @return   parameter "out" of type {@link speciestreebuilder.ConstructSpeciesTreeOutput ConstructSpeciesTreeOutput}
      */
     @JsonServerMethod(rpc = "SpeciesTreeBuilder.construct_species_tree", async=true)
-    public String constructSpeciesTree(ConstructSpeciesTreeParams input, AuthToken authPart, RpcContext jsonRpcContext) throws Exception {
-        String returnVal = null;
+    public ConstructSpeciesTreeOutput constructSpeciesTree(ConstructSpeciesTreeParams input, AuthToken authPart, RpcContext jsonRpcContext) throws Exception {
+        ConstructSpeciesTreeOutput returnVal = null;
         //BEGIN construct_species_tree
         SpeciesTreeBuilder runner = new SpeciesTreeBuilder(config, authPart);
         returnVal = runner.run(input);

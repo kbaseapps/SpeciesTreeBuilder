@@ -11,9 +11,9 @@ import java.util.TreeMap;
 
 import us.kbase.auth.AuthToken;
 import us.kbase.common.service.Tuple2;
-import us.kbase.workspace.ObjectData;
-import us.kbase.workspace.SubObjectIdentity;
-import us.kbase.workspace.WorkspaceClient;
+import workspace.ObjectData;
+import workspace.SubObjectIdentity;
+import workspace.WorkspaceClient;
 
 public class CloseGenomesFinder {
     private final Map<String, String> configParams;
