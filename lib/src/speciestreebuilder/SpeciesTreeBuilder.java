@@ -593,8 +593,6 @@ public class SpeciesTreeBuilder {
 			if (ref == null) {
 				System.err.println("[WARNING] SpeciesTreeBuilder: Can't find public genome object " +
                                    "for id: " + genomeKb);
-				//concat.remove(genomeKb);
-				//continue;
 			}
 			String name = kbToNames.get(genomeKb);
 			idLabelMap.put(genomeKb, name + " (" + genomeKb + ")");
@@ -727,8 +725,8 @@ public class SpeciesTreeBuilder {
 				cogAlignments.get(cogCode).put(nodeName, alignedSeq);
 				seeds.add(nodeName);
 				if (!idLabelMap.containsKey(nodeName)) {
-					idLabelMap.put(nodeName, genomeRes.getGenomeName() + " (" + 
-					        genomeRefToObjName.get(genomeRef) + ")");
+					idLabelMap.put(nodeName, genomeRefToObjName.get(genomeRef)
+							+ " (" + genomeRes.getGenomeName() + ")");
 					Map<String, List<String>> refMap = new TreeMap<String, List<String>>();
 					refMap.put("g", Arrays.<String>asList(genomeRef));
 					idRefMap.put(nodeName, refMap);
@@ -763,7 +761,7 @@ public class SpeciesTreeBuilder {
                                 "protein_translation", "type"))).getGenomes().get(0).getData();
         String genomeName = genome.getScientificName();
         if (genomeName == null)
-            genomeName = "Genome " + genomeRef;
+            genomeName = "User Genome " + genomeRef;
         final List<Feature> cdss = genome.getFeatures();
 		File fastaFile = File.createTempFile("proteome", ".fasta", tempDir);
 		File dbFile = null;
