@@ -37,7 +37,7 @@
     "advanced": false,
     "allow_multiple": false,
     "default_values": [
-        "1"
+        "0"
     ],
     "field_type": "checkbox",
     "checkbox_options": {
