@@ -7,7 +7,7 @@ tooltip : |
     Extract a set of genomes from a species tree.
 
 screenshots :
-    
+
     - build_genome_set_input.png
     - build_genome_set_output.png
 
@@ -60,3 +60,9 @@ description : |
     <p>Note: when inserting one or more genomes into a species tree, the inserted genomes that are also contained within the KBase list of species will be duplicated in the tree. One copy will have the KBase list ID and the other will have the ID of the inserted genome. The genomes will also be duplicated in any genome set generated from the tree.</p>
     <p><strong>Team members who developed & deployed algorithm in KBase:</strong> Roman Sutormin. For questions, contact us at <a href="http://kbase.us/contact-us/">http://kbase.us/contact-us/</a><</p>
 
+
+publications :
+    -
+        display-text: |
+            Arkin AP, Cottingham RW, Henry CS, Harris NL, Stevens RL, Maslov S, et al. KBase: The United States Department of Energy Systems Biology Knowledgebase. Nature Biotechnology. 2018;36: 566. doi: 10.1038/nbt.4163
+        link: https://www.nature.com/articles/nbt.4163

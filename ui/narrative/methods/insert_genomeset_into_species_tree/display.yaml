@@ -439,10 +439,9 @@ description : |
       turnover, chaperones].</td>
      </tr>
     </table>
-    
+
 publications :
     -
         display-text: |
-            Price MN, Dehal PS, Arkin AP (2010) FastTree 2--approximately maximum-likelihood trees for large alignments. PLoS One. 2010 Mar 10;5(3):e9490
+            Price MN, Dehal PS, Arkin AP. FastTree 2 – Approximately Maximum-Likelihood Trees for Large Alignments. PLoS One. 2010;5. doi:10.1371/journal.pone.0009490
         link: http://www.ncbi.nlm.nih.gov/pmc/articles/PMC2835736/
-
