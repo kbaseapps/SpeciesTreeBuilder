@@ -22,8 +22,6 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
  *     field should be defined.
  * out_workspace - (required) the workspace to deposit the completed tree
  * out_tree_id - (optional) the name of the newly constructed tree (will be random if not present or null)
- * out_genomeset_ref - the name of the output genomeset object
- * copy_genomes - 1 means copy genomes to user workspace; 0 means refer only to the public genomes
  * use_ribosomal_s9_only - (optional) 1 means only one protein family (Ribosomal S9) is used for 
  *     tree construction rather than all 49 improtant families, default value is 0.
  * nearest_genome_count - (optional) defines maximum number of public genomes nearest to
@@ -38,10 +36,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "genomeset_ref",
     "out_workspace",
     "out_tree_id",
-    "out_genomeset_ref",
-    "copy_genomes",
     "use_ribosomal_s9_only",
-    "nearest_genome_count"
+    "nearest_genome_count",
+    "prioritize_sisters"
 })
 public class ConstructSpeciesTreeParams {
 
@@ -53,14 +50,13 @@ public class ConstructSpeciesTreeParams {
     private java.lang.String outWorkspace;
     @JsonProperty("out_tree_id")
     private java.lang.String outTreeId;
-    @JsonProperty("out_genomeset_ref")
-    private java.lang.String outGenomesetRef;
-    @JsonProperty("copy_genomes")
-    private Long copyGenomes;
     @JsonProperty("use_ribosomal_s9_only")
     private Long useRibosomalS9Only;
     @JsonProperty("nearest_genome_count")
     private Long nearestGenomeCount;
+    @JsonProperty("prioritize_sisters")
+    private boolean prioritizeSisters;
+
     private Map<java.lang.String, Object> additionalProperties = new HashMap<java.lang.String, Object>();
 
     @JsonProperty("new_genomes")
@@ -123,36 +119,6 @@ public class ConstructSpeciesTreeParams {
         return this;
     }
 
-    @JsonProperty("out_genomeset_ref")
-    public java.lang.String getOutGenomesetRef() {
-        return outGenomesetRef;
-    }
-
-    @JsonProperty("out_genomeset_ref")
-    public void setOutGenomesetRef(java.lang.String outGenomesetRef) {
-        this.outGenomesetRef = outGenomesetRef;
-    }
-
-    public ConstructSpeciesTreeParams withOutGenomesetRef(java.lang.String outGenomesetRef) {
-        this.outGenomesetRef = outGenomesetRef;
-        return this;
-    }
-
-    @JsonProperty("copy_genomes")
-    public Long getCopyGenomes() {
-        return copyGenomes;
-    }
-
-    @JsonProperty("copy_genomes")
-    public void setCopyGenomes(Long copyGenomes) {
-        this.copyGenomes = copyGenomes;
-    }
-
-    public ConstructSpeciesTreeParams withCopyGenomes(Long copyGenomes) {
-        this.copyGenomes = copyGenomes;
-        return this;
-    }
-
     @JsonProperty("use_ribosomal_s9_only")
     public Long getUseRibosomalS9Only() {
         return useRibosomalS9Only;
@@ -178,6 +144,16 @@ public class ConstructSpeciesTreeParams {
         this.nearestGenomeCount = nearestGenomeCount;
     }
 
+    @JsonProperty("nearest_genome_count")
+    public boolean getPrioritizeSisters() {
+        return prioritizeSisters;
+    }
+
+    @JsonProperty("nearest_genome_count")
+    public void setPrioritizeSisters(boolean prioritizeSisters) {
+        this.prioritizeSisters = prioritizeSisters;
+    }
+
     public ConstructSpeciesTreeParams withNearestGenomeCount(Long nearestGenomeCount) {
         this.nearestGenomeCount = nearestGenomeCount;
         return this;
@@ -195,7 +171,7 @@ public class ConstructSpeciesTreeParams {
 
     @Override
     public java.lang.String toString() {
-        return ((((((((((((((((((("ConstructSpeciesTreeParams"+" [newGenomes=")+ newGenomes)+", genomesetRef=")+ genomesetRef)+", outWorkspace=")+ outWorkspace)+", outTreeId=")+ outTreeId)+", outGenomesetRef=")+ outGenomesetRef)+", copyGenomes=")+ copyGenomes)+", useRibosomalS9Only=")+ useRibosomalS9Only)+", nearestGenomeCount=")+ nearestGenomeCount)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((("ConstructSpeciesTreeParams"+" [newGenomes=")+ newGenomes)+", genomesetRef=")+ genomesetRef)+", outWorkspace=")+ outWorkspace)+", outTreeId=")+ outTreeId)+", useRibosomalS9Only=")+ useRibosomalS9Only)+", nearestGenomeCount=")+ nearestGenomeCount)+", prioritizeSisters=")+ prioritizeSisters)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }
