@@ -110,7 +110,7 @@ sub new
 
 =head2 construct_species_tree
 
-  $tree_ref = $obj->construct_species_tree($input)
+  $out = $obj->construct_species_tree($input)
 
 =over 4
 
@@ -120,7 +120,7 @@ sub new
 
 <pre>
 $input is a SpeciesTreeBuilder.ConstructSpeciesTreeParams
-$tree_ref is a SpeciesTreeBuilder.ws_tree_id
+$out is a SpeciesTreeBuilder.ConstructSpeciesTreeOutput
 ConstructSpeciesTreeParams is a reference to a hash where the following keys are defined:
 	new_genomes has a value which is a reference to a list where each element is a SpeciesTreeBuilder.ws_genome_id
 	genomeset_ref has a value which is a SpeciesTreeBuilder.ws_genomeset_id
@@ -132,6 +132,10 @@ ConstructSpeciesTreeParams is a reference to a hash where the following keys are
 	nearest_genome_count has a value which is an int
 ws_genome_id is a string
 ws_genomeset_id is a string
+ConstructSpeciesTreeOutput is a reference to a hash where the following keys are defined:
+	output_result_id has a value which is a SpeciesTreeBuilder.ws_tree_id
+	report_name has a value which is a string
+	report_ref has a value which is a string
 ws_tree_id is a string
 
 </pre>
@@ -141,7 +145,7 @@ ws_tree_id is a string
 =begin text
 
 $input is a SpeciesTreeBuilder.ConstructSpeciesTreeParams
-$tree_ref is a SpeciesTreeBuilder.ws_tree_id
+$out is a SpeciesTreeBuilder.ConstructSpeciesTreeOutput
 ConstructSpeciesTreeParams is a reference to a hash where the following keys are defined:
 	new_genomes has a value which is a reference to a list where each element is a SpeciesTreeBuilder.ws_genome_id
 	genomeset_ref has a value which is a SpeciesTreeBuilder.ws_genomeset_id
@@ -153,6 +157,10 @@ ConstructSpeciesTreeParams is a reference to a hash where the following keys are
 	nearest_genome_count has a value which is an int
 ws_genome_id is a string
 ws_genomeset_id is a string
+ConstructSpeciesTreeOutput is a reference to a hash where the following keys are defined:
+	output_result_id has a value which is a SpeciesTreeBuilder.ws_tree_id
+	report_name has a value which is a string
+	report_ref has a value which is a string
 ws_tree_id is a string
 
 
@@ -721,6 +729,45 @@ out_genomeset_ref has a value which is a SpeciesTreeBuilder.ws_genomeset_id
 copy_genomes has a value which is an int
 use_ribosomal_s9_only has a value which is an int
 nearest_genome_count has a value which is an int
+
+
+=end text
+
+=back
+
+
+
+=head2 ConstructSpeciesTreeOutput
+
+=over 4
+
+
+
+=item Description
+
+Output is a report, and a Tree object
+
+
+=item Definition
+
+=begin html
+
+<pre>
+a reference to a hash where the following keys are defined:
+output_result_id has a value which is a SpeciesTreeBuilder.ws_tree_id
+report_name has a value which is a string
+report_ref has a value which is a string
+
+</pre>
+
+=end html
+
+=begin text
+
+a reference to a hash where the following keys are defined:
+output_result_id has a value which is a SpeciesTreeBuilder.ws_tree_id
+report_name has a value which is a string
+report_ref has a value which is a string
 
 
 =end text

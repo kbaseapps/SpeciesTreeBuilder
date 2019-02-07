@@ -33,6 +33,10 @@ import kbasegenomes.Genome;
 
 import datafileutil.DataFileUtilClient;
 
+import kbphylogenomics.KbPhylogenomicsClient;
+import kbphylogenomics.ViewTreeInput;
+import kbphylogenomics.ViewTreeOutput;
+
 import us.kbase.auth.AuthToken;
 import us.kbase.common.service.Tuple11;
 import us.kbase.common.service.Tuple2;
@@ -44,12 +48,14 @@ import us.kbase.common.utils.FastaWriter;
 import us.kbase.kbasetrees.Tree;
 import us.kbase.kbasetrees.util.TreeStructureUtil;
 import us.kbase.kbasetrees.util.WorkspaceUtil;
+
 import us.kbase.workspace.GetObjectInfoNewParams;
 import us.kbase.workspace.GetObjects2Params;
 import us.kbase.workspace.ListObjectsParams;
 import us.kbase.workspace.ObjectSpecification;
 import us.kbase.workspace.WorkspaceClient;
 import us.kbase.workspace.WorkspaceIdentity;
+
 
 public class SpeciesTreeBuilder {
     private File tempDir;
@@ -142,6 +148,93 @@ public class SpeciesTreeBuilder {
     private String saveResult(String ws, String id, Tree res,
                               ConstructSpeciesTreeParams inputData) throws Exception {
         URL callbackUrl = new URL(System.getenv("SDK_CALLBACK_URL"));
+        this.wsUrl = wsUrl.toString();
+	}
+
+	public static File getDirParam(Map<String, String> configParams, String param) {
+	    String tempDirPath = configParams.get(param);
+	    if (tempDirPath == null)
+	        throw new IllegalStateException("Parameter " + param + " is not defined in " +
+	        		"configuration");
+	    return new File(tempDirPath);
+	}
+
+	public ConstructSpeciesTreeOutput run(ConstructSpeciesTreeParams inputData) throws Exception {
+		System.out.println("====== Running SpeciesTreeBuilder ======");
+		if (inputData.getOutGenomesetRef().split("/")[1].equals(inputData.getOutTreeId())) {
+			throw new IllegalArgumentException("Output Genome Set and Output Tree must have different names");
+		}
+		boolean useCog103Only = inputData.getUseRibosomalS9Only() != null && 
+				inputData.getUseRibosomalS9Only() == 1L;
+		System.out.println(">>> useCog103Only: "+useCog103Only);
+		long nearestGenomeCount = inputData.getNearestGenomeCount() != null ? 
+				inputData.getNearestGenomeCount() : DEFAULT_NEAREST_GENOME_COUNT;
+        boolean copyGenomes = inputData.getCopyGenomes() == null || (inputData.getCopyGenomes() == 1L);
+
+		if (nearestGenomeCount < MIN_NEAREST_GENOME_COUNT)
+		    throw new IllegalStateException("Neighbor public genome count can not be less than " +
+		            MIN_NEAREST_GENOME_COUNT);
+		if (nearestGenomeCount > MAX_NEAREST_GENOME_COUNT)
+		    throw new IllegalStateException("Neighbor public genome count can not be more than " +
+		            MAX_NEAREST_GENOME_COUNT);
+		List<String> genomeRefs = inputData.getNewGenomes();
+		if (genomeRefs == null) {
+			String genomeSetRef = inputData.getGenomesetRef();
+			if (genomeSetRef == null)
+				throw new IllegalStateException("Either new_genomes or genomeset_ref field " +
+						"should be defined");
+			@SuppressWarnings("unchecked")
+			Map<String, Object> genomeSet = storage.getObjects2(
+			        new GetObjects2Params().withObjects(Arrays.asList(new ObjectSpecification()
+			        .withRef(genomeSetRef)))).getData().get(0).getData().asClassInstance(
+			                Map.class);
+			@SuppressWarnings("unchecked")
+			Map<String, Object> genomeSetElements = (Map<String, Object>)genomeSet.get("elements");
+			genomeRefs = new ArrayList<String>();
+		    for (String key : genomeSetElements.keySet()) {
+				@SuppressWarnings("unchecked")
+		    	Map<String, Object> genomeSetElem = (Map<String, Object>)genomeSetElements.get(
+		    	        key);
+		    	genomeRefs.add((String)genomeSetElem.get("ref"));
+		    }
+		}
+		Tree tree = placeUserGenomes(inputData.getOutWorkspace(),
+                                     genomeRefs,
+                                     useCog103Only,
+                                     false,
+                                     copyGenomes,
+                                     (int)nearestGenomeCount);
+		System.out.println(">>> Built species tree ...");
+        String treeId = inputData.getOutTreeId();
+        if (treeId == null)
+            treeId = "tree" + System.currentTimeMillis();
+		String treeRef = saveResult(inputData.getOutWorkspace(), treeId, tree, inputData);
+        String outGenomesetRef = inputData.getOutGenomesetRef();
+        GenomeSetBuilder.buildGenomeSetFromTree
+            (wsUrl,token,treeRef,outGenomesetRef,copyGenomes);
+		System.out.println(">>> Built genome set from tree ...");
+		ViewTreeOutput report_result = makeReport(inputData.getOutWorkspace(), treeRef);
+		System.out.println(">>> Created report");
+        return new ConstructSpeciesTreeOutput().withOutputResultId(treeRef)
+				.withReportName(report_result.getReportName())
+				.withReportRef(report_result.getReportRef());
+	}
+
+	private ViewTreeOutput makeReport(String outWorkspace, String treeRef) throws Exception {
+		String desc = "Species Tree generated by Species Tree Builder";
+		URL callbackUrl = new URL(System.getenv("SDK_CALLBACK_URL"));
+		KbPhylogenomicsClient kbphylo = new KbPhylogenomicsClient(callbackUrl, token);
+		kbphylo.setIsInsecureHttpConnectionAllowed(true);
+		return kbphylo.viewTree(
+				new ViewTreeInput().withWorkspaceName(outWorkspace)
+				.withInputTreeRef(treeRef)
+				.withDesc(desc)
+		);
+	}
+
+	private String saveResult(String ws, String id, Tree res,
+			ConstructSpeciesTreeParams inputData) throws Exception {
+	    URL callbackUrl = new URL(System.getenv("SDK_CALLBACK_URL"));
         DataFileUtilClient dfu = new DataFileUtilClient(callbackUrl, token);
         dfu.setIsInsecureHttpConnectionAllowed(true);
         Map<String, String> meta = new LinkedHashMap<String, String>();
@@ -603,6 +696,45 @@ public class SpeciesTreeBuilder {
                     @Override
                     public int compare(Tuple2<String, Integer> o1, Tuple2<String, Integer> o2) {
                         return o1.getE2().compareTo(o2.getE2());
+		}
+		Map<String, String> concat = new TreeMap<String, String>();
+		for (String kbId : alnConcat.getGenomeIds())
+			if (seeds.contains(kbId) || nearestNodes.contains(kbId))
+				concat.put(kbId, alnConcat.getSequence(kbId));
+		Map<String, String> kbToNames = loadGenomeKbToNames();
+		Map<String, String> kbToRefs = loadGenomeKbToRefs();
+		Map<String, Map<String, List<String>>> idKbMap = 
+            new TreeMap<String, Map<String, List<String>>>();
+        Set<String> namehash = new TreeSet<String>();
+		for (String genomeKb : new ArrayList<String>(concat.keySet())) {
+			Map<String, List<String>> refMap = new TreeMap<String, List<String>>();
+			refMap.put("g", Arrays.asList(genomeKb));
+			idKbMap.put(genomeKb, refMap);
+			if (seeds.contains(genomeKb))
+				continue;
+			String ref = kbToRefs.get(genomeKb);
+			if (ref == null) {
+				System.err.println("[WARNING] SpeciesTreeBuilder: Can't find public genome object " +
+                                   "for id: " + genomeKb);
+			}
+			String name = kbToNames.get(genomeKb);
+			idLabelMap.put(genomeKb, name + " (" + genomeKb + ")");
+            System.out.println("debug: "+genomeKb+" ref:"+ref+" name:"+name);
+            if (ref != null) {
+                long refWsId = Long.parseLong(ref.split("/")[0]);
+                if (copyGenomes && (!wsId.equals(refWsId))) {
+                    // copy it here, make new genome ref
+                    String origRef = new String(ref);
+                    String newname = idLabelMap.get(genomeKb);
+                    newname = GenomeSetBuilder.cleanName(newname);
+                    if (namehash.contains(newname)) {
+                        int count = 0;
+                        String testname = newname + "_" + count;
+                        while (namehash.contains(testname)) {
+                            count++;
+                            testname = newname + "_" + count;
+                        }
+                        newname = testname;
                     }
                 });
                 //if (stopOnZeroDist && minDist == 0)
@@ -711,6 +843,54 @@ public class SpeciesTreeBuilder {
     public GenomeToCogsAlignment alignGenomeProteins(String genomeRef,
                                                      boolean useCog103Only, final Map<String, Integer> cogToAlnLength)
             throws Exception {
+		for (String genomeRef : genomeRefToObjName.keySet()) {
+			try {
+	            objectids.add(new ObjectSpecification().withRef(genomeRef));
+				userData.add(alignGenomeProteins(genomeRef, useCog103Only, cogToAlnLength));
+			} catch (Exception ex) {
+				throw new IllegalStateException("Error processing genome [" + genomeRef + "] " +
+				        "(" + ex.getMessage() + ")", ex);
+			}
+		}
+		System.out.println(">>> Genome proteins aligned ...");
+		for (String cogCode : cogAlignments.keySet()) {
+			for (int genomePos = 0; genomePos < userData.size(); genomePos++) {
+				GenomeToCogsAlignment genomeRes = userData.get(genomePos);
+				List<ProteinToCogAlignemt> alns = genomeRes.getCogToProteins().get(cogCode);
+				if (alns == null || alns.isEmpty())
+					continue;
+				String alignedSeq = alns.get(0).getTrimmedFeatureSeq();
+				String genomeRef = genomeRes.getGenomeRef();
+				String nodeName = "user" + (genomePos + 1);
+				cogAlignments.get(cogCode).put(nodeName, alignedSeq);
+				seeds.add(nodeName);
+				if (!idLabelMap.containsKey(nodeName)) {
+					idLabelMap.put(nodeName, genomeRefToObjName.get(genomeRef)
+							+ " (" + genomeRes.getGenomeName() + ")");
+					Map<String, List<String>> refMap = new TreeMap<String, List<String>>();
+					refMap.put("g", Arrays.<String>asList(genomeRef));
+					idRefMap.put(nodeName, refMap);
+				}
+			}
+		}
+		System.out.println(">>> Concatenated cog alignments ...");
+		return concatCogAlignments(cogAlignments);
+	}
+	
+	private int getDistance(char[] s1, char[] s2) {
+		int ret = 0;
+		int len = s1.length;
+		if (len != s2.length)
+			throw new IllegalStateException();
+		for (int i = 0; i < len; i++)
+			if (s1[i] != s2[i])
+				ret++;
+		return ret;
+	}
+	
+	public GenomeToCogsAlignment alignGenomeProteins(String genomeRef, 
+			boolean useCog103Only, final Map<String, Integer> cogToAlnLength) 
+			        throws Exception {
         URL callbackUrl = new URL(System.getenv("SDK_CALLBACK_URL"));
         GenomeAnnotationAPIClient gaapi = new GenomeAnnotationAPIClient(callbackUrl, token);
         gaapi.setIsInsecureHttpConnectionAllowed(true);
@@ -721,7 +901,7 @@ public class SpeciesTreeBuilder {
                                 "protein_translation", "type"))).getGenomes().get(0).getData();
         String genomeName = genome.getScientificName();
         if (genomeName == null)
-            genomeName = "Genome " + genomeRef;
+            genomeName = "User Genome " + genomeRef;
         final List<Feature> cdss = genome.getFeatures();
         File fastaFile = File.createTempFile("proteome", ".fasta", tempDir);
         File dbFile = null;

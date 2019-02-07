@@ -51,9 +51,18 @@ module SpeciesTreeBuilder {
     } ConstructSpeciesTreeParams;
 
     /*
+        Output is a report, and a Tree object
+        */
+        typedef structure {
+    	ws_tree_id output_result_id;
+    	string report_name;
+    	string report_ref;
+        } ConstructSpeciesTreeOutput;
+
+    /*
         Build a species tree out of a set of given genome references.
     */
-    funcdef construct_species_tree(ConstructSpeciesTreeParams input) returns (ws_tree_id tree_ref) authentication required;
+    funcdef construct_species_tree(ConstructSpeciesTreeParams input) returns (ConstructSpeciesTreeOutput out) authentication required;
 
 
     /* 

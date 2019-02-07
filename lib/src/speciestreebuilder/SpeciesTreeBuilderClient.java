@@ -168,15 +168,15 @@ public class SpeciesTreeBuilderClient {
      * Build a species tree out of a set of given genome references.
      * </pre>
      * @param   input   instance of type {@link speciestreebuilder.ConstructSpeciesTreeParams ConstructSpeciesTreeParams}
-     * @return   parameter "tree_ref" of original type "ws_tree_id" (A workspace ID that references a Tree data object. @id ws KBaseTrees.Tree)
+     * @return   parameter "out" of type {@link speciestreebuilder.ConstructSpeciesTreeOutput ConstructSpeciesTreeOutput}
      * @throws IOException if an IO exception occurs
      * @throws JsonClientException if a JSON RPC exception occurs
      */
-    public String constructSpeciesTree(ConstructSpeciesTreeParams input, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
+    public ConstructSpeciesTreeOutput constructSpeciesTree(ConstructSpeciesTreeParams input, RpcContext... jsonRpcContext) throws IOException, JsonClientException {
         List<Object> args = new ArrayList<Object>();
         args.add(input);
-        TypeReference<List<String>> retType = new TypeReference<List<String>>() {};
-        List<String> res = caller.jsonrpcCall("SpeciesTreeBuilder.construct_species_tree", args, retType, true, true, jsonRpcContext, this.serviceVersion);
+        TypeReference<List<ConstructSpeciesTreeOutput>> retType = new TypeReference<List<ConstructSpeciesTreeOutput>>() {};
+        List<ConstructSpeciesTreeOutput> res = caller.jsonrpcCall("SpeciesTreeBuilder.construct_species_tree", args, retType, true, true, jsonRpcContext, this.serviceVersion);
         return res.get(0);
     }
 

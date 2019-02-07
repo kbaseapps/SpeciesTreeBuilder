@@ -23,7 +23,7 @@ class SpeciesTreeBuilder(object):
             self, url=None, timeout=30 * 60, user_id=None,
             password=None, token=None, ignore_authrc=False,
             trust_all_ssl_certificates=False,
-            auth_svc='https://kbase.us/services/authorization/Sessions/Login'):
+            auth_svc='https://ci.kbase.us/services/auth/api/legacy/KBase/Sessions/Login'):
         if url is None:
             raise ValueError('A url is required')
         self._service_ver = None
@@ -64,8 +64,11 @@ class SpeciesTreeBuilder(object):
            KBaseSearch.GenomeSet), parameter "copy_genomes" of Long,
            parameter "use_ribosomal_s9_only" of Long, parameter
            "nearest_genome_count" of Long
-        :returns: instance of type "ws_tree_id" (A workspace ID that
-           references a Tree data object. @id ws KBaseTrees.Tree)
+        :returns: instance of type "ConstructSpeciesTreeOutput" (Output is a
+           report, and a Tree object) -> structure: parameter
+           "output_result_id" of type "ws_tree_id" (A workspace ID that
+           references a Tree data object. @id ws KBaseTrees.Tree), parameter
+           "report_name" of String, parameter "report_ref" of String
         """
         return self._client.call_method(
             'SpeciesTreeBuilder.construct_species_tree',
