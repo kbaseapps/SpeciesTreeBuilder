@@ -1,18 +1,14 @@
 #
 # Define basic display information
 #
-name     : Insert Set of Genomes Into Species Tree 2.1.10
+name     : Insert Set of Genomes Into Species Tree - v2.2.0
 
 tooltip  : |
     Add a user-provided GenomeSet to a KBase species tree.
 
 
 screenshots :
-    - insert_genome_into_species_tree_input.png
-    - insert_genome_into_species_tree_output1.png
-    - insert_genome_into_species_tree_output2.png
-    - insert_genome_into_species_tree_output3.png
-    - insert_genome_into_species_tree_output4.png
+    []
 
 icon: speciestree-purple.png
 
@@ -40,27 +36,19 @@ parameters :
         ui-name : |
             GenomeSet
         short-hint : |
-            GenomeSet to insert into a phylogenetic tree for comparing it with closely related publicly available genomes
-        long-hint  : |
-            GenomeSet to insert into a phylogenetic tree for comparing it with closely related publicly available genomes
-
+            GenomeSet to insert into a phylogenetic tree for comparing it with closely related publicly available genomes.
 
     param1 :
         ui-name : |
             Neighbor public genome count
         short-hint : |
-            Number of closest public genomes the tree will contain (optional--default value is 20)
-        long-hint  : |
-            Number of closest public genomes the tree will contain (optional--default value is 20)
-
+            Number of closest public genomes the tree will contain. Note that this is optional and the default value is 20.
 
     copy_genomes :
         ui-name : |
             Copy public genomes to your workspace
         short-hint : |
-            We recommend copying public genomes to your workspace, so that you can conveniently do other analyses on them
-        long-hint  : |
-            We recommend copying public genomes to your workspace, so that you can conveniently do other analyses on them.  If you don't want to do anything else with the species tree, you may not need copies
+            We recommend copying public genomes to your workspace so that you can conveniently do other analyses on them. If you don't want to do anything else with the species tree, you may not need the copies.
 
     treeID :
         ui-name : |
@@ -68,28 +56,32 @@ parameters :
         short-hint : |
             Output species tree name
         long-hint : |
-            The name of the output phylogenetic tree relating public genomes available in KBase to your genomes
+            The name of the output phylogenetic tree relating public genomes available in KBase to your genomes.
 
     genomeSetName :
         ui-name : |
             Output Genome Set
         short-hint : |
-            A collection of Genome objects
-        long-hint  : |
-            A collection of Genome objects
+            A collection of Genome objects.
         placeholder: |
             Name the set of genomes generated
 
 
 description : |
-    <p>This app allows a user to construct a phylogenetic tree combining the GenomeSet provided by the user with a set of closely related genomes from the KBase list of species.
-    Since the number of genomes available in KBase is very large, the procedure starts by selecting a subset of KBase genomes closely related to the user-provided genome. Relatedness is determined by alignment similarity to a select subset of COG (Clusters of Orthologous Groups) domains.
-    Next, a phylogenetic tree is reconstructed using FastTree (version 2.1.10, a method to quickly estimate maximum likelihood phylogeny, see Publications) with the genome provided by the user and the set of genomes identified as similar in the previous step. The output tree can be shown with two possible layouts - rectangular and circular.</p>
+    <p>This App allows a user to construct a species tree using a set of 49 core, universal genes defined by COG (Clusters of Orthologous Groups) gene families. It combines the genome(s) provided by the user with a set of closely related genomes selected from the public KBase genomes import of RefSeq. Since the number of genomes available in KBase is very large, the procedure starts by selecting a subset of public KBase genomes closely related to the user-provided genomes. Relatedness is determined by alignment similarity to a select subset of 49 COG domains. Next, the user genome(s) are inserted into our curated multiple sequence alignment (MSA) for each COG family. The curated alignments have been trimmed using GBLOCKS to remove poorly aligned sections of the MSA. The MSAs are then concatenated. Then, a phylogenetic tree is reconstructed using <a href=”http://www.microbesonline.org/fasttree/”FastTree2</a>, (version 2.1.10, a method to quickly estimate approximate maximum likelihood phylogeny, see Publications) with the genome(s) provided by the user and the set of genomes identified as similar in the previous step. FastTree2 is used with the ‘-fastest’ setting.</p>
+
     <p>Note: when inserting one or more genomes into a species tree, the inserted genomes that are also contained within the KBase list of species will be duplicated in the tree. One copy will have the KBase list ID and the other will have the ID of the inserted genome.</p>
-    <p>This app also creates a Genome Set object containing all the genomes in the species tree that was generated.
-    By default, the genomes in this Genome Set are also copied into your narrative, in order to make further analyses (e.g., viewing, finding domains) more convenient.
-    By clicking on the Genome Set object that is generated, you can edit the set of genomes, e.g., to exclude some of them from downstream analyses.</p>
-    <p><strong>Team members who developed & deployed algorithm in KBase:</strong> Roman Sutormin. For questions, <a href="http://kbase.us/contact-us/">contact us.</a></p>
+
+    <p>The <b>Neighbor public genome count</b> parameter will control how many nearby genomes are included in the species tree for each input genome. The maximum number of nearby genomes is 200. This represents the total number of close genomes that will be added to the tree. If you have several diverse input genomes, you should increase this number.</p>
+
+    <p>The primary output of this object will be a species tree data object. The App report will show the resulting tree and contain links for downloading the tree in newick format and as a pdf or png. Tree leaves are labeled by the NCBI RefSeq species name plus their GCF identifiers. User genomes are labeled with the data object name. Branch support values are shown for each node, as described in the FastTree2 <a href=”http://www.microbesonline.org/fasttree/”>documentation</a>.</p>
+
+    <p>This App also creates a Genome Set object containing all the genomes in the species tree that was generated. You must provide a name for this output object. By default, the genomes in this Genome Set are not copied into your narrative, in order to make further analyses (e.g., viewing, finding domains) more convenient, you may select the <b>Copy public genomes to your workspace</b> option. However, this is not recommended if you set a large value for the <b>Neighbor public genome count</b>.</p>
+
+    <p>By clicking on the Genome Set object that is generated, you can edit the set of genomes, e.g., to exclude some of them from downstream analyses.</p>
+
+    <p><strong>Team members who developed & deployed algorithm in KBase:</strong> Roman Sutormin. For questions, please <a href="http://kbase.us/contact-us/">contact us</a>.</p>
+
 
     The COGs domains used in the estimate of relatedness include:
     <table>
