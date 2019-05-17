@@ -1,9 +1,9 @@
 #
 # Define basic display information
 #
-name     : Insert Genome Into Species Tree - v2.2.0
+name     : Insert Genome Into SpeciesTree - v2.2.0
 tooltip  : |
-    Add one or more genomes to a KBase species tree.
+    Add one or more Genomes to a KBase SpeciesTree.
 
 screenshots :
     []
@@ -38,13 +38,13 @@ parameters :
 
     param1 :
         ui-name : |
-            Neighbor public genome count
+            Neighbor Public Genome Count
         short-hint : |
             Number of closest public genomes the tree will contain. Note this is optional and that the default value is 20.
 
     copy_genomes :
         ui-name : |
-            Copy public genomes to your workspace
+            Copy Public Genomes to Workspace
         short-hint : |
             We recommend copying public genomes to your workspace so that you can conveniently do other analyses on them. If you don't want to do anything else with the species tree, you may not need the copies.
 
