@@ -1,15 +1,14 @@
 #
 # Define basic display information
 #
-name     : Build Genome Set From Tree
+name     : Build GenomeSet From Tree
 
 tooltip : |
-    Extract a set of genomes from a species tree.
+    Allows users to extract a set of genomes (GenomeSet data object) from a SpecieTree.
 
 screenshots :
 
-    - build_genome_set_input.png
-    - build_genome_set_output.png
+    []
 
 icon: speciestree-purple.png
 
@@ -36,30 +35,25 @@ parameters :
         ui-name : |
             Species Tree
         short-hint : |
-            User-generated KBase phylogenetic species tree
-        long-hint  : |
-            User-generated KBase phylogenetic species tree
-
+            User-generated KBase phylogenetic SpeciesTree object.
 
     genomeSetName :
         ui-name : |
-            Output Genome Set
+            Output GenomeSet
         short-hint : |
-            A collection of Genome objects
-        long-hint  : |
-            A collection of Genome objects
+            The output collection of Genome objects.
         placeholder: |
             Name the set of genomes generated
 
 
 description : |
-    <p>This app allows a user to extract a set of genomes from a user-generated species Tree object. First, it copies the set of genomes from the tree to the current Narrative.
-    The output widget lets you name the Genome Set object and select specific genomes from the genomes contained in the input Tree object.
-    The genomes can be deleted from the output set by clicking the trashcan icon. Additional genomes can be added by pressing the &quot;Add&quot; button at the bottom of the table in the Narrative panel.
-    The Genome Set object is saved when the &quot;Save&quot; button is clicked. The resulting Genome Set object can then be used as input to other apps such as <a data-method-id=Òcompute_pangenomeÓ>Compute Pangenome</a> and <a data-method-id=Òinsert_genomeset_into_species_tree_genericÓ>Insert Set of Genomes into Species Tree</a>.</p>
-    <p>Note: when inserting one or more genomes into a species tree, the inserted genomes that are also contained within the KBase list of species will be duplicated in the tree. One copy will have the KBase list ID and the other will have the ID of the inserted genome. The genomes will also be duplicated in any genome set generated from the tree.</p>
-    <p><strong>Team members who developed & deployed algorithm in KBase:</strong> Roman Sutormin. For questions, contact us at <a href="http://kbase.us/contact-us/">http://kbase.us/contact-us/</a><</p>
+    <p>This App enables users to create a GenomeSet from a user-generated SpeciesTree object. A tree can be generated with <a href=”https://narrative.kbase.us/#catalog/apps/SpeciesTreeBuilder/insert_set_of_genomes_into_species_tree/release”>Insert Genome into Species Tree</a> or <a href=”https://narrative.kbase.us/#catalog/apps/SpeciesTreeBuilder/insert_genomeset_into_species_tree/a8c2ec25ce5276946c33ba8ac830d3f9d613b69c”>Insert Set of Genomes into Species Tree</a>. The Genomes from the tree are copied to the current Narrative and then the GenomeSet is created.</p>
 
+    <p>You must supply a name for the GenomeSet output object. After the App is run, you can select specific Genomes to add to or remove from the GenomeSet. The Genomes can be deleted from the output set by clicking the trashcan icon. Additional Genomes can be added by pressing the &quot;Add&quot; button at the bottom of the table and adding Genomes from the Narrative.</p>
+
+    <p>The GenomeSet object is saved when the &quot;Save&quot; button is clicked. The resulting GenomeSet object can then be used as input to other Apps such as <a href=”https://narrative.kbase.us/#catalog/apps/GenomeComparisonSDK/build_pangenome/release”>Compute Pangenome</a> and <a href=”https://narrative.kbase.us/#catalog/apps/kb_phylogenomics/run_DomainAnnotation_Sets/release”>Annotate Domains in a Genome Set</a>.</p>
+
+    <p><strong>Team members who developed & deployed algorithm in KBase:</strong> Roman Sutormin. For questions, please <a href=”http://kbase.us/contact-us/”>contact us</a>.</p>
 
 publications :
     -
