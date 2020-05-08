@@ -39,6 +39,7 @@ import kbphylogenomics.ViewTreeInput;
 import kbphylogenomics.ViewTreeOutput;
 
 import us.kbase.auth.AuthToken;
+import us.kbase.common.service.ServerException;
 import us.kbase.common.service.Tuple11;
 import us.kbase.common.service.Tuple2;
 import us.kbase.common.service.UObject;
@@ -172,11 +173,20 @@ public class SpeciesTreeBuilder {
 		URL callbackUrl = new URL(System.getenv("SDK_CALLBACK_URL"));
 		KbPhylogenomicsClient kbphylo = new KbPhylogenomicsClient(callbackUrl, token);
 		kbphylo.setIsInsecureHttpConnectionAllowed(true);
-		return kbphylo.viewTree(
-				new ViewTreeInput().withWorkspaceName(outWorkspace)
-				.withInputTreeRef(treeRef)
-				.withDesc(desc)
-		);
+		try {
+			return kbphylo.viewTree(
+					new ViewTreeInput().withWorkspaceName(outWorkspace)
+					.withInputTreeRef(treeRef)
+					.withDesc(desc)
+			);
+		} catch (ServerException se) {
+			// no good way to test this
+			System.out.println("Caught kb_phylogenomics.view_tree exception, " +
+					"printing serverside stack trace");
+			System.out.println("Message: " + se.getMessage());
+			System.out.println(se.getData());
+			throw se;
+		}
 	}
 
 	private String saveResult(String ws, String id, Tree res,
