@@ -12,7 +12,7 @@ from __future__ import print_function
 try:
     # baseclient and this client are in a package
     from .baseclient import BaseClient as _BaseClient  # @UnusedImport
-except:
+except ImportError:
     # no they aren't
     from baseclient import BaseClient as _BaseClient  # @Reimport
 
@@ -70,9 +70,8 @@ class SpeciesTreeBuilder(object):
            references a Tree data object. @id ws KBaseTrees.Tree), parameter
            "report_name" of String, parameter "report_ref" of String
         """
-        return self._client.call_method(
-            'SpeciesTreeBuilder.construct_species_tree',
-            [input], self._service_ver, context)
+        return self._client.call_method('SpeciesTreeBuilder.construct_species_tree',
+                                        [input], self._service_ver, context)
 
     def find_close_genomes(self, params, context=None):
         """
@@ -91,9 +90,8 @@ class SpeciesTreeBuilder(object):
            that references a Genome data object. @id ws KBaseGenomes.Genome
            KBaseGenomeAnnotations.GenomeAnnotation)
         """
-        return self._client.call_method(
-            'SpeciesTreeBuilder.find_close_genomes',
-            [params], self._service_ver, context)
+        return self._client.call_method('SpeciesTreeBuilder.find_close_genomes',
+                                        [params], self._service_ver, context)
 
     def guess_taxonomy_path(self, params, context=None):
         """
@@ -106,9 +104,8 @@ class SpeciesTreeBuilder(object):
            KBaseGenomes.Genome KBaseGenomeAnnotations.GenomeAnnotation)
         :returns: instance of String
         """
-        return self._client.call_method(
-            'SpeciesTreeBuilder.guess_taxonomy_path',
-            [params], self._service_ver, context)
+        return self._client.call_method('SpeciesTreeBuilder.guess_taxonomy_path',
+                                        [params], self._service_ver, context)
 
     def build_genome_set_from_tree(self, params, context=None):
         """
@@ -121,9 +118,8 @@ class SpeciesTreeBuilder(object):
         :returns: instance of type "ws_genomeset_id" (A workspace ID that
            references a GenomeSet data object. @id ws KBaseSearch.GenomeSet)
         """
-        return self._client.call_method(
-            'SpeciesTreeBuilder.build_genome_set_from_tree',
-            [params], self._service_ver, context)
+        return self._client.call_method('SpeciesTreeBuilder.build_genome_set_from_tree',
+                                        [params], self._service_ver, context)
 
     def status(self, context=None):
         return self._client.call_method('SpeciesTreeBuilder.status',

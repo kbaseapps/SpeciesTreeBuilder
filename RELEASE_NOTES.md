@@ -1,3 +1,9 @@
+### Version 0.1.0
+- Update to Java 8 to enable TLS 1.2
+
+### Version 0.0.13
+- Undocumented
+
 ### Version 0.0.12
 - Tweaks to the display of genomes
 
