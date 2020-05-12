@@ -12,11 +12,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 
 /**
- * <p>Original spec-file type: trim_tree_to_genomeSet_Input</p>
+ * <p>Original spec-file type: trim_speciestree_to_genomeset_Input</p>
  * <pre>
- * trim_tree_to_genomeSet()
+ * trim_speciestree_to_genomeset()
  * **
- * ** trim a KBase Tree to match genomeset, and make newick and images downloadable
+ * ** reduce tree to match genomes found in genomeset
  * </pre>
  * 
  */
@@ -26,9 +26,11 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "workspace_name",
     "input_genomeSet_ref",
     "input_tree_ref",
-    "desc"
+    "output_tree_name",
+    "desc",
+    "enforce_genome_version_match"
 })
-public class TrimTreeToGenomeSetInput {
+public class TrimSpeciestreeToGenomesetInput {
 
     @JsonProperty("workspace_name")
     private String workspaceName;
@@ -36,8 +38,12 @@ public class TrimTreeToGenomeSetInput {
     private String inputGenomeSetRef;
     @JsonProperty("input_tree_ref")
     private String inputTreeRef;
+    @JsonProperty("output_tree_name")
+    private String outputTreeName;
     @JsonProperty("desc")
     private String desc;
+    @JsonProperty("enforce_genome_version_match")
+    private Long enforceGenomeVersionMatch;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("workspace_name")
@@ -50,7 +56,7 @@ public class TrimTreeToGenomeSetInput {
         this.workspaceName = workspaceName;
     }
 
-    public TrimTreeToGenomeSetInput withWorkspaceName(String workspaceName) {
+    public TrimSpeciestreeToGenomesetInput withWorkspaceName(String workspaceName) {
         this.workspaceName = workspaceName;
         return this;
     }
@@ -65,7 +71,7 @@ public class TrimTreeToGenomeSetInput {
         this.inputGenomeSetRef = inputGenomeSetRef;
     }
 
-    public TrimTreeToGenomeSetInput withInputGenomeSetRef(String inputGenomeSetRef) {
+    public TrimSpeciestreeToGenomesetInput withInputGenomeSetRef(String inputGenomeSetRef) {
         this.inputGenomeSetRef = inputGenomeSetRef;
         return this;
     }
@@ -80,8 +86,23 @@ public class TrimTreeToGenomeSetInput {
         this.inputTreeRef = inputTreeRef;
     }
 
-    public TrimTreeToGenomeSetInput withInputTreeRef(String inputTreeRef) {
+    public TrimSpeciestreeToGenomesetInput withInputTreeRef(String inputTreeRef) {
         this.inputTreeRef = inputTreeRef;
+        return this;
+    }
+
+    @JsonProperty("output_tree_name")
+    public String getOutputTreeName() {
+        return outputTreeName;
+    }
+
+    @JsonProperty("output_tree_name")
+    public void setOutputTreeName(String outputTreeName) {
+        this.outputTreeName = outputTreeName;
+    }
+
+    public TrimSpeciestreeToGenomesetInput withOutputTreeName(String outputTreeName) {
+        this.outputTreeName = outputTreeName;
         return this;
     }
 
@@ -95,8 +116,23 @@ public class TrimTreeToGenomeSetInput {
         this.desc = desc;
     }
 
-    public TrimTreeToGenomeSetInput withDesc(String desc) {
+    public TrimSpeciestreeToGenomesetInput withDesc(String desc) {
         this.desc = desc;
+        return this;
+    }
+
+    @JsonProperty("enforce_genome_version_match")
+    public Long getEnforceGenomeVersionMatch() {
+        return enforceGenomeVersionMatch;
+    }
+
+    @JsonProperty("enforce_genome_version_match")
+    public void setEnforceGenomeVersionMatch(Long enforceGenomeVersionMatch) {
+        this.enforceGenomeVersionMatch = enforceGenomeVersionMatch;
+    }
+
+    public TrimSpeciestreeToGenomesetInput withEnforceGenomeVersionMatch(Long enforceGenomeVersionMatch) {
+        this.enforceGenomeVersionMatch = enforceGenomeVersionMatch;
         return this;
     }
 
@@ -112,7 +148,7 @@ public class TrimTreeToGenomeSetInput {
 
     @Override
     public String toString() {
-        return ((((((((((("TrimTreeToGenomeSetInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", inputTreeRef=")+ inputTreeRef)+", desc=")+ desc)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((("TrimSpeciestreeToGenomesetInput"+" [workspaceName=")+ workspaceName)+", inputGenomeSetRef=")+ inputGenomeSetRef)+", inputTreeRef=")+ inputTreeRef)+", outputTreeName=")+ outputTreeName)+", desc=")+ desc)+", enforceGenomeVersionMatch=")+ enforceGenomeVersionMatch)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }
