@@ -21,9 +21,9 @@ import us.kbase.common.service.RpcContext;
  */
 public class SpeciesTreeBuilderServer extends JsonServerServlet {
     private static final long serialVersionUID = 1L;
-    private static final String version = "0.1.0";
-    private static final String gitUrl = "https://github.com/kbaseapps/speciestreebuilder.git";
-    private static final String gitCommitHash = "3696ed44680b77ded8c65ab398555576a31622a6";
+    private static final String version = "0.1.1";
+    private static final String gitUrl = "https://github.com/mrcreosote/speciestreebuilder.git";
+    private static final String gitCommitHash = "a6cc85e48c643f6dcda4c8e0c55f6f569ef25685";
 
     //BEGIN_CLASS_HEADER
     public Map<String, String> getConfig() throws Exception {

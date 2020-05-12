@@ -1,8 +1,11 @@
+### Version 0.1.1
+- Convert the kb_phylogenomics client to an async client and remove beta tag
+
 ### Version 0.1.0
 - Update to Java 8 to enable TLS 1.2
 
 ### Version 0.0.13
-- Undocumented
+- Documentation updates
 
 ### Version 0.0.12
 - Tweaks to the display of genomes
