@@ -27,13 +27,21 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "input_featureSet_ref",
     "namespace",
     "custom_target_fams",
+    "genome_disp_name_config",
     "count_category",
     "heatmap",
     "vertical",
     "top_hit",
     "e_value",
     "log_base",
-    "show_blanks"
+    "required_COG_annot_perc",
+    "required_PFAM_annot_perc",
+    "required_TIGR_annot_perc",
+    "required_SEED_annot_perc",
+    "count_hypothetical",
+    "show_blanks",
+    "skip_missing_genomes",
+    "enforce_genome_version_match"
 })
 public class ViewFxnProfileFeatureSetInput {
 
@@ -52,6 +60,8 @@ public class ViewFxnProfileFeatureSetInput {
      */
     @JsonProperty("custom_target_fams")
     private CustomTargetFams customTargetFams;
+    @JsonProperty("genome_disp_name_config")
+    private String genomeDispNameConfig;
     @JsonProperty("count_category")
     private String countCategory;
     @JsonProperty("heatmap")
@@ -64,8 +74,22 @@ public class ViewFxnProfileFeatureSetInput {
     private Double eValue;
     @JsonProperty("log_base")
     private Double logBase;
+    @JsonProperty("required_COG_annot_perc")
+    private Double requiredCOGAnnotPerc;
+    @JsonProperty("required_PFAM_annot_perc")
+    private Double requiredPFAMAnnotPerc;
+    @JsonProperty("required_TIGR_annot_perc")
+    private Double requiredTIGRAnnotPerc;
+    @JsonProperty("required_SEED_annot_perc")
+    private Double requiredSEEDAnnotPerc;
+    @JsonProperty("count_hypothetical")
+    private Long countHypothetical;
     @JsonProperty("show_blanks")
     private Long showBlanks;
+    @JsonProperty("skip_missing_genomes")
+    private Long skipMissingGenomes;
+    @JsonProperty("enforce_genome_version_match")
+    private Long enforceGenomeVersionMatch;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     @JsonProperty("workspace_name")
@@ -139,6 +163,21 @@ public class ViewFxnProfileFeatureSetInput {
 
     public ViewFxnProfileFeatureSetInput withCustomTargetFams(CustomTargetFams customTargetFams) {
         this.customTargetFams = customTargetFams;
+        return this;
+    }
+
+    @JsonProperty("genome_disp_name_config")
+    public String getGenomeDispNameConfig() {
+        return genomeDispNameConfig;
+    }
+
+    @JsonProperty("genome_disp_name_config")
+    public void setGenomeDispNameConfig(String genomeDispNameConfig) {
+        this.genomeDispNameConfig = genomeDispNameConfig;
+    }
+
+    public ViewFxnProfileFeatureSetInput withGenomeDispNameConfig(String genomeDispNameConfig) {
+        this.genomeDispNameConfig = genomeDispNameConfig;
         return this;
     }
 
@@ -232,6 +271,81 @@ public class ViewFxnProfileFeatureSetInput {
         return this;
     }
 
+    @JsonProperty("required_COG_annot_perc")
+    public Double getRequiredCOGAnnotPerc() {
+        return requiredCOGAnnotPerc;
+    }
+
+    @JsonProperty("required_COG_annot_perc")
+    public void setRequiredCOGAnnotPerc(Double requiredCOGAnnotPerc) {
+        this.requiredCOGAnnotPerc = requiredCOGAnnotPerc;
+    }
+
+    public ViewFxnProfileFeatureSetInput withRequiredCOGAnnotPerc(Double requiredCOGAnnotPerc) {
+        this.requiredCOGAnnotPerc = requiredCOGAnnotPerc;
+        return this;
+    }
+
+    @JsonProperty("required_PFAM_annot_perc")
+    public Double getRequiredPFAMAnnotPerc() {
+        return requiredPFAMAnnotPerc;
+    }
+
+    @JsonProperty("required_PFAM_annot_perc")
+    public void setRequiredPFAMAnnotPerc(Double requiredPFAMAnnotPerc) {
+        this.requiredPFAMAnnotPerc = requiredPFAMAnnotPerc;
+    }
+
+    public ViewFxnProfileFeatureSetInput withRequiredPFAMAnnotPerc(Double requiredPFAMAnnotPerc) {
+        this.requiredPFAMAnnotPerc = requiredPFAMAnnotPerc;
+        return this;
+    }
+
+    @JsonProperty("required_TIGR_annot_perc")
+    public Double getRequiredTIGRAnnotPerc() {
+        return requiredTIGRAnnotPerc;
+    }
+
+    @JsonProperty("required_TIGR_annot_perc")
+    public void setRequiredTIGRAnnotPerc(Double requiredTIGRAnnotPerc) {
+        this.requiredTIGRAnnotPerc = requiredTIGRAnnotPerc;
+    }
+
+    public ViewFxnProfileFeatureSetInput withRequiredTIGRAnnotPerc(Double requiredTIGRAnnotPerc) {
+        this.requiredTIGRAnnotPerc = requiredTIGRAnnotPerc;
+        return this;
+    }
+
+    @JsonProperty("required_SEED_annot_perc")
+    public Double getRequiredSEEDAnnotPerc() {
+        return requiredSEEDAnnotPerc;
+    }
+
+    @JsonProperty("required_SEED_annot_perc")
+    public void setRequiredSEEDAnnotPerc(Double requiredSEEDAnnotPerc) {
+        this.requiredSEEDAnnotPerc = requiredSEEDAnnotPerc;
+    }
+
+    public ViewFxnProfileFeatureSetInput withRequiredSEEDAnnotPerc(Double requiredSEEDAnnotPerc) {
+        this.requiredSEEDAnnotPerc = requiredSEEDAnnotPerc;
+        return this;
+    }
+
+    @JsonProperty("count_hypothetical")
+    public Long getCountHypothetical() {
+        return countHypothetical;
+    }
+
+    @JsonProperty("count_hypothetical")
+    public void setCountHypothetical(Long countHypothetical) {
+        this.countHypothetical = countHypothetical;
+    }
+
+    public ViewFxnProfileFeatureSetInput withCountHypothetical(Long countHypothetical) {
+        this.countHypothetical = countHypothetical;
+        return this;
+    }
+
     @JsonProperty("show_blanks")
     public Long getShowBlanks() {
         return showBlanks;
@@ -247,6 +361,36 @@ public class ViewFxnProfileFeatureSetInput {
         return this;
     }
 
+    @JsonProperty("skip_missing_genomes")
+    public Long getSkipMissingGenomes() {
+        return skipMissingGenomes;
+    }
+
+    @JsonProperty("skip_missing_genomes")
+    public void setSkipMissingGenomes(Long skipMissingGenomes) {
+        this.skipMissingGenomes = skipMissingGenomes;
+    }
+
+    public ViewFxnProfileFeatureSetInput withSkipMissingGenomes(Long skipMissingGenomes) {
+        this.skipMissingGenomes = skipMissingGenomes;
+        return this;
+    }
+
+    @JsonProperty("enforce_genome_version_match")
+    public Long getEnforceGenomeVersionMatch() {
+        return enforceGenomeVersionMatch;
+    }
+
+    @JsonProperty("enforce_genome_version_match")
+    public void setEnforceGenomeVersionMatch(Long enforceGenomeVersionMatch) {
+        this.enforceGenomeVersionMatch = enforceGenomeVersionMatch;
+    }
+
+    public ViewFxnProfileFeatureSetInput withEnforceGenomeVersionMatch(Long enforceGenomeVersionMatch) {
+        this.enforceGenomeVersionMatch = enforceGenomeVersionMatch;
+        return this;
+    }
+
     @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
@@ -259,7 +403,7 @@ public class ViewFxnProfileFeatureSetInput {
 
     @Override
     public String toString() {
-        return ((((((((((((((((((((((((("ViewFxnProfileFeatureSetInput"+" [workspaceName=")+ workspaceName)+", inputFeatureSetRef=")+ inputFeatureSetRef)+", namespace=")+ namespace)+", customTargetFams=")+ customTargetFams)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", topHit=")+ topHit)+", eValue=")+ eValue)+", logBase=")+ logBase)+", showBlanks=")+ showBlanks)+", additionalProperties=")+ additionalProperties)+"]");
+        return ((((((((((((((((((((((((((((((((((((((((("ViewFxnProfileFeatureSetInput"+" [workspaceName=")+ workspaceName)+", inputFeatureSetRef=")+ inputFeatureSetRef)+", namespace=")+ namespace)+", customTargetFams=")+ customTargetFams)+", genomeDispNameConfig=")+ genomeDispNameConfig)+", countCategory=")+ countCategory)+", heatmap=")+ heatmap)+", vertical=")+ vertical)+", topHit=")+ topHit)+", eValue=")+ eValue)+", logBase=")+ logBase)+", requiredCOGAnnotPerc=")+ requiredCOGAnnotPerc)+", requiredPFAMAnnotPerc=")+ requiredPFAMAnnotPerc)+", requiredTIGRAnnotPerc=")+ requiredTIGRAnnotPerc)+", requiredSEEDAnnotPerc=")+ requiredSEEDAnnotPerc)+", countHypothetical=")+ countHypothetical)+", showBlanks=")+ showBlanks)+", skipMissingGenomes=")+ skipMissingGenomes)+", enforceGenomeVersionMatch=")+ enforceGenomeVersionMatch)+", additionalProperties=")+ additionalProperties)+"]");
     }
 
 }
