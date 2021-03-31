@@ -8,10 +8,10 @@ service-language:
     java
 
 module-version:
-    0.1.1
+    0.1.2
 
 owners:
-    [jmc, gaprice]
+    [jmc, gaprice, zimingy]
 
 data-version:
     1.2

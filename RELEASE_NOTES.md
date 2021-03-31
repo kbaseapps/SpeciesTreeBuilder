@@ -1,3 +1,6 @@
+### Version 0.1.2
+- Add github action workflow and remove empty travis.yml file
+
 ### Version 0.1.1
 - Convert the kb_phylogenomics client to an async client and remove beta tag
 
