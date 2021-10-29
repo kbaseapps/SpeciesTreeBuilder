@@ -718,7 +718,10 @@ public class SpeciesTreeBuilder {
 	            objectids.add(new ObjectSpecification().withRef(genomeRef));
 				userData.add(alignGenomeProteins(genomeRef, useCog103Only, cogToAlnLength));
 			} catch (Exception ex) {
-				throw new IllegalStateException("Error processing genome [" + genomeRef + "] " +
+				Map<String, Object> obj = storage.getObjects2(
+			        new GetObjects2Params().withObjects(Arrays.asList(new ObjectSpecification()
+			        .withRef(genomeRef)))).getData().get(0).getData().asClassInstance(Map.class);
+				throw new IllegalStateException("Error processing genome [" + genomeRef + ":" + obj.get("id") + "] " +
 				        "(" + ex.getMessage() + ")", ex);
 			}
 		}
