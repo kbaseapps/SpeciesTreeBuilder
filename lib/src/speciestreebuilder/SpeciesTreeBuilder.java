@@ -720,14 +720,19 @@ public class SpeciesTreeBuilder {
 			} catch (Exception ex) {
 				String[] arrOfStr = this.wsUrl.split("/", 0);
 				Map<String, Object> obj = storage.getObjects2(
-			                                                              new GetObjects2Params().withObjects(Arrays.asList(new ObjectSpecification().withRef(genomeRef)))
-			                                                              )
-			                                                              .getData().get(0).getData().asClassInstance(Map.class);
+					new GetObjects2Params().withObjects(
+						Arrays.asList(new ObjectSpecification().withRef(genomeRef))
+					)
+			    )
+			    .getData().get(0).getData().asClassInstance(Map.class);
 				throw new IllegalStateException("Error processing genome ["
 					+ genomeRef + ": " + obj.get("id")
 					+ "  https://" + arrOfStr[2] + "/#dataview/" + genomeRef + "] "
 					+ "(" + ex.getMessage() + ")"
-					+ "one or more of the genomes in the list is missing all 40 of the COG-containing genes needed to place it in the tree.", ex);
+					+ "one or more of the genomes in the list is missing"
+					+ "all 40 of the COG-containing genes needed to place"
+					+ "it in the tree.", ex
+				);
 			}
 		}
 		System.out.println(">>> Genome proteins aligned ...");
