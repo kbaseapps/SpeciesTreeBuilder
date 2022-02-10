@@ -723,8 +723,8 @@ public class SpeciesTreeBuilder {
 					new GetObjects2Params().withObjects(
 						Arrays.asList(new ObjectSpecification().withRef(genomeRef))
 					)
-			    )
-			    .getData().get(0).getData().asClassInstance(Map.class);
+				)
+				.getData().get(0).getData().asClassInstance(Map.class);
 				throw new IllegalStateException("Error processing genome ["
 					+ genomeRef + ": " + obj.get("id")
 					+ "  https://" + arrOfStr[2] + "/#dataview/" + genomeRef + "] "
