@@ -6,7 +6,9 @@ MAINTAINER KBase Developer
 # any required dependencies for your module.
 
 # update java
-RUN add-apt-repository ppa:openjdk-r/ppa \
+RUN apt-get update --fix-missing \
+	&& sudo apt-get install --reinstall ca-certificates \
+	&& add-apt-repository ppa:openjdk-r/ppa \
 	&& sudo apt-get update \
 	&& sudo apt-get -y install openjdk-8-jdk \
 	&& echo java versions: \
