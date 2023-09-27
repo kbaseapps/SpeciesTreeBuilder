@@ -1,78 +1,103 @@
 {
-  "ver" : "1.0.2",
-  "authors" : [ "rsutormin" ],
-  "contact" : "http://kbase.us/contact-us/",
-  "visble" : true,
-  "categories" : ["active","comparative_genomics"],
-  "widgets" : {
-    "input" : null,
-    "output" : "no-display"
+  "ver": "1.0.2",
+  "authors": [
+    "rsutormin"
+  ],
+  "contact": "http://kbase.us/contact-us/",
+  "visble": true,
+  "categories": [
+    "active",
+    "comparative_genomics"
+  ],
+  "widgets": {
+    "input": null,
+    "output": "no-display"
   },
-  "parameters" : [ {
-    "id" : "param0",
-    "optional" : false,
-    "advanced" : false,
-    "allow_multiple" : false,
-    "default_values" : [ "" ],
-    "field_type" : "text",
-    "text_options" : {
-      "valid_ws_types" : [ "KBaseSearch.GenomeSet" ]
-    }
-  }, {
-    "id" : "param1",
-    "optional" : true,
-    "advanced" : false,
-    "allow_multiple" : false,
-    "default_values" : [ "20" ],
-    "field_type" : "text",
-    "text_options" : {
-      "valid_ws_types" : [ ],
-      "validate_as": "int",
-      "min_int" : 1,
-      "max_int" : 200
-    }
-  }, {
-    "id": "copy_genomes",
-    "optional": false,
-    "advanced": false,
-    "allow_multiple": false,
-    "default_values": [
+  "parameters": [
+    {
+      "id": "param0",
+      "optional": false,
+      "advanced": false,
+      "allow_multiple": false,
+      "default_values": [
+        ""
+      ],
+      "field_type": "text",
+      "text_options": {
+        "valid_ws_types": [
+          "KBaseSearch.GenomeSet"
+        ]
+      }
+    },
+    {
+      "id": "param1",
+      "optional": true,
+      "advanced": false,
+      "allow_multiple": false,
+      "default_values": [
+        "20"
+      ],
+      "field_type": "text",
+      "text_options": {
+        "valid_ws_types": [],
+        "validate_as": "int",
+        "min_int": 1,
+        "max_int": 200
+      }
+    },
+    {
+      "id": "copy_genomes",
+      "optional": false,
+      "advanced": false,
+      "allow_multiple": false,
+      "default_values": [
         "0"
-    ],
-    "field_type": "checkbox",
-    "checkbox_options": {
+      ],
+      "field_type": "checkbox",
+      "checkbox_options": {
         "checked_value": 1,
         "unchecked_value": 0
+      }
+    },
+    {
+      "id": "treeID",
+      "optional": false,
+      "advanced": false,
+      "allow_multiple": false,
+      "default_values": [
+        ""
+      ],
+      "field_type": "text",
+      "text_options": {
+        "valid_ws_types": [
+          "KBaseTrees.Tree"
+        ],
+        "is_output_name": true
+      }
+    },
+    {
+      "id": "genomeSetName",
+      "optional": false,
+      "advanced": false,
+      "allow_multiple": false,
+      "default_values": [
+        ""
+      ],
+      "field_type": "text",
+      "text_options": {
+        "valid_ws_types": [
+          "KBaseSearch.GenomeSet"
+        ],
+        "is_output_name": true
+      }
     }
-  }, {
-    "id" : "treeID",
-    "optional" : false,
-    "advanced" : false,
-    "allow_multiple" : false,
-    "default_values" : [ "" ],
-    "field_type" : "text",
-    "text_options" : {
-      "valid_ws_types" : [ "KBaseTrees.Tree" ],
-      "is_output_name":true
-    }
-  }, {
-    "id" : "genomeSetName",
-    "optional" : false,
-    "advanced" : false,
-    "allow_multiple" : false,
-    "default_values" : [ "" ],
-    "field_type" : "text",
-    "text_options" : {
-      "valid_ws_types" : [ "KBaseSearch.GenomeSet" ],
-      "is_output_name":true
-    }
-  } ],
-  "behavior" : {
-    "service-mapping" : {
-      "url" : "",
-      "name" : "SpeciesTreeBuilder",
-      "method" : "construct_species_tree",
-      "input_mapping" : [
+  ],
+  "behavior": {
+    "service-mapping": {
+      "url": "",
+      "name": "SpeciesTreeBuilder",
+      "method": "construct_species_tree",
+      "input_mapping": [
         {
           "input_parameter": "param0",
           "target_property": "genomeset_ref",
@@ -94,7 +119,7 @@
         {
           "input_parameter": "genomeSetName",
           "target_property": "out_genomeset_ref",
-          "target_type_transform": "ref"
+          "target_type_transform": "putative-ref"
         },
         {
           "narrative_system_variable": "workspace",
@@ -105,18 +130,30 @@
           "target_property": "use_ribosomal_s9_only"
         }
       ],
-      "output_mapping" : [
+      "output_mapping": [
         {
-          "service_method_output_path": [0, "output_result_id"],
+          "service_method_output_path": [
+            0,
+            "output_result_id"
+          ],
           "target_property": "output_result_id"
-        }, {
+        },
+        {
           "narrative_system_variable": "workspace",
           "target_property": "workspaceID"
-        }, {
-          "service_method_output_path": [0, "report_name"],
+        },
+        {
+          "service_method_output_path": [
+            0,
+            "report_name"
+          ],
           "target_property": "report_name"
-        }, {
-          "service_method_output_path": [0, "report_ref"],
+        },
+        {
+          "service_method_output_path": [
+            0,
+            "report_ref"
+          ],
           "target_property": "report_ref"
         }
       ]

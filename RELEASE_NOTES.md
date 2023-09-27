@@ -1,3 +1,6 @@
+### Version 0.1.4
+- Convert `ref` to `putative-ref` in the specs to allow the app to use existing objects or create new ones.
+
 ### Version 0.1.3
 - Add object url into error message
 
