@@ -1,41 +1,56 @@
 {
-  "ver" : "1.0.0",
-  "authors" : [ "rsutormin" ],
-  "contact" : "http://kbase.us/contact-us/",
-  "visble" : false,
-  "categories" : ["comparative_genomics"],
-  "widgets" : {
-    "input" : null,
-    "output" : "kbaseGenomeSetBuilder"
+  "ver": "1.0.0",
+  "authors": [
+    "rsutormin"
+  ],
+  "contact": "http://kbase.us/contact-us/",
+  "visble": false,
+  "categories": [
+    "comparative_genomics"
+  ],
+  "widgets": {
+    "input": null,
+    "output": "kbaseGenomeSetBuilder"
   },
-  "parameters" : [ {
-    "id" : "param0",
-    "optional" : false,
-    "advanced" : false,
-    "allow_multiple" : false,
-    "default_values" : [ "" ],
-    "field_type" : "text",
-    "text_options" : {
-      "valid_ws_types" : [ "KBaseTrees.Tree" ]
+  "parameters": [
+    {
+      "id": "param0",
+      "optional": false,
+      "advanced": false,
+      "allow_multiple": false,
+      "default_values": [
+        ""
+      ],
+      "field_type": "text",
+      "text_options": {
+        "valid_ws_types": [
+          "KBaseTrees.Tree"
+        ]
+      }
+    },
+    {
+      "id": "genomeSetName",
+      "optional": false,
+      "advanced": false,
+      "allow_multiple": false,
+      "default_values": [
+        ""
+      ],
+      "field_type": "text",
+      "text_options": {
+        "valid_ws_types": [
+          "KBaseSearch.GenomeSet"
+        ],
+        "is_output_name": true
+      }
     }
-  }, {
-    "id" : "genomeSetName",
-    "optional" : false,
-    "advanced" : false,
-    "allow_multiple" : false,
-    "default_values" : [ "" ],
-    "field_type" : "text",
-    "text_options" : {
-      "valid_ws_types" : [ "KBaseSearch.GenomeSet" ],
-      "is_output_name":true
-    }
-  } ],
-  "behavior" : {
-    "service-mapping" : {
-      "url" : "",
-      "name" : "SpeciesTreeBuilder",
-      "method" : "build_genome_set_from_tree",
-      "input_mapping" : [
+  ],
+  "behavior": {
+    "service-mapping": {
+      "url": "",
+      "name": "SpeciesTreeBuilder",
+      "method": "build_genome_set_from_tree",
+      "input_mapping": [
         {
           "input_parameter": "param0",
           "target_property": "tree_ref",
@@ -47,10 +62,10 @@
             "prefix": "genomeset_"
           },
           "target_property": "genomeset_ref",
-          "target_type_transform": "ref"
+          "target_type_transform": "putative-ref"
         }
       ],
-      "output_mapping" : [
+      "output_mapping": [
         {
           "input_parameter": "genomeSetName",
           "target_property": "genomeSetName"

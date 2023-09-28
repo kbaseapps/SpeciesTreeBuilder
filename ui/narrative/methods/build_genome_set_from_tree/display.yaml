@@ -41,7 +41,7 @@ parameters :
         ui-name : |
             Output GenomeSet
         short-hint : |
-            The output collection of Genome objects.
+            The output collection of Genome objects. Note that using an existing genome set will replace the contents of that set with the output of this app.
         placeholder: |
             Name the set of genomes generated
 
