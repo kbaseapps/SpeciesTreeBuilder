@@ -61,8 +61,7 @@
           "generated_value": {
             "prefix": "genomeset_"
           },
-          "target_property": "genomeset_ref",
-          "target_type_transform": "putative-ref"
+          "target_property": "genomeset_ref"
         }
       ],
       "output_mapping": [

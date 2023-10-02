@@ -4,7 +4,7 @@
 name     : Build GenomeSet From Tree
 
 tooltip : |
-    Allows users to extract a set of genomes (GenomeSet data object) from a SpecieTree.
+    Allows users to extract a set of genomes (GenomeSet data object) from a SpeciesTree.
 
 screenshots :
 
@@ -41,7 +41,7 @@ parameters :
         ui-name : |
             Output GenomeSet
         short-hint : |
-            The output collection of Genome objects. Note that using an existing genome set will replace the contents of that set with the output of this app.
+            The output collection of Genome objects. Cannot be an existing genomeset.
         placeholder: |
             Name the set of genomes generated
 
