@@ -41,7 +41,7 @@ parameters :
         ui-name : |
             Output GenomeSet
         short-hint : |
-            The output collection of Genome objects. Cannot be an existing genomeset.
+            The output collection of Genome objects.
         placeholder: |
             Name the set of genomes generated
 

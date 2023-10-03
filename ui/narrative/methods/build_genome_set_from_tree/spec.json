@@ -41,7 +41,7 @@
         "valid_ws_types": [
           "KBaseSearch.GenomeSet"
         ],
-        "is_output_name": true
+        "is_output_name": false
       }
     }
   ],
@@ -61,7 +61,12 @@
           "generated_value": {
             "prefix": "genomeset_"
           },
-          "target_property": "genomeset_ref"
+          "target_property": "genomeset_ref",
+          "target_type_transform": "putative-ref"
+        },
+        {
+          "narrative_system_variable": "workspace",
+          "target_property": "out_workspace"
         }
       ],
       "output_mapping": [
